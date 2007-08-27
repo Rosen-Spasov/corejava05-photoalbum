@@ -12,7 +12,7 @@ public class HibernateConnection {
 	
 	private Session getHbSession() {
 		if (this.hbSession == null) {
-			this.hbSession = HibernateConnectionManager.getInstance().openSession();
+			this.hbSession = HibernateConnectionManager.openSession();
 		}
 		return this.hbSession;
 	}
@@ -46,7 +46,7 @@ public class HibernateConnection {
 	}
 	
 	public void close() {
-		HibernateConnectionManager.getInstance().closeSession(this.getHbSession());
+		HibernateConnectionManager.closeSession(this.getHbSession());
 	}
 	
 	public void save(Object obj) {
