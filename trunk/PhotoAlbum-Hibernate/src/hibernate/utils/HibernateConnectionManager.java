@@ -10,11 +10,19 @@ public class HibernateConnectionManager {
 	
 	public static final String CONFIG_FILE = "/hibernate.cfg.xml";
 	
+	public static int CONNECTION_POOL_SIZE = 20;
+	
+//	static {
+//		for (int i = 0; i < CONNECTION_POOL_SIZE; i++) {
+//			openSession();
+//		}
+//	}
+	
 	private static SessionFactory sessionFactory;
 	
-	private static HibernateConnectionManager instance = null;
+//	private static HibernateConnectionManager instance = null;
 	
-	private ArrayList<Session> activeSessions = null;
+	private static ArrayList<Session> activeSessions = null;
 	
 	private static SessionFactory getSessionFactory() {
 		if (HibernateConnectionManager.sessionFactory == null) {
@@ -25,30 +33,30 @@ public class HibernateConnectionManager {
 		return HibernateConnectionManager.sessionFactory;
 	}
 	
-	private ArrayList<Session> getActiveSessions() {
-		if (this.activeSessions == null) {
-			this.activeSessions = new ArrayList<Session>();
+	private static ArrayList<Session> getActiveSessions() {
+		if (activeSessions == null) {
+			activeSessions = new ArrayList<Session>();
 		}
-		return this.activeSessions;
+		return activeSessions;
 	}
 	
-	public static HibernateConnectionManager getInstance() {
-		if (HibernateConnectionManager.instance == null) {
-			HibernateConnectionManager.instance = new HibernateConnectionManager();
-		}
-		return HibernateConnectionManager.instance;
-	}
+//	public static HibernateConnectionManager getInstance() {
+//		if (HibernateConnectionManager.instance == null) {
+//			HibernateConnectionManager.instance = new HibernateConnectionManager();
+//		}
+//		return HibernateConnectionManager.instance;
+//	}
 	
 	private HibernateConnectionManager() {
 	}
 	
-	public Session openSession() {
+	public static synchronized Session openSession() {
 		Session hbSession = HibernateConnectionManager.getSessionFactory().openSession();
-		this.getActiveSessions().add(hbSession);
+		getActiveSessions().add(hbSession);
 		return hbSession;
 	}
 	
-	public void closeSession(Session hbSession) {
-		this.getActiveSessions().remove(hbSession);
+	public static synchronized void closeSession(Session hbSession) {
+		getActiveSessions().remove(hbSession);
 	}
 }
