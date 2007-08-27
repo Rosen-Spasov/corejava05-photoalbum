@@ -12,17 +12,15 @@ public class HibernateConnectionManager {
 	
 	public static int CONNECTION_POOL_SIZE = 20;
 	
-//	static {
-//		for (int i = 0; i < CONNECTION_POOL_SIZE; i++) {
-//			openSession();
-//		}
-//	}
+	static {
+		for (int i = 0; i < CONNECTION_POOL_SIZE; i++) {
+			openConnection();
+		}
+	}
 	
 	private static SessionFactory sessionFactory;
 	
-//	private static HibernateConnectionManager instance = null;
-	
-	private static ArrayList<Session> activeSessions = null;
+	private static ArrayList<HibernateConnection> connections = null;
 	
 	private static SessionFactory getSessionFactory() {
 		if (HibernateConnectionManager.sessionFactory == null) {
@@ -33,30 +31,41 @@ public class HibernateConnectionManager {
 		return HibernateConnectionManager.sessionFactory;
 	}
 	
-	private static ArrayList<Session> getActiveSessions() {
-		if (activeSessions == null) {
-			activeSessions = new ArrayList<Session>();
+	private static ArrayList<HibernateConnection> getConnections() {
+		if (connections == null) {
+			connections = new ArrayList<HibernateConnection>();
 		}
-		return activeSessions;
+		return connections;
 	}
-	
-//	public static HibernateConnectionManager getInstance() {
-//		if (HibernateConnectionManager.instance == null) {
-//			HibernateConnectionManager.instance = new HibernateConnectionManager();
-//		}
-//		return HibernateConnectionManager.instance;
-//	}
 	
 	private HibernateConnectionManager() {
 	}
 	
-	public static synchronized Session openSession() {
-		Session hbSession = HibernateConnectionManager.getSessionFactory().openSession();
-		getActiveSessions().add(hbSession);
-		return hbSession;
+	private static HibernateConnection findAvailableConnection() {
+		HibernateConnection connection = null;
+		for (int index = 0; index < getConnections().size(); index++) {
+			if (getConnections().get(index).isAvailable()) {
+				connection = getConnections().get(index);
+				break;
+			}
+		}
+		return connection;
 	}
 	
-	public static synchronized void closeSession(Session hbSession) {
-		getActiveSessions().remove(hbSession);
+	public static synchronized HibernateConnection openConnection() {
+		HibernateConnection connection = findAvailableConnection();
+		if (connection == null) {
+			Session session = HibernateConnectionManager.getSessionFactory().openSession();
+			connection = new HibernateConnection(session);
+			getConnections().add(connection);
+		}
+		return connection;
 	}
+	
+	public static synchronized void closeConnection(HibernateConnection connection) {
+		if (getConnections().size() > CONNECTION_POOL_SIZE) {
+			getConnections().remove(connection);
+		}
+	}
+	
 }
