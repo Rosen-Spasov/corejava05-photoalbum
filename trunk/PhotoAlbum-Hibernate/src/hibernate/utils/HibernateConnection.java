@@ -6,20 +6,41 @@ import org.hibernate.Transaction;
 
 public class HibernateConnection {
 	
-	private Session hbSession = null;
+	private Session session = null;
 	
 	private Transaction transaction = null;
 	
-	private Session getHbSession() {
-		if (this.hbSession == null) {
-			this.hbSession = HibernateConnectionManager.openSession();
+	private boolean available = false;
+	
+	public HibernateConnection(Session session) {
+		this.setSession(session);
+	}
+	
+	public boolean isAvailable() {
+		return this.available;
+	}
+	
+	private void setAvailable(boolean available) {
+		this.available = available;
+	}
+	
+	private Session getSession() {
+		if (this.session == null) {
 		}
-		return this.hbSession;
+		return this.session;
+	}
+	
+	private void setSession(Session session) {
+		if (session != null) {
+			this.session = session;
+		} else {
+			throw new IllegalArgumentException("[null] is not a valid argument for [void setSession(Session)].");
+		}
 	}
 	
 	private Transaction getTransaction() {
 		if (this.transaction == null) {
-			this.transaction = this.getHbSession().beginTransaction();
+			this.transaction = this.getSession().beginTransaction();
 		}
 		return this.transaction;
 	}
@@ -33,7 +54,7 @@ public class HibernateConnection {
 	}
 	
 	public void beginTransaction() {
-		Transaction transaction = this.getHbSession().beginTransaction();
+		Transaction transaction = this.getSession().beginTransaction();
 		this.setTransaction(transaction);
 	}
 	
@@ -46,22 +67,24 @@ public class HibernateConnection {
 	}
 	
 	public void close() {
-		HibernateConnectionManager.closeSession(this.getHbSession());
+		this.setAvailable(true);
+		HibernateConnectionManager.closeConnection(this);
 	}
 	
 	public void save(Object obj) {
-		this.getHbSession().save(obj);
+		this.getSession().save(obj);
 	}
 	
 	public void update(Object obj) {
-		this.getHbSession().update(obj);
+		this.getSession().update(obj);
 	}
 	
 	public void delete(Object obj) {
-		this.getHbSession().delete(obj);
+		this.getSession().delete(obj);
 	}
 	
 	public Query createQuery(String hql) {
-		return this.getHbSession().createQuery(hql);
+		return this.getSession().createQuery(hql);
 	}
+	
 }
