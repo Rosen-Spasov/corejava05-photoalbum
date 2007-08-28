@@ -83,22 +83,24 @@ public class Logger {
 		return this.logWriter;
 	}
 	
-	private synchronized void setLogWriter(PrintWriter logWriter) {
-		if (logWriter != null) {
-			this.logWriter = logWriter;
-		} else {
-			throw new IllegalArgumentException("[null] is not a valid argument for [void setLogWriter(PrintWriter)].");
-		}
-	}
+//	private synchronized void setLogWriter(PrintWriter logWriter) {
+//		if (logWriter != null) {
+//			this.logWriter = logWriter;
+//		} else {
+//			throw new IllegalArgumentException("[null] is not a valid argument for [void setLogWriter(PrintWriter)].");
+//		}
+//	}
 	
 	public synchronized void log(String msg) {
 		Date currentTime = new Date();
 		String currentTimeString = Common.defaultDateTimeFormat.format(currentTime);
-		this.getLogWriter().println("*************************************************************************");
-		this.getLogWriter().println("[" + currentTimeString + "]");
-		this.getLogWriter().println(msg);
-		this.getLogWriter().close();
-		this.setLogWriter(null);
+		PrintWriter writer = this.getLogWriter();
+		writer.println("*************************************************************************");
+		writer.println("[" + currentTimeString + "]");
+		writer.println(msg);
+		writer.flush();
+//		writer.close();
+//		this.setLogWriter(null);
 	}
 	
 	public synchronized void log(Throwable exc) {
@@ -108,20 +110,21 @@ public class Logger {
 	private synchronized void log(Throwable exc, String indent) {
 		Date currentTime = new Date();
 		String currentTimeString = Common.defaultDateTimeFormat.format(currentTime);
-		this.getLogWriter().println("*************************************************************************");
-		this.getLogWriter().println(indent + "[" + currentTimeString + "] ERROR");
-		this.getLogWriter().println(indent + exc.getMessage());
+		PrintWriter writer = this.getLogWriter();
+		writer.println("*************************************************************************");
+		writer.println(indent + "[" + currentTimeString + "] ERROR");
+		writer.println(indent + exc.getMessage());
 		StackTraceElement[] stackTrace = exc.getStackTrace();
 		for (StackTraceElement stackTraceElement : stackTrace) {
-			this.getLogWriter().println(indent + stackTraceElement.toString());
+			writer.println(indent + stackTraceElement.toString());
 		}
 		Throwable cause = exc.getCause();
 		if (cause != null) {
-			this.getLogWriter().println(indent + "Caused by:");
+			writer.println(indent + "Caused by:");
 			this.log(cause, indent + "\t");
 		}
-		this.getLogWriter().close();
-		this.setLogWriter(null);
+//		writer.close();
+//		this.setLogWriter(null);
 	}
 	
 }
