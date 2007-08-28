@@ -8,7 +8,7 @@ public class SecurityManager {
 	
 	private Logger getLogger() {
 		if (this.logger == null) {
-			this.logger = new Logger("security.log");
+			this.logger = Logger.getLogger("security.log");
 		}
 		return this.logger;
 	}

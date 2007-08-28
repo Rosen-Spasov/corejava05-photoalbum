@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.Hashtable;
 
 import common.Common;
 
@@ -16,15 +17,44 @@ public class Logger {
 	
 	private static Logger defaultInstance = null;
 	
+	private static Hashtable<String, Logger> loggers = null;
+	
 	private String logFileName = Logger.LOGS_DIRECTORY + "/" + Logger.DEFAULT_LOG_FILENAME;
 	
 	private PrintWriter logWriter = null;
 	
+	private Logger() {
+	}
+	
+	private Logger(String logFileName) {
+		this.setLogFileName(logFileName);
+	}
+
+	private static Hashtable<String, Logger> getLoggers() {
+		if (loggers == null) {
+			loggers = new Hashtable<String, Logger>();
+		}
+		return loggers;
+	}
+	
 	public static Logger getDefaultInstance() {
 		if (Logger.defaultInstance == null) {
 			Logger.defaultInstance = new Logger();
+			Logger.getLoggers().put(Logger.defaultInstance.getLogFileName(), Logger.defaultInstance);
 		}
 		return Logger.defaultInstance;
+	}
+	
+	public static Logger getLogger(String logFileName) {
+		Logger result = null;
+		if (logFileName != null) {
+			result = Logger.getLoggers().get(logFileName);
+			if (result == null) {
+				result = new Logger(logFileName);
+				Logger.getLoggers().put(result.getLogFileName(), result);
+			}
+		}
+		return result;
 	}
 	
 	public String getLogFileName() {
@@ -39,7 +69,7 @@ public class Logger {
 		}
 	}
 	
-	private PrintWriter getLogWriter() {
+	private synchronized PrintWriter getLogWriter() {
 		if (this.logWriter == null) {
 			try {
 				FileWriter fWriter = new FileWriter(this.getLogFileName(), true);
@@ -53,19 +83,12 @@ public class Logger {
 		return this.logWriter;
 	}
 	
-	private void setLogWriter(PrintWriter logWriter) {
+	private synchronized void setLogWriter(PrintWriter logWriter) {
 		if (logWriter != null) {
 			this.logWriter = logWriter;
 		} else {
 			throw new IllegalArgumentException("[null] is not a valid argument for [void setLogWriter(PrintWriter)].");
 		}
-	}
-	
-	private Logger() {
-	}
-	
-	public Logger(String logFileName) {
-		this.setLogFileName(logFileName);
 	}
 	
 	public synchronized void log(String msg) {
