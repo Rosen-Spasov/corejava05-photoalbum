@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Hashtable;
 
@@ -55,6 +56,13 @@ public class Logger {
 			}
 		}
 		return result;
+	}
+	
+	public static void closeAll() {
+		Collection<Logger> loggers = Logger.getLoggers().values();
+		for (Logger logger : loggers) {
+			logger.close();
+		}
 	}
 	
 	public String getLogFileName() {
@@ -125,6 +133,11 @@ public class Logger {
 		}
 //		writer.close();
 //		this.setLogWriter(null);
+	}
+	
+	public void close() {
+		this.getLogWriter().close();
+		Logger.getLoggers().remove(this);
 	}
 	
 }
