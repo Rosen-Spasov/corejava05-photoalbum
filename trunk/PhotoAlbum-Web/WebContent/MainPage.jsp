@@ -17,22 +17,16 @@
 	<tr style="background-color: aqua;">
 		<td width="124" style="border-right:0px solid White;"><img src="Themes/top-left.gif"></td>
 		<td style="text-align:center; border-right: 0px solid White;">
-			<span style="font:oblique">Добре дошли във фото албум</span>
+			<span style="font-size: 30px;">Добре дошли във фото албум</span>
 		</td>
 		<td width="125"><img src="Themes/top-right.gif"></td>
 	</tr>
 </table>
-	
-		
-		
-		<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Pragma" content="no-cache" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Фото албум</title>
 		
 				<link rel="stylesheet" type="text/css" href="http://img.elmaz.com/style/css/main.css" />
-				
-	
-	
 				<td class="mainLeft vtop">
 					<!--loginform -->
 					
