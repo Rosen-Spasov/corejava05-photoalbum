@@ -8,9 +8,19 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import common.Common.DBProvider;
+
 public class HibernateConnectionManager {
 	
 	public static final String CONFIG_FILE = "/hibernate.cfg.xml";
+	
+	public static final String DRIVER_CLASS_PROPERTY = "connection.driver_class";
+	
+	public static final String URL_PROPERTY = "connection.url";
+	
+	public static final String USERNAME_PROPERTY = "connection.username";
+	
+	public static final String PASSWORD_PROPERTY = "connection.password";
 	
 	public static int CONNECTION_POOL_SIZE = 20;
 	
@@ -20,15 +30,27 @@ public class HibernateConnectionManager {
 		}
 	}
 	
+	private static Configuration cfg = null;
+
 	private static SessionFactory sessionFactory;
 	
 	private static ArrayList<HibernateConnection> connections = null;
 	
+	private static boolean configured = false;
+	
+	private static Configuration getCfg() {
+		if (cfg == null) {
+			cfg = new Configuration();
+		}
+		return cfg;
+	}
+	
 	private static SessionFactory getSessionFactory() {
 		if (HibernateConnectionManager.sessionFactory == null) {
-			Configuration cfg = new Configuration();
-			cfg.configure(CONFIG_FILE);
-			HibernateConnectionManager.sessionFactory = cfg.buildSessionFactory(); 
+			if (!isConfigured()) {
+				configure();
+			}
+			HibernateConnectionManager.sessionFactory = getCfg().buildSessionFactory(); 
 		}
 		return HibernateConnectionManager.sessionFactory;
 	}
@@ -40,6 +62,14 @@ public class HibernateConnectionManager {
 		return connections;
 	}
 	
+	public static boolean isConfigured() {
+		return configured;
+	}
+
+	private static void setConfigured(boolean configured) {
+		HibernateConnectionManager.configured = configured;
+	}
+
 	private HibernateConnectionManager() {
 	}
 	
@@ -71,6 +101,32 @@ public class HibernateConnectionManager {
 	public static synchronized void closeConnection(HibernateConnection connection) {
 		if (getConnections().size() > CONNECTION_POOL_SIZE) {
 			getConnections().remove(connection);
+		}
+	}
+	
+	public static void configure() {
+		if (!isConfigured()) {
+			getCfg().configure(CONFIG_FILE);
+			setConfigured(true);
+		}
+	}
+	
+	public static void configure(String password, String host, String port, String sid, String dbProvider) {
+		if ( dbProvider.equals(DBProvider.ORACLE.toString()) ) {
+			configure(password, host, port, sid, DBProvider.ORACLE);
+		}
+	}
+	
+	public static void configure(String password, String host, String port, String sid, DBProvider dbProvider) {
+		if (!isConfigured()) {
+			if (dbProvider == DBProvider.ORACLE) {
+				String driver = "oracle.jdbc.driver.OracleDriver";
+				String url = "jdbc:oracle:thin:@" + host + ":" + port + "/" + sid;
+				getCfg().setProperty(DRIVER_CLASS_PROPERTY, driver);
+				getCfg().setProperty(URL_PROPERTY, url);
+			}
+			getCfg().setProperty(PASSWORD_PROPERTY, password);
+			setConfigured(true);
 		}
 	}
 	
