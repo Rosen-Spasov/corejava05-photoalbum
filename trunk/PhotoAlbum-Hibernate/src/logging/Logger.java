@@ -71,6 +71,9 @@ public class Logger {
 	
 	private void setLogFileName(String logFileName) {
 		if (logFileName != null) {
+			if (!Common.parentDirExists(logFileName)) {
+				Common.createParentDirs(logFileName);
+			}
 			this.logFileName = Logger.LOGS_DIRECTORY + "/" + logFileName;
 		} else {
 			throw new IllegalArgumentException("[null] is not a valid argument for [void setLogFileName(String)].");

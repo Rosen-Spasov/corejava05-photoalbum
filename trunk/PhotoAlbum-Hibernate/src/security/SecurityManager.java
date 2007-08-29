@@ -1,5 +1,7 @@
 package security;
 
+import entities.User;
+import hibernate.queries.UserQuery;
 import logging.Logger;
 
 public class SecurityManager {
@@ -13,8 +15,14 @@ public class SecurityManager {
 		return this.logger;
 	}
 	
-	public boolean accessGranted(String username, String password, String type) {
+	public boolean accessGranted(String userName, String password) {
 		boolean result = false;
+		
+		UserQuery query = new UserQuery();
+		User user = query.getUserByUserName(userName);
+		if (user != null && user.getPassword().equals(password)) {
+			result = true;
+		}
 
 		return result;
 	}

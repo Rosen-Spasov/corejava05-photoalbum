@@ -83,6 +83,10 @@ public class HibernateConnection {
 		this.getSession().delete(obj);
 	}
 	
+	public Object get(Class objClass, int primaryKey) {
+		return this.getSession().get(objClass, primaryKey);
+	}
+	
 	public Query createQuery(String hql) {
 		return this.getSession().createQuery(hql);
 	}
