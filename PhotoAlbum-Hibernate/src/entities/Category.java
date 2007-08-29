@@ -1,13 +1,15 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Category {
 
 	private int categoryId;
 
-	private String name;
+	private String catName;
 
 	private String path;
 
@@ -15,16 +17,24 @@ public class Category {
 
 	private User user;
 
-	private List<Photo> photos = new ArrayList<Photo>();
+	private Set<Photo> photos = new HashSet<Photo>();
 
-	private List<Category> categories = new ArrayList<Category>();
+	private Set<Category> categories = new HashSet<Category>();
 
-	public List<Category> getCategories() {
+	public Set<Category> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(List<Category> categories) {
+	public void setCategories(Set<Category> categories) {
 		this.categories = categories;
+	}
+
+	public Set<Photo> getPhotos() {
+		return photos;
+	}
+
+	public void setPhotos(Set<Photo> photos) {
+		this.photos = photos;
 	}
 
 	public int getCategoryId() {
@@ -43,12 +53,12 @@ public class Category {
 		this.childCategory = childCategory;
 	}
 
-	public String getName() {
-		return name;
+	public String getCatName() {
+		return catName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCatName(String catName) {
+		this.catName = catName;
 	}
 
 	public String getPath() {
@@ -57,14 +67,6 @@ public class Category {
 
 	public void setPath(String path) {
 		this.path = path;
-	}
-
-	public List<Photo> getPhotos() {
-		return photos;
-	}
-
-	public void setPhotos(List<Photo> photos) {
-		this.photos = photos;
 	}
 
 	public User getUser() {
