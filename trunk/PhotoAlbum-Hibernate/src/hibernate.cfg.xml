@@ -30,6 +30,12 @@
 
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">false</property>
+        
+        <!-- Hibernate mappings references -->
+		<mapping resource="User.hbm.xml"/>
+		<mapping resource="Category.hbm.xml"/>
+		<mapping resource="Comment.hbm.xml"/>
+		<mapping resource="Photo.hbm.xml"/>
 		
     </session-factory>
 
