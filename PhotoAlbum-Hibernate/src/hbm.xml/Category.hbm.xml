@@ -3,8 +3,8 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping>
-	<class name="entities.Category" table="Categories">
+<hibernate-mapping package="entities">
+	<class name="Category" table="Categories">
 
 		<id name="CategoryId" column="CATEGORY_ID">
 			<generator class="sequence">
@@ -15,18 +15,18 @@
 		<property name="Name" column="NAME"/>
 		<property name="Path" column="PATH"/>
 		
-		<many-to-one name="ChildCategory" class="entities.Category" column="CHILD_CATEGORY_ID"/>
+		<many-to-one name="ChildCategory" class="Category" column="CHILD_CATEGORY_ID"/>
 	
-		<many-to-one name="User" class="entities.User" column="USER_ID"/>
+		<many-to-one name="User" class="User" column="USER_ID"/>
 		
 		<bag name="Photos" table="Photos">
 			<key column="CATEGORY_ID"/>
-			<one-to-many class="entities.Photo"/>
+			<one-to-many class="Photo"/>
 		</bag>
 		
 		<bag name="Categories" table="Categories">
 			<key column="CHILD_CATEGORY_ID"/>
-			<one-to-many class="entities.Category"/>
+			<one-to-many class="Category"/>
 		</bag>
 			
     </class>
