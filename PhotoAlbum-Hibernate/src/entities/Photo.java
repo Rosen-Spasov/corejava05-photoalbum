@@ -1,19 +1,21 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Photo {
 
 	private int photoId;
 
-	private String name;
+	private String phName;
 
 	private String path;
 
 	private Category category;
 
-	private List<Comment> comments = new ArrayList<Comment>();
+	private Set<Comment> comments = new HashSet<Comment>();
 
 	public Category getCategory() {
 		return category;
@@ -23,20 +25,20 @@ public class Photo {
 		this.category = category;
 	}
 
-	public List<Comment> getComments() {
+	public Set<Comment> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<Comment> comments) {
+	public void setComments(Set<Comment> comments) {
 		this.comments = comments;
 	}
 
-	public String getName() {
-		return name;
+	public String getPhName() {
+		return phName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPhName(String phName) {
+		this.phName = phName;
 	}
 
 	public String getPath() {
