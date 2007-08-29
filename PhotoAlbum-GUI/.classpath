@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="PhotoAlbum-Hibernate-src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/asm.jar"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/cglib-2.1.3.jar"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/commons-collections-2.1.1.jar"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/hibernate3.jar"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/jstl.jar"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/jta.jar"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/log4j-1.2.11.jar"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/standard.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
