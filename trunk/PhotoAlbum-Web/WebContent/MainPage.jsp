@@ -24,8 +24,7 @@
 
 	<body onload="">
 	
-	<table border="0" width="100%" cellspacing="0" cellpadding="0" 
-	style="padding:0px 0px 0px 0px; border:1px solid White;">
+	<table border="0" width="100%" cellspacing="0" cellpadding="0" style="padding:0px 0px 0px 0px; border:1px solid White;">
 	<tr style="background-image:url(Themes/headBG.png)" >
 		<td width="124" style="border-right:0px solid White;"><img src="Themes/top-left.gif"></td>
 		<td style=" background-image: Themes/headBG.png; text-align:center; border-right:  " >
@@ -83,8 +82,8 @@
 					</table>
 				</form>
 								<!--left menu -->
-					
-<table cellpadding="0" cellspacing="0" class="leftMenu top10">
+	<div style="width:170px ; height:580px; overflow: scroll">				
+<table cellpadding="0" cellspacing="0" class="leftMenu top10" >
 
 	<tr>
 		<td colspan="2" class="headerMin" style="border-bottom: 3px solid #fabc01;">
@@ -94,14 +93,15 @@
 	
 	<tr><td class="left pLeft10 pTop10"></td>
 	<td class="pRight10 pTop10">
+	
 		<ol type="disc">
-			<% for (int k=0;k<30;k++){ %>
+			<% for (int k=0;k<80;k++){ %>
 		<tr><td><li><a href="">user <%= k %></a></li></td></tr>
 			<%} %>	
 		</ol>
 			</td>
 		</tr>
-	</table>
+	</table></div>
 
 
 
