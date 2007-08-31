@@ -1,9 +1,13 @@
 package photoalbum.gui.frames;
 
+import hibernate.queries.UserQuery;
 import hibernate.utils.HibernateConnectionManager;
 
 import java.awt.Rectangle;
+import java.util.List;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -12,10 +16,16 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
+import photoalbum.gui.CustomCellRenderer;
 import photoalbum.gui.dialogs.NewSessionDialog;
 import photoalbum.gui.dialogs.NewSessionDialog.DialogResult;
+import entities.Category;
+import entities.User;
 
 public class MainFrame extends JFrame {
 
@@ -31,8 +41,6 @@ public class MainFrame extends JFrame {
 
 	private JMenuItem mItemNewSession = null;
 
-	private JScrollPane scrollPaneUsers = null;
-
 	private JPanel panelButtons = null;
 
 	private JButton btnExit = null;
@@ -47,7 +55,65 @@ public class MainFrame extends JFrame {
 	
 	private NewSessionDialog newSessionDialog = null;
 
-	public NewSessionDialog getNewSessionDialog() {
+	private JScrollPane scrollPaneData = null;
+
+	private JTree treeData = null;
+	
+	private DefaultMutableTreeNode rootNode = null;
+	
+	private Icon userIcon = null;
+	
+	private Icon openedCategoryIcon = null;
+	
+	private Icon closedCategoryIcon = null;
+	
+	private Icon photoIcon = null;
+	
+	private CustomCellRenderer customCellRenderer = null;
+	
+	private CustomCellRenderer getCustomCellRenderer() {
+		if (this.customCellRenderer == null) {
+			this.customCellRenderer = new CustomCellRenderer(this);
+		}
+		return this.customCellRenderer;
+	}
+	
+	public Icon getPhotoIcon() {
+		if (this.photoIcon == null) {
+			this.photoIcon = new ImageIcon("./images/photo.png");
+		}
+		return this.photoIcon;
+	}
+	
+	public Icon getClosedCategoryIcon() {
+		if (this.closedCategoryIcon == null) {
+			this.closedCategoryIcon = new ImageIcon("./images/closed-category.gif");
+		}
+		return this.closedCategoryIcon;
+	}
+	
+	public Icon getOpenedCategoryIcon() {
+		if (this.openedCategoryIcon == null) {
+			this.openedCategoryIcon = new ImageIcon("./images/opened-category.gif");
+		}
+		return this.openedCategoryIcon;
+	}
+	
+	public Icon getUserIcon() {
+		if (this.userIcon == null) {
+			this.userIcon = new ImageIcon("./images/user.gif");
+		}
+		return this.userIcon;
+	}
+	
+	private DefaultMutableTreeNode getRootNode() {
+		if (this.rootNode == null) {
+			this.rootNode = new DefaultMutableTreeNode("PhotoAlbum");
+		}
+		return this.rootNode;
+	}
+
+	private NewSessionDialog getNewSessionDialog() {
 		if (this.newSessionDialog == null) {
 			this.newSessionDialog = new NewSessionDialog(this);
 		}
@@ -83,8 +149,9 @@ public class MainFrame extends JFrame {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(null);
-			jContentPane.add(getScrollPaneUsers(), null);
 			jContentPane.add(getPanelButtons(), null);
+			jContentPane.add(getBtnExit(), null);
+			jContentPane.add(getScrollPaneData(), null);
 		}
 		return jContentPane;
 	}
@@ -150,20 +217,6 @@ public class MainFrame extends JFrame {
 	}
 
 	/**
-	 * This method initializes scrollPaneUsers	
-	 * 	
-	 * @return javax.swing.JScrollPane	
-	 */
-	private JScrollPane getScrollPaneUsers() {
-		if (scrollPaneUsers == null) {
-			scrollPaneUsers = new JScrollPane();
-			scrollPaneUsers.setLayout(null);
-			scrollPaneUsers.setBounds(new Rectangle(0, 0, 451, 271));
-		}
-		return scrollPaneUsers;
-	}
-
-	/**
 	 * This method initializes panelButtons	
 	 * 	
 	 * @return javax.swing.JPanel	
@@ -172,8 +225,7 @@ public class MainFrame extends JFrame {
 		if (panelButtons == null) {
 			panelButtons = new JPanel();
 			panelButtons.setLayout(null);
-			panelButtons.setBounds(new Rectangle(450, 0, 106, 271));
-			panelButtons.add(getBtnExit(), null);
+			panelButtons.setBounds(new Rectangle(450, 0, 106, 106));
 			panelButtons.add(getBtnAdd(), null);
 			panelButtons.add(getBtnEdit(), null);
 			panelButtons.add(getBtnDelete(), null);
@@ -189,8 +241,8 @@ public class MainFrame extends JFrame {
 	private JButton getBtnExit() {
 		if (btnExit == null) {
 			btnExit = new JButton();
-			btnExit.setBounds(new Rectangle(15, 240, 76, 16));
 			btnExit.setText("Exit");
+			btnExit.setBounds(new Rectangle(465, 240, 76, 16));
 			btnExit.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					exit();
@@ -259,7 +311,34 @@ public class MainFrame extends JFrame {
 		}
 		return mItemExit;
 	}
-	
+
+	/**
+	 * This method initializes scrollPaneData	
+	 * 	
+	 * @return javax.swing.JScrollPane	
+	 */
+	private JScrollPane getScrollPaneData() {
+		if (scrollPaneData == null) {
+			scrollPaneData = new JScrollPane();
+			scrollPaneData.setBounds(new Rectangle(0, 0, 451, 271));
+			scrollPaneData.setViewportView(getTreeData());
+		}
+		return scrollPaneData;
+	}
+
+	/**
+	 * This method initializes treeData	
+	 * 	
+	 * @return javax.swing.JTree	
+	 */
+	private JTree getTreeData() {
+		if (treeData == null) {
+			treeData = new JTree(this.getRootNode());
+			treeData.setCellRenderer(this.getCustomCellRenderer());
+		}
+		return treeData;
+	}
+
 	/**
 	 * @param args
 	 */
@@ -296,6 +375,42 @@ public class MainFrame extends JFrame {
 		String sid = this.getNewSessionDialog().getSid();
 		String dbProvider = this.getNewSessionDialog().getDbProvider();
 		HibernateConnectionManager.configure(password, host, port, sid, dbProvider);
+		loadTree();
+	}
+	
+	private void loadTree() {
+		UserQuery userQuery = new UserQuery();
+		List<User> usersList = userQuery.getAllUsers();
+		User[] users = new User[usersList.size()];
+		usersList.toArray(users);
+		loadChildren(this.getRootNode(), users);
+		this.getTreeData().expandPath(new TreePath(this.getRootNode().getPath()));
+		this.getTreeData().invalidate();
+	}
+	
+	private void loadChildren(DefaultMutableTreeNode root, Object[] children) {
+		for (Object child : children) {
+			DefaultMutableTreeNode newChild = null;
+			if (child instanceof User) {
+				User newUser = (User) child;
+				newChild = new DefaultMutableTreeNode(newUser);
+				Category[] categories = new Category[newUser.getCategories().size()];
+				newUser.getCategories().toArray(categories);
+				loadChildren(newChild, categories);
+			} else if (child instanceof Category) {
+				Category newCategory = (Category) child;
+				newChild = new DefaultMutableTreeNode(newCategory);
+				Category[] categories = new Category[newCategory.getCategories().size()];
+				newCategory.getCategories().toArray(categories);
+				loadChildren(newChild, categories);
+			} else {
+				newChild = new DefaultMutableTreeNode(child);
+			}
+			if (newChild != null) {
+				root.add(newChild);
+			}
+		}
+		
 	}
 
 }  //  @jve:decl-index=0:visual-constraint="10,10"

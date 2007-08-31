@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import common.Common.DBProvider;
+
 public class NewSessionDialog extends JDialog {
 	
 	public static enum DialogResult {CONNECT, CANCEL};
@@ -186,7 +188,7 @@ public class NewSessionDialog extends JDialog {
 	 */
 	private JComboBox getComboBoxDbProvider() {
 		if (comboBoxDbProvider == null) {
-			comboBoxDbProvider = new JComboBox();
+			comboBoxDbProvider = new JComboBox(DBProvider.values());
 			comboBoxDbProvider.setBounds(new Rectangle(103, 135, 123, 16));
 		}
 		return comboBoxDbProvider;

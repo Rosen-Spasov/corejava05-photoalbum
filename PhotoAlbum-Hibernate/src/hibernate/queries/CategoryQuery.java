@@ -9,9 +9,9 @@ import logging.Logger;
 
 import org.hibernate.Query;
 
-import entities.User;
+import entities.Category;
 
-public class UserQuery {
+public class CategoryQuery {
 	
 	Logger logger = null;
 	
@@ -37,43 +37,43 @@ public class UserQuery {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<User> getAllUsers() {
-		List<User> result = null;
+	public List<Category> getAllCategorys() {
+		List<Category> result = null;
 		
-		String hql = "from User";
+		String hql = "from Category";
 		Query query = this.openHbConnection().createQuery(hql);
-		result = (List<User>) query.list();
+		result = (List<Category>) query.list();
 		this.closeHbConnection();
 		
 		return result;
 	}
 	
 	
-	public User getUserByID(int userID) {
-		User result = (User) this.openHbConnection().get(User.class, userID);
+	public Category getCategoryByID(int categoryID) {
+		Category result = (Category) this.openHbConnection().get(Category.class, categoryID);
 		this.closeHbConnection();
 		return result;
 	}
 	
-	public User getUserByUserName(String username) {
-		User user = null;
+	public Category getCategoryByCategoryName(String catName) {
+		Category category = null;
 		
-		String hql = "from User u where u.Username=:username";
+		String hql = "from Category c where c.CatName=:categoryname";
 		Query query = this.openHbConnection().createQuery(hql);
-		query.setString("userName", username);
+		query.setString("categoryName", catName);
 		List list = (List) query.list();
 		if (list != null && list.size() != 1) {
 			try {
-				user = (User) list.get(0);
+				category = (Category) list.get(0);
 			} catch (ClassCastException exc) {
 				this.logger.log(exc);
 			}
 		} else {
-			this.getLogger().log("ERROR: Cannot find User with username=" + username + " or there is more than one User with the given username.");
+			this.getLogger().log("ERROR: Cannot find Category with name [" + catName + "] or there is more than one Category with the given name.");
 		}
 		this.closeHbConnection();
 		
-		return user;
+		return category;
 	}
 
 }

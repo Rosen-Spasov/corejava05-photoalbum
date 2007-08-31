@@ -12,22 +12,20 @@
 			</generator>
 		</id>
 
-		<property name="Username" column="USERNAME"/>
-		<property name="FirstName" column="FIRST_NAME"/>
-		<property name="LastName" column="LAST_NAME"/>
-		<property name="Password" column="PASSWORD"></property>
+		<property name="Username" column="USERNAME" />
+		<property name="FirstName" column="FIRST_NAME" />
+		<property name="LastName" column="LAST_NAME" />
+		<property name="Password" column="PASSWORD" />
 		
-		<bag name="Categories" table="Categories">
-			<key column="USER_ID"/>
-			<one-to-many class="entities.Category"/>
-		</bag>
+		<set name="Categories" table="CATEGORIES">
+			<key column="USER_ID" />
+			<one-to-many class="entities.Category" />
+		</set>
 		
-		<bag name="Comments" table="Comments">
-			<key column="USER_ID"/>
-			<one-to-many class="entities.Comment"/>
-		</bag>
+		<set name="Comments" table="COMMENTS">
+			<key column="USER_ID" />
+			<one-to-many class="entities.Comment" />
+		</set>
 		
-		
-			
     </class>
 </hibernate-mapping>

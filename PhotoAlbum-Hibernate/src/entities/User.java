@@ -1,8 +1,6 @@
 package entities;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class User {
@@ -75,6 +73,13 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public User() {		
+	}
+	
+	public String toString() {
+		return this.getUsername();
 	}
 
 }

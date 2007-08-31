@@ -12,22 +12,22 @@
 			</generator>
 		</id>
 
-		<property name="Name" column="NAME"/>
+		<property name="CatName" column="CAT_NAME"/>
 		<property name="Path" column="PATH"/>
 		
 		<many-to-one name="ChildCategory" class="Category" column="CHILD_CATEGORY_ID"/>
 	
 		<many-to-one name="User" class="User" column="USER_ID"/>
 		
-		<bag name="Photos" table="Photos">
+		<set name="Photos" table="Photos">
 			<key column="CATEGORY_ID"/>
 			<one-to-many class="Photo"/>
-		</bag>
+		</set>
 		
-		<bag name="Categories" table="Categories">
+		<set name="Categories" table="Categories">
 			<key column="CHILD_CATEGORY_ID"/>
 			<one-to-many class="Category"/>
-		</bag>
+		</set>
 			
     </class>
 </hibernate-mapping>

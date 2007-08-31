@@ -1,8 +1,6 @@
 package entities;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Category {
@@ -75,6 +73,13 @@ public class Category {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public Category() {
+	}
+	
+	public String toString() {
+		return this.getCatName();
 	}
 
 }

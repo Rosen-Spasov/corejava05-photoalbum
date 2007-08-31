@@ -12,9 +12,9 @@
 			</generator>
 		</id>
 
-		<property name="Name"/>
+		<property name="PhName" column="PH_NAME"/>
 		
-		<property name="Path"/>
+		<property name="Path" column="PATH"/>
 				
 		<many-to-one name="Category" class="entities.Category" column="CATEGORY_ID"/>
 
