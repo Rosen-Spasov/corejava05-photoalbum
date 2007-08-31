@@ -5,8 +5,7 @@
 
 <hibernate-mapping>
 	<class name="entities.Comment" table="Comments">
-
-		<id name="COMMENT_ID">
+		<id name="CommentId">
 			<generator class="sequence">
 				<param name="sequence">SEQ_COMMENTS</param>
 			</generator>

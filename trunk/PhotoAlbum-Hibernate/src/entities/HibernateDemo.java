@@ -1,14 +1,9 @@
 package entities;
 
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Order;
 
 @SuppressWarnings("unchecked")
 public class HibernateDemo {
