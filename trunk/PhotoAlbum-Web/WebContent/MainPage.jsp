@@ -4,26 +4,13 @@
 <html>
 <html>
 	<head>
-		
-		<meta name="description" content="Запознанства, приятели, любов, романтика и срещи. галерия жени, галерия мъже, списък жени, списък мъже, търсене. Elmaz.com bg zapoznanstva bulgaria" />
-		<meta name="keywords" content="запознанства, elmaz, елмаз,приятели, zapoznanstva, любов, обяви за запознанства, романтика, срещи, връзки, лични обяви, партньор, запознанство, zapoznanstwa, romantika, priatel, priateli, жени, мъже, търсене" />
-		<meta name="robots" content="index, follow">
-		<meta http-equiv="expires" content="0" />
-		<meta http-equiv="Pragma" content="no-cache" />
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Фото албум - Намери снимките които търсиш!</title>
-		
-				<link rel="stylesheet" type="text/css" href="http://img.elmaz.com/style/css/main.css" />
-				<script type="text/javascript">
-		</script>
-		
-				
-				<script type="text/javascript" src="http://www.elmaz.com/js/include.js"></script>
-				<script type="text/javascript" src="http://www.elmaz.com/js/functs.js"></script>
-			</head>
-
-	<body onload="">
 	
+		<title>Фото албум - Намери снимките които търсиш!</title>
+		<link rel="stylesheet" type="text/css" href="Themes/main.css" />
+		<script type="text/javascript"></script>
+	</head>
+	
+<body onload="">
 	<table border="0" width="100%" cellspacing="0" cellpadding="0" style="padding:0px 0px 0px 0px; border:1px solid White;">
 	<tr style="background-image:url(Themes/headBG.png)" >
 		<td width="124" style="border-right:0px solid White;"><img src="Themes/top-left.gif"></td>
@@ -33,53 +20,49 @@
 		<td width="125"><img src="Themes/top-right.gif"></td>
 	</tr>
 </table>
-
-		<table class="mainTable" cellpadding="0" cellspacing="0" align="center">
-			<tr><td colspan="3" class="mainTop"></td></tr>
-			<tr><td class="vseparator">&nbsp;</td></tr>
-			<tr><td colspan="3" class="mainTopMenu">
-			<table cellpadding="0" cellspacing="0" class="flex">
+	<table class="mainTable" cellpadding="0" cellspacing="0" align="center">
+		<tr><td colspan="3" class="mainTop"></td></tr>
+		<td class="vseparator">&nbsp;</td>
+		<tr><td colspan="3" class="mainTopMenu">
+			<table cellspacing="0" class="flex">
 				<tr><td class="left pLeft10">Най-големият сайт за снимки в България!</td><td class="right">
-				<a href="http://www">Регистрация</a><span class="separator"><img src="http://img.elmaz.com/style/img/separator.png" align="absmiddle" /></span>
-				<a href="http://www">Търсене</a><span class="separator"><span class="separator"><img src="http://img.elmaz.com/style/img/separator.png" align="absmiddle" /></span>
-				<a href="http://www">Забравена парола</a><span class="separator"><span class="separator"><img src="http://img.elmaz.com/style/img/separator.png" align="absmiddle" /></span>
-				<a href="http://www">Помощ</a>
+				<a href="register.jsp">Регистрация</a><span class="separator"><img src="http://img.elmaz.com/style/img/separator.png" align="absmiddle" /></span>
+				<a href="Search.jsp">Търсене</a><span class="separator"><span class="separator"><img src="http://img.elmaz.com/style/img/separator.png" align="absmiddle" /></span>
+				<a href="LostPassword.jsp">Забравена парола</a><span class="separator"><span class="separator"><img src="http://img.elmaz.com/style/img/separator.png" align="absmiddle" /></span>
+				<a href="Help.jsp">Помощ</a>
 					</td>
 				</tr>
 			</table></td>
-			</tr>
-						
-			<tr>
-				<td class="mainLeft vtop">
+		</tr>
+		<tr><td class="mainLeft vtop">
 					<!--loginform -->
-					
-				<form action="" method="post">
-					<table cellpadding="0" cellspacing="0">
-						<tr><td class="leftLoginTop">&nbsp;</td></tr>
-						<tr><td><table cellpadding="0" cellspacing="0" class="leftLoginForm">
-							<tr><td class="left pTop10 pLeft10"><label for="userName">Име: </label></td>
-								<td class="left pTop10 pRight10"><input type="text" class="textInput" name="username" id="username" /></td>
-							</tr>
-							<tr><td class="left pLeft10"><label for="pass">Парола: </label></td>
-								<td class="left pRight10"><input type="password" class="textInput" name="pass" id="pass" /></td>
-							</tr><tr><td class="right">&nbsp;</td>
-									<td class="left">
-									<input type="submit" class="button" style="width: 90px;" name="login" id="login" value="Вход" />
-									</td>
-								</tr>
-								<tr>
-									<td class="right">&nbsp;</td>
-									<td class="left pBottom10">
-										<a href="http://www.elmaz.com/index.php?page=lostPassword" class="loginRegister">Забравена парола</a>
-									</td>
-								</tr>
-					</table>
-								</td>
-							</tr>
-						<tr>
-							<td class="leftLoginBottom">&nbsp;</td>
-						</tr>
-					</table>
+			<form action="Login.jsp" method="post">
+				<table cellpadding="0" cellspacing="0">
+					<tr><td class="leftLoginTop">&nbsp;</td></tr>
+					<tr><td><table cellpadding="0" cellspacing="0" class="leftLoginForm">
+					<tr><td class="left pTop10 pLeft10"><label for="userName">Име: </label></td>
+						<td class="left pTop10 pRight10"><input type="text" class="textInput" name="username" id="username" /></td>
+					</tr>
+					<tr><td class="left pLeft10"><label for="pass">Парола: </label></td>
+						<td class="left pRight10"><input type="password" class="textInput" name="pass" id="pass" /></td>
+					</tr><tr><td class="right">&nbsp;</td>
+						<td class="left">
+						<input type="submit" class="button" style="width: 90px;" name="login" id="login" value="Вход" />
+						</td>
+					</tr>
+					<tr>
+						<td class="right">&nbsp;</td>
+						<td class="left pBottom10">
+							<a href="LostPassword.jsp" class="loginRegister">Забравена парола</a>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+			<tr>
+				<td class="leftLoginBottom">&nbsp;</td>
+			</tr>
+	</table>
 				</form>
 								<!--left menu -->
 	<div style="width:170px ; height:580px; overflow: scroll">				
@@ -96,14 +79,13 @@
 	
 		<ol type="disc">
 			<% for (int k=0;k<80;k++){ %>
-		<tr><td><li><a href="">user <%= k %></a></li></td></tr>
+		
+		<tr><td><li><a href="ShowUser.jsp?param1=<%= k %>">user <%= k %></a></li></td></tr>
 			<%} %>	
 		</ol>
 			</td>
 		</tr>
 	</table></div>
-
-
 
 <div class="kare top10">
 	<table cellpadding="0" cellspacing="0" class="top10">
@@ -185,7 +167,7 @@
 				<tr>
 					<td class="mainSearchTd">
 						<div class="fLeft pLeft10 pTop10">
-							<form action="http://www" method="post">
+							<form action="Search.jsp" method="post">
 								<table cellpadding="0" cellspacing="0" class="searchTable">
 								<tr><td colspan="2">търсенето става по име и/или категория</td></tr>
 									<tr><td class="pRight10">Аз съм</td>
@@ -225,7 +207,7 @@
 								</div>
 							</div>
 							<div class="center" style="line-height:17px;">
-								<a href="http://www.elmaz.com/index.php?page=registration" class="link bold">Регистрирай се</a>
+								<a href="register.jsp" class="link bold">Регистрирай се</a>
 							</div>
 						</div>
 					</td>
@@ -244,7 +226,7 @@
 		<td class="tabs">
 			<div class="rightTabStub">&nbsp;</div>
 		
-			<div class="tab tabSelected" id="womenTab1" onclick="changeTab(1,'women');">най нови снимки</div>
+			<div class="tab tabSelected" >най нови снимки</div>
 			<div class="leftTabStubMiddle">&nbsp;</div>
 		</td>
 	</tr>
@@ -357,7 +339,7 @@
 			</div>
 			<div class="fRight right10">
 				<div style="line-height:17px;">
-					<a href="http://www.elmaz.com/index.php?page=gallery&amp;gender=1" class="link">Виж всички снимки &raquo;</a>
+					<a href="GetPicturesFromDatabase" class="link">Виж всички снимки &raquo;</a>
 				</div>
 			</div>
 			<input type="hidden" name="menTabName" id="menTabName" value="tab" />
@@ -386,19 +368,17 @@
 							<div class="weddings top10" style="border: 1px solid white;">
 				<div class="top10 left10">
 					<img src="http://img.elmaz.com/style/img/num1.gif" align="absmiddle" />
-					<a href="http://www." class="link yellow">Намери</a> своята снимка или на твои приятел сред 666 регистрирани потребители
+					<a href="Search.jsp" class="link yellow">Намери</a> своята снимка или на твои приятел сред 666 регистрирани потребители
 				</div>
 				<div class="left10 top10">
 					<img src="http://img.elmaz.com/style/img/num2.gif" align="absmiddle" />
-					<a href="http://www." class="link yellow">Регистрирай се</a> и си направи профил напълно безплатно
+					<a href="register.jsp" class="link yellow">Регистрирай се</a> и си направи профил напълно безплатно
 				</div>
 				<div class="left10 top10">
 					<img src="http://img.elmaz.com/style/img/num3.gif" align="absmiddle" />
 					Срещни стари познати ;-)
 				</div>
-				<div>
-					<input type="button" name="reg" class="buttonReg" value="Регистрирай се" onclick="window.location.href='http://www.elmaz.com/index.php?page=registration';" />
-				</div>
+				
 			</div>
 						<div class="specialLinks top10">
 				<div class="headerSmall rightSquare" style="border-bottom:3px solid #6cce00;padding-top: 3px;height:19px;">
@@ -425,11 +405,10 @@
 <div>
 	<div class="fLeft vtop left10 top10">
 		
-		<a class="link" href="http://www.elmaz.com/index.php?page=contacts">За контакти</a><span class="separator">|</span>
-		<a class="link" href="http://www.elmaz.com/index.php?page=advertisement&amp;what=prices">За реклама</a><span class="separator">|</span>
-				<a class="link" href="http://www.elmaz.com/index.php?page=rights">Права и задължения</a><span class="separator">|</span>
-		<a class="link" href="http://www.elmaz.com/index.php?page=help">Помощ</a><span class="separator">|</span>
-		<a class="link" href="http://www.elmaz.com/index.php?page=services">Услуги</a>
+		<a class="link" href="http://academy.devbg.org/">За контакти</a><span class="separator">|</span>
+		<a class="link" href="Advertisement.jsp">За реклама</a><span class="separator">|</span>
+				<a class="link" href="Dot.jsp">Права и задължения</a><span class="separator">|</span>
+		<a class="link" href="Help.jsp">Помощ</a><span class="separator">|</span>
 		<div class="left"><div style="padding-top: 10px;padding-bottom: 10px;">
 	
 	<span class="separator"></span>
