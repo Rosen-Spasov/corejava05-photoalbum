@@ -2,14 +2,11 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <html>
-<html>
-	<head>
-	
-		<title>Фото албум - Намери снимките които търсиш!</title>
-		<link rel="stylesheet" type="text/css" href="Themes/main.css" />
-		<script type="text/javascript"></script>
-	</head>
-	
+<head>
+	<title>Фото албум - Намери снимките, които търсиш!</title>
+	<link rel="stylesheet" type="text/css" href="Themes/main.css" />
+	<script type="text/javascript"></script>
+</head>	
 <body onload="">
 	<table border="0" width="100%" cellspacing="0" cellpadding="0" style="padding:0px 0px 0px 0px; border:1px solid White;">
 	<tr style="background-image:url(Themes/headBG.png)" >
