@@ -13,12 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import photoalbum.gui.Common;
+
 import common.Common.DBProvider;
 
 public class NewSessionDialog extends JDialog {
 	
-	public static enum DialogResult {CONNECT, CANCEL};
-
 	private static final long serialVersionUID = 1L;
 
 	private JPanel jContentPane = null;
@@ -29,13 +29,13 @@ public class NewSessionDialog extends JDialog {
 
 	private JButton btnCancel = null;
 
-	private JLabel lbHost = null;
+	private JLabel lbDbHost = null;
 
-	private JLabel lbPort = null;
+	private JLabel lbDbPort = null;
 
-	private JTextField txtHost = null;
+	private JTextField txtDbHost = null;
 
-	private JTextField txtPort = null;
+	private JTextField txtDbPort = null;
 
 	private JLabel lbDbType = null;
 
@@ -43,11 +43,27 @@ public class NewSessionDialog extends JDialog {
 
 	private JPasswordField pwdPassword = null;
 	
-	private DialogResult dialogResult = DialogResult.CANCEL;  //  @jve:decl-index=0:
+	private Common.DialogResult dialogResult = Common.DialogResult.CANCEL;  //  @jve:decl-index=0:
 
 	private JTextField txtSid = null;
 
 	private JLabel lbSid = null;
+
+	private JLabel lbHost = null;
+
+	private JTextField txtHost = null;
+
+	private JTextField txtPort = null;
+
+	private JLabel lbPort = null;
+	
+	public Common.DialogResult getDialogResult() {
+		return this.dialogResult;
+	}
+	
+	private void setDialogResult(Common.DialogResult dialogResult) {
+		this.dialogResult = dialogResult;
+	}
 
 	/**
 	 * @param owner
@@ -63,7 +79,7 @@ public class NewSessionDialog extends JDialog {
 	 * @return void
 	 */
 	private void initialize() {
-		this.setSize(246, 227);
+		this.setSize(246, 242);
 		this.setMinimumSize(new Dimension(7, 33));
 		this.setModal(true);
 		this.setResizable(false);
@@ -78,35 +94,45 @@ public class NewSessionDialog extends JDialog {
 	 */
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
-			lbSid = new JLabel();
-			lbSid.setBounds(new Rectangle(165, 75, 61, 16));
-			lbSid.setText("SID:");
-			lbDbType = new JLabel();
-			lbDbType.setBounds(new Rectangle(15, 135, 75, 16));
-			lbDbType.setText("DB Provider:");
 			lbPort = new JLabel();
 			lbPort.setBounds(new Rectangle(165, 15, 61, 16));
 			lbPort.setText("Port:");
 			lbHost = new JLabel();
 			lbHost.setBounds(new Rectangle(15, 15, 61, 16));
 			lbHost.setText("Host:");
+			lbSid = new JLabel();
+			lbSid.setBounds(new Rectangle(165, 105, 61, 16));
+			lbSid.setText("SID:");
+			lbDbType = new JLabel();
+			lbDbType.setBounds(new Rectangle(17, 150, 75, 16));
+			lbDbType.setText("DB Provider:");
+			lbDbPort = new JLabel();
+			lbDbPort.setBounds(new Rectangle(165, 60, 61, 16));
+			lbDbPort.setText("DB Port:");
+			lbDbHost = new JLabel();
+			lbDbHost.setBounds(new Rectangle(15, 60, 61, 16));
+			lbDbHost.setText("DB Host:");
 			lbPassword = new JLabel();
-			lbPassword.setBounds(new Rectangle(15, 75, 61, 16));
+			lbPassword.setBounds(new Rectangle(15, 105, 61, 16));
 			lbPassword.setText("Password:");
 			jContentPane = new JPanel();
 			jContentPane.setLayout(null);
-			jContentPane.add(lbPassword, null);
 			jContentPane.add(getBtnConnect(), null);
 			jContentPane.add(getBtnCancel(), null);
-			jContentPane.add(lbHost, null);
-			jContentPane.add(lbPort, null);
-			jContentPane.add(getTxtHost(), null);
-			jContentPane.add(getTxtPort(), null);
+			jContentPane.add(lbDbHost, null);
+			jContentPane.add(getTxtDbHost(), null);
+			jContentPane.add(lbDbPort, null);
+			jContentPane.add(getTxtDbPort(), null);
 			jContentPane.add(lbDbType, null);
 			jContentPane.add(getComboBoxDbProvider(), null);
+			jContentPane.add(lbPassword, null);
 			jContentPane.add(getPwdPassword(), null);
-			jContentPane.add(getTxtSid(), null);
 			jContentPane.add(lbSid, null);
+			jContentPane.add(getTxtSid(), null);
+			jContentPane.add(lbHost, null);
+			jContentPane.add(getTxtHost(), null);
+			jContentPane.add(lbPort, null);
+			jContentPane.add(getTxtPort(), null);
 		}
 		return jContentPane;
 	}
@@ -119,12 +145,12 @@ public class NewSessionDialog extends JDialog {
 	private JButton getBtnConnect() {
 		if (btnConnect == null) {
 			btnConnect = new JButton();
-			btnConnect.setBounds(new Rectangle(15, 165, 91, 16));
+			btnConnect.setBounds(new Rectangle(17, 180, 91, 16));
 			btnConnect.setText("Connect");
 			btnConnect.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					if (validateForm()) {
-						dialogResult = DialogResult.CONNECT;
+						setDialogResult(Common.DialogResult.CONNECT);
 						setVisible(false);
 					}
 				}
@@ -141,10 +167,11 @@ public class NewSessionDialog extends JDialog {
 	private JButton getBtnCancel() {
 		if (btnCancel == null) {
 			btnCancel = new JButton();
-			btnCancel.setBounds(new Rectangle(135, 165, 91, 16));
+			btnCancel.setBounds(new Rectangle(137, 180, 91, 16));
 			btnCancel.setText("Cancel");
 			btnCancel.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
+					setDialogResult(Common.DialogResult.CANCEL);
 					setVisible(false);
 				}
 			});
@@ -153,32 +180,32 @@ public class NewSessionDialog extends JDialog {
 	}
 
 	/**
-	 * This method initializes txtHost	
+	 * This method initializes txtDbHost	
 	 * 	
 	 * @return javax.swing.JTextField	
 	 */
-	private JTextField getTxtHost() {
-		if (txtHost == null) {
-			txtHost = new JTextField();
-			txtHost.setBounds(new Rectangle(15, 45, 136, 16));
-			txtHost.setText("localhost");
+	private JTextField getTxtDbHost() {
+		if (txtDbHost == null) {
+			txtDbHost = new JTextField();
+			txtDbHost.setBounds(new Rectangle(15, 75, 136, 16));
+			txtDbHost.setText("localhost");
 		}
-		return txtHost;
+		return txtDbHost;
 	}
 
 	/**
-	 * This method initializes txtPort	
+	 * This method initializes txtDbPort	
 	 * 	
 	 * @return javax.swing.JTextField	
 	 */
-	private JTextField getTxtPort() {
-		if (txtPort == null) {
-			txtPort = new JTextField();
-			txtPort.setBounds(new Rectangle(165, 45, 61, 16));
-			txtPort.setText("1521");
-			txtPort.setColumns(4);
+	private JTextField getTxtDbPort() {
+		if (txtDbPort == null) {
+			txtDbPort = new JTextField();
+			txtDbPort.setBounds(new Rectangle(165, 75, 61, 16));
+			txtDbPort.setText("1521");
+			txtDbPort.setColumns(4);
 		}
-		return txtPort;
+		return txtDbPort;
 	}
 
 	/**
@@ -189,7 +216,7 @@ public class NewSessionDialog extends JDialog {
 	private JComboBox getComboBoxDbProvider() {
 		if (comboBoxDbProvider == null) {
 			comboBoxDbProvider = new JComboBox(DBProvider.values());
-			comboBoxDbProvider.setBounds(new Rectangle(103, 135, 123, 16));
+			comboBoxDbProvider.setBounds(new Rectangle(105, 150, 123, 16));
 		}
 		return comboBoxDbProvider;
 	}
@@ -202,16 +229,16 @@ public class NewSessionDialog extends JDialog {
 	private JPasswordField getPwdPassword() {
 		if (pwdPassword == null) {
 			pwdPassword = new JPasswordField();
-			pwdPassword.setBounds(new Rectangle(15, 105, 136, 16));
+			pwdPassword.setBounds(new Rectangle(15, 120, 136, 16));
 			pwdPassword.setColumns(20);
 			pwdPassword.setEchoChar('*');
 		}
 		return pwdPassword;
 	}
 	
-	public DialogResult showDialog() {
+	public Common.DialogResult showDialog() {
 		this.setVisible(true);
-		return this.dialogResult;
+		return this.getDialogResult();
 	}
 
 	/**
@@ -222,7 +249,7 @@ public class NewSessionDialog extends JDialog {
 	private JTextField getTxtSid() {
 		if (txtSid == null) {
 			txtSid = new JTextField();
-			txtSid.setBounds(new Rectangle(165, 105, 61, 16));
+			txtSid.setBounds(new Rectangle(165, 120, 61, 16));
 			txtSid.setText("xe");
 		}
 		return txtSid;
@@ -250,6 +277,27 @@ public class NewSessionDialog extends JDialog {
 				return false;
 			}
 		}
+		this.getTxtDbHost().setText(this.getTxtDbHost().getText().trim());
+		if (this.getTxtDbHost().getText().equals("")) {
+			JOptionPane.showMessageDialog(this, "DB host cannot be empty!", "Invalid DB Host", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		this.getTxtDbPort().setText(this.getTxtDbPort().getText().trim());
+		if (this.getTxtDbPort().getText().equals("")) {
+			JOptionPane.showMessageDialog(this, "DB port cannot be empty!", "Invalid DB Port", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else {
+			try {
+				int port = Integer.parseInt(this.getTxtDbPort().getText());
+				if (port < 0 || port > 65535) {
+					JOptionPane.showMessageDialog(this, "DB port must be an integer between 0 and 65535!", "Invalid DB Port", JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			} catch (NumberFormatException exc) {
+				JOptionPane.showMessageDialog(this, "Port must be an integer between 0 and 65535!s", "Invalid DB Port", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		}
 		this.getTxtSid().setText(this.getTxtSid().getText().trim());
 		if (this.getTxtSid().getText().equals("")) {
 			JOptionPane.showMessageDialog(this, "SID cannot be empty!Invalid SID", "", JOptionPane.ERROR_MESSAGE);
@@ -258,12 +306,12 @@ public class NewSessionDialog extends JDialog {
 		return true;
 	}
 	
-	public String getHost() {
-		return this.getTxtHost().getText();
+	public String getDbHost() {
+		return this.getTxtDbHost().getText();
 	}
 	
-	public String getPort() {
-		return this.getTxtPort().getText();
+	public String getDbPort() {
+		return this.getTxtDbPort().getText();
 	}
 	
 	public String getPassword() {
@@ -276,6 +324,42 @@ public class NewSessionDialog extends JDialog {
 	
 	public String getDbProvider() {
 		return this.getComboBoxDbProvider().getSelectedItem().toString();
+	}
+	
+	public String getHost() {
+		return this.getTxtHost().getText();
+	}
+	
+	public String getPort() {
+		return this.getTxtPort().getText();
+	}
+
+	/**
+	 * This method initializes txtHost	
+	 * 	
+	 * @return javax.swing.JTextField	
+	 */
+	private JTextField getTxtHost() {
+		if (txtHost == null) {
+			txtHost = new JTextField();
+			txtHost.setBounds(new Rectangle(15, 30, 136, 16));
+			txtHost.setText("localhost");
+		}
+		return txtHost;
+	}
+
+	/**
+	 * This method initializes txtPort	
+	 * 	
+	 * @return javax.swing.JTextField	
+	 */
+	private JTextField getTxtPort() {
+		if (txtPort == null) {
+			txtPort = new JTextField();
+			txtPort.setBounds(new Rectangle(165, 30, 61, 16));
+			txtPort.setText("3301");
+		}
+		return txtPort;
 	}
 
 }  //  @jve:decl-index=0:visual-constraint="10,10"
