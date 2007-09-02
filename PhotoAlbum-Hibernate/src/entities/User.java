@@ -88,5 +88,9 @@ public class User {
 	public String toString() {
 		return this.getUsername();
 	}
+	
+	public void addCategory(Category category) {
+		this.getCategories().add(category);
+	}
 
 }
