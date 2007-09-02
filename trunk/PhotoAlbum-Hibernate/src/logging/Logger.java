@@ -1,5 +1,6 @@
 package logging;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -66,6 +67,11 @@ public class Logger {
 	}
 	
 	public String getLogFileName() {
+		File file = new File(logFileName);
+		File parent = new File(file.getParent());
+		if (!parent.exists()) {
+			parent.mkdirs();
+		}
 		return this.logFileName;
 	}
 	
@@ -114,22 +120,22 @@ public class Logger {
 //		this.setLogWriter(null);
 	}
 	
-	public synchronized void log(Throwable exc) {
-		this.log(exc, "");
+	public synchronized void log(Throwable e) {
+		this.log(e, "");
 	}
 	
-	private synchronized void log(Throwable exc, String indent) {
+	private synchronized void log(Throwable e, String indent) {
 		Date currentTime = new Date();
 		String currentTimeString = Common.defaultDateTimeFormat.format(currentTime);
 		PrintWriter writer = this.getLogWriter();
 		writer.println("*************************************************************************");
 		writer.println(indent + "[" + currentTimeString + "] ERROR");
-		writer.println(indent + exc.getMessage());
-		StackTraceElement[] stackTrace = exc.getStackTrace();
+		writer.println(indent + e.getMessage());
+		StackTraceElement[] stackTrace = e.getStackTrace();
 		for (StackTraceElement stackTraceElement : stackTrace) {
 			writer.println(indent + stackTraceElement.toString());
 		}
-		Throwable cause = exc.getCause();
+		Throwable cause = e.getCause();
 		if (cause != null) {
 			writer.println(indent + "Caused by:");
 			this.log(cause, indent + "\t");

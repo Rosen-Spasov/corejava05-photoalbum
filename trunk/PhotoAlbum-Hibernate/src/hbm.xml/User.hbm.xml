@@ -17,7 +17,7 @@
 		<property name="LastName" column="LAST_NAME" />
 		<property name="Password" column="PASSWORD" />
 		
-		<set name="Categories" table="CATEGORIES">
+		<set name="Categories" table="CATEGORIES" cascade="delete">
 			<key column="USER_ID" />
 			<one-to-many class="entities.Category" />
 		</set>

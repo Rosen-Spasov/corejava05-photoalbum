@@ -1,12 +1,22 @@
 package security;
 
-import entities.User;
-import hibernate.queries.UserQuery;
+import hibernate.utils.HibernateConnection;
+import hibernate.utils.HibernateConnectionManager;
 import logging.Logger;
+import entities.User;
 
 public class SecurityManager {
 	
 	private Logger logger = null;
+	
+	private HibernateConnection hbConnection = null;
+	
+	private HibernateConnection getHbConnection() {
+		if (this.hbConnection == null || this.hbConnection.isReleased()) {
+			this.hbConnection = HibernateConnectionManager.openConnection();
+		}
+		return this.hbConnection;
+	}
 	
 	private Logger getLogger() {
 		if (this.logger == null) {
@@ -18,11 +28,11 @@ public class SecurityManager {
 	public boolean accessGranted(String userName, String password) {
 		boolean result = false;
 		
-		UserQuery query = new UserQuery();
-		User user = query.getUserByUserName(userName);
+		User user = this.getHbConnection().getUserByUserName(userName);
 		if (user != null && user.getPassword().equals(password)) {
 			result = true;
 		}
+		this.getHbConnection().close();
 
 		return result;
 	}
