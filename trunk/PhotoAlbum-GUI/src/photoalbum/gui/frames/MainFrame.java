@@ -3,12 +3,17 @@ package photoalbum.gui.frames;
 import hibernate.utils.HibernateConnection;
 import hibernate.utils.HibernateConnectionManager;
 
+import java.awt.Cursor;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -31,13 +36,13 @@ import photoalbum.gui.CustomCellRenderer;
 import photoalbum.gui.ICustomIconsSupplier;
 import photoalbum.gui.Common.DialogResult;
 import photoalbum.gui.dialogs.NewSessionDialog;
-import photoalbum.gui.dialogs.NewUserDialog;
+import photoalbum.gui.dialogs.UserDialog;
 import photoalbum.network.connection.ServerConnection;
 import entities.Category;
 import entities.Photo;
 import entities.User;
 
-public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelectionListener {
+public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelectionListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -65,7 +70,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	
 	private NewSessionDialog newSessionDialog = null;
 	
-	private NewUserDialog newUserDialog = null;
+	private UserDialog userDialog = null;
 
 	private JScrollPane scrollPaneData = null;
 
@@ -88,6 +93,15 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	private JButton btnRefresh = null;
 	
 	private HibernateConnection hbConnection = null;
+	
+	private JFileChooser fileChooser = null;
+	
+	private JFileChooser getFileChooser() {
+		if (this.fileChooser == null) {
+			this.fileChooser = new JFileChooser();
+		}
+		return this.fileChooser;
+	}
 	
 	private HibernateConnection getHbConnection() {
 		if (this.hbConnection == null || this.hbConnection.isReleased()) {
@@ -151,11 +165,11 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		return this.rootNode;
 	}
 	
-	private NewUserDialog getNewUserDialog() {
-		if (this.newUserDialog == null) {
-			this.newUserDialog = new NewUserDialog(this);
+	private UserDialog getUserDialog() {
+		if (this.userDialog == null) {
+			this.userDialog = new UserDialog(this);
 		}
-		return this.newUserDialog;
+		return this.userDialog;
 	}
 
 	private NewSessionDialog getNewSessionDialog() {
@@ -175,11 +189,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			btnRefresh = new JButton();
 			btnRefresh.setBounds(new Rectangle(15, 105, 91, 16));
 			btnRefresh.setText("Refresh");
-			btnRefresh.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					refreshTree();
-				}
-			});
+			btnRefresh.addActionListener(this);
 		}
 		return btnRefresh;
 	}
@@ -216,6 +226,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		this.setContentPane(getJContentPane());
 		this.getTreeData().setEnabled(false);
 		this.updateButtons(false);
+		this.getBtnRefresh().setEnabled(false);
 		this.setTitle("Manage Photo Album");
 	}
 
@@ -286,11 +297,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		if (mItemNewSession == null) {
 			mItemNewSession = new JMenuItem();
 			mItemNewSession.setText("New Session");
-			mItemNewSession.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					newSession();
-				}
-			});
+			mItemNewSession.addActionListener(this);
 		}
 		return mItemNewSession;
 	}
@@ -324,11 +331,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			btnExit = new JButton();
 			btnExit.setText("Exit");
 			btnExit.setBounds(new Rectangle(465, 240, 91, 16));
-			btnExit.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					exit();
-				}
-			});
+			btnExit.addActionListener(this);
 		}
 		return btnExit;
 	}
@@ -343,22 +346,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			btnAdd = new JButton();
 			btnAdd.setBounds(new Rectangle(15, 15, 91, 16));
 			btnAdd.setText("Add");
-			btnAdd.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) getTreeData().getLastSelectedPathComponent();
-					if (selectedNode == getRootNode()) {
-						addUser();
-					} else if (selectedNode.getUserObject() instanceof User) {
-						addCategory(selectedNode.getUserObject());
-					} else if (selectedNode.getUserObject() instanceof Category) {
-						if (JOptionPane.showOptionDialog(null, "Category or Photo?", "Category or Photo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[] {"Category", "Photo"}, "Category") == JOptionPane.YES_OPTION) {
-							addCategory(selectedNode.getUserObject());
-						} else {
-							addPhoto(selectedNode.getUserObject());
-						}
-					}
-				}
-			});
+			btnAdd.addActionListener(this);
 		}
 		return btnAdd;
 	}
@@ -373,6 +361,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			btnEdit = new JButton();
 			btnEdit.setBounds(new Rectangle(15, 45, 91, 16));
 			btnEdit.setText("Edit");
+			btnEdit.addActionListener(this);
 		}
 		return btnEdit;
 	}
@@ -387,11 +376,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			btnDelete = new JButton();
 			btnDelete.setBounds(new Rectangle(15, 75, 91, 16));
 			btnDelete.setText("Delete");
-			btnDelete.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					deleteSelectedObject();
-				}
-			});
+			btnDelete.addActionListener(this);
 		}
 		return btnDelete;
 	}
@@ -405,11 +390,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		if (mItemExit == null) {
 			mItemExit = new JMenuItem();
 			mItemExit.setText("Exit");
-			mItemExit.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					exit();
-				}
-			});
+			mItemExit.addActionListener(this);
 		}
 		return mItemExit;
 	}
@@ -460,6 +441,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	}
 	
 	private void connect() {
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		String password = this.getNewSessionDialog().getPassword();
 		String dbHost = this.getNewSessionDialog().getDbHost();
 		String dbPort = this.getNewSessionDialog().getDbPort();
@@ -467,6 +449,9 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		String dbProvider = this.getNewSessionDialog().getDbProvider();
 		try {
 			HibernateConnectionManager.configure(password, dbHost, dbPort, sid, dbProvider);
+			this.getTreeData().setEnabled(true);
+			this.getBtnRefresh().setEnabled(true);
+			refreshTree();
 		} catch (Throwable exc) {
 			JOptionPane.showMessageDialog(this, "Could not connect to DB.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
 			Logger.getDefaultInstance().log(exc);
@@ -488,8 +473,8 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 //			Logger.getDefaultInstance().log(e);
 //		}
 		
-		this.getTreeData().setEnabled(true);
-		refreshTree();
+		
+		this.setCursor(Cursor.getDefaultCursor());
 	}
 	
 	private void loadTree() {
@@ -498,7 +483,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		usersList.toArray(users);
 		loadChildren(this.getRootNode(), users);
 		this.getTreeData().expandPath(new TreePath(this.getRootNode().getPath()));
-		this.getTreeData().invalidate();
+		this.reloadTree();
 	}
 	
 	private void loadChildren(DefaultMutableTreeNode root, Object[] children) {
@@ -516,7 +501,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 				Category[] categories = new Category[newCategory.getCategories().size()];
 				newCategory.getCategories().toArray(categories);
 				loadChildren(newChild, categories);
-			} else {
+			} else if (child instanceof Photo) {
 				newChild = new DefaultMutableTreeNode(child);
 			}
 			if (newChild != null) {
@@ -525,27 +510,155 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		}
 	}
 	
+	private void addObject() {
+		if (!this.getTreeData().isSelectionEmpty()) {
+			DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) getTreeData().getLastSelectedPathComponent();
+			Object selectedObject = selectedNode.getUserObject();
+			if (selectedNode == getRootNode()) {
+				addUser();
+			} else if (selectedObject instanceof User || selectedObject instanceof Category) {
+				addFileStructure(selectedObject);
+			}
+			this.refreshTree();
+		}
+	}
+	
 	private void addUser() {
-		if (this.getNewUserDialog().showDialog() == DialogResult.CREATE) {
-			String username = this.getNewUserDialog().getUsername();
-			String password = this.getNewUserDialog().getPassword();
-			String firstName = this.getNewUserDialog().getFirstName();
-			String lastName = this.getNewUserDialog().getLastName();
+		this.getUserDialog().resetDialog();
+		if (this.getUserDialog().showDialog() == DialogResult.OK) {
+			String username = this.getUserDialog().getUsername();
+			String password = this.getUserDialog().getPassword();
+			String firstName = this.getUserDialog().getFirstName();
+			String lastName = this.getUserDialog().getLastName();
 			
 			User newUser = new User(username, password, firstName, lastName);
 			this.getHbConnection().save(newUser);
-			refreshTree();
-			this.getTreeData().invalidate();
 		}
 		
 	}
 	
-	private void addCategory(Object parent) {
-		
+	private void addFileStructure(Object parentObject) {
+		if (this.getFileChooser().showDialog(this, "Add") == JFileChooser.APPROVE_OPTION) {
+			File[] selectedFiles = this.getFileChooser().getSelectedFiles();
+			for (File selectedFile : selectedFiles) {
+				if (selectedFile.isDirectory()) {
+					addCategory(parentObject, selectedFile);
+				} else if (isValidFile(selectedFile) && parentObject instanceof Category) {
+					addPhoto((Category) parentObject, selectedFile);
+				}
+			}
+			this.getHbConnection().update(parentObject);
+		}
 	}
 	
-	private void addPhoto(Object parent) {
+	private Category addCategory(Object parent, File category) {
+		if (parent instanceof User) {
+			return addCategory((User) parent, category);
+		} else if (parent instanceof Category) {
+			return addCategory((Category) parent, category);
+		} else {
+			return null;
+		}
+	}
+	
+	private Category addCategory(User parent, File category) {
+		Category newCategory = new Category();
 		
+		newCategory.setUser(parent);
+		
+		String catName = category.getName();
+		newCategory.setCatName(catName);
+				
+		String path = "./PhotoAlbum" + catName;
+		newCategory.setPath(path);
+		
+		File[] children = category.listFiles();
+		for (File child : children) {
+			if (child.isDirectory()) {
+				addCategory(newCategory, child);
+			}
+		}
+		parent.addCategory(newCategory);
+		
+		return newCategory;
+	}
+	
+	private Category addCategory(Category parent, File category) {
+		Category newCategory = new Category();
+		
+		newCategory.setUser(parent.getUser());
+		
+		String catName = category.getName();
+		newCategory.setCatName(catName);
+		
+		String path = parent.getPath() + "/" + catName;
+		newCategory.setPath(path);
+		
+		File[] children = category.listFiles();
+		for (File child : children) {
+			if (child.isDirectory()) {
+				addCategory(newCategory, child);
+			} else if (isValidFile(child)) {
+				addPhoto(newCategory, child);
+			}
+		}
+		parent.addCategory(newCategory);
+		
+		return newCategory;
+	}
+	
+	private Photo addPhoto(Category parent, File photo) {
+		Photo newPhoto = new Photo();
+		
+		newPhoto.setCategory(parent);
+		
+		String phName = photo.getName();
+		newPhoto.setPhName(phName);
+		
+		String path = parent.getPath();
+		newPhoto.setPath(path);
+		
+		parent.addPhoto(newPhoto);
+		
+		return newPhoto;
+	}
+	
+	private boolean isValidFile(File file) {
+		return 	file.isFile() &&
+				file.getName().endsWith(".jpg") &&
+				file.getName().endsWith(".gif") &&
+				file.getName().endsWith(".png");
+	}
+	
+	private void editSelectedObject() {
+		if (!this.getTreeData().isSelectionEmpty()) {
+			DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getTreeData().getLastSelectedPathComponent();
+			if (selectedNode != null && selectedNode != getRootNode()) {
+				Object selectedObject = selectedNode.getUserObject();
+				if (selectedObject instanceof User) {
+					editUser((User) selectedObject);
+				}
+			}
+		}
+	}
+	
+	private void editUser(User user) {
+		String username = user.getUsername();
+		String firstName = user.getFirstName();
+		String lastName = user.getLastName();
+		this.getUserDialog().resetDialog(username, "", firstName, lastName);
+		if (this.getUserDialog().showDialog() == DialogResult.OK) {
+			user.setUsername(this.getUserDialog().getUsername());
+			user.setFirstName(this.getUserDialog().getFirstName());
+			user.setLastName(this.getUserDialog().getLastName());
+			String password = this.getUserDialog().getPassword();
+			if (!password.equals("")) {
+				user.setPassword(this.getUserDialog().getPassword());
+			}
+			this.getHbConnection().update(user);
+
+			this.reloadTree();
+		}
 	}
 	
 	private void deleteSelectedObject() {
@@ -553,40 +666,65 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getTreeData().getLastSelectedPathComponent();
 			if (selectedNode != null && selectedNode != getRootNode()) {
 				this.getHbConnection().delete(selectedNode.getUserObject());
-				refreshTree();
+				DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
+				parentNode.remove(selectedNode);
+				this.reloadTree();
 			}
-		}
-		
+		}		
 	}
 
 	public void valueChanged(TreeSelectionEvent e) {
-		DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getTreeData().getLastSelectedPathComponent();
-		if (selectedNode == getRootNode()) {
-			this.updateButtons(true, false, false, true);
-		} else if (selectedNode != null) {
-			if (selectedNode.getUserObject() instanceof Photo) {
-				this.updateButtons(false, true, true, true);
+		if (!this.getTreeData().isSelectionEmpty()) {
+			DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getTreeData().getLastSelectedPathComponent();
+			if (selectedNode == getRootNode()) {
+				this.updateButtons(true, false, false);
+			} else if (selectedNode.getUserObject() instanceof User) {
+					this.updateButtons(true, true, true);
+			} else if (selectedNode.getUserObject() instanceof Category) {
+					this.updateButtons(true, true, false);
+			} else if (selectedNode.getUserObject() instanceof Photo) {
+					this.updateButtons(false, true, false);
 			} else {
 				this.updateButtons(true);
 			}
+		} else {
+			this.updateButtons(false);
 		}
 	}
 	
 	private void refreshTree() {
 		getRootNode().removeAllChildren();
 		loadTree();
+	}
+	
+	private void reloadTree() {
 		((DefaultTreeModel) getTreeData().getModel()).reload();
 	}
 	
 	private void updateButtons(boolean enableAll) {
-		this.updateButtons(enableAll, enableAll, enableAll, enableAll);
+		this.updateButtons(enableAll, enableAll, enableAll);
 	}
 	
-	private void updateButtons(boolean btnAddEnabled, boolean btnDeleteEnabled, boolean btnEditEnabled, boolean btnRefreshEnabled) {
+	private void updateButtons(boolean btnAddEnabled, boolean btnDeleteEnabled, boolean btnEditEnabled) {
 		this.getBtnAdd().setEnabled(btnAddEnabled);
 		this.getBtnDelete().setEnabled(btnDeleteEnabled);
 		this.getBtnEdit().setEnabled(btnEditEnabled);
-		this.getBtnRefresh().setEnabled(btnRefreshEnabled);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == this.getBtnAdd()) {
+			addObject();
+		} else if (e.getSource() == this.getBtnEdit()) {
+			editSelectedObject();
+		} else if (e.getSource() == this.getBtnDelete()) {
+			deleteSelectedObject();
+		} else if (e.getSource() == this.getBtnRefresh()) {
+			refreshTree();
+		} else if (e.getSource() == this.getBtnExit() || e.getSource() == this.getMItemExit()) {
+			exit();
+		} else if (e.getSource() == this.getMItemNewSession()) {
+			newSession();
+		}
 	}
 
 }  //  @jve:decl-index=0:visual-constraint="10,10"
