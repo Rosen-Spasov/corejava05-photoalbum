@@ -15,23 +15,22 @@ public class CustomCellRenderer extends DefaultTreeCellRenderer {
 
 	private static final long serialVersionUID = -811663968624239700L;
 	
-	MainFrame frame = null;
+	ICustomIconsSupplier iconSupplier = null;
 	
-	public CustomCellRenderer(MainFrame frame) {
-		this.setFrame(frame);		
+	public CustomCellRenderer(ICustomIconsSupplier iconSupplier) {
+		this.setIconSupplier(iconSupplier);		
 	}
 	
-	private MainFrame getFrame() {
-		if (this.frame == null) {
-			this.frame = new MainFrame();
-			this.frame.setTitle("Manage Photo Album");
+	private ICustomIconsSupplier getIconSupplier() {
+		if (this.iconSupplier == null) {
+			this.iconSupplier = new MainFrame();
 		}
-		return this.frame;
+		return this.iconSupplier;
 	}
 	
-	private void setFrame(MainFrame frame) {
-		if (frame != null) {
-			this.frame = frame;
+	private void setIconSupplier(ICustomIconsSupplier iconSupplier) {
+		if (iconSupplier != null) {
+			this.iconSupplier = iconSupplier;
 		}
 	}
 
@@ -42,17 +41,17 @@ public class CustomCellRenderer extends DefaultTreeCellRenderer {
 		if (value instanceof DefaultMutableTreeNode) {
         	Object node = ((DefaultMutableTreeNode) value).getUserObject();
         	if (node instanceof User) {
-        		this.setIcon(this.getFrame().getUserIcon());
+        		this.setIcon(this.getIconSupplier().getUserIcon());
         	} else if (node instanceof Category ){
         		if (expanded) {
-        			this.setIcon(this.getFrame().getOpenedCategoryIcon());
+        			this.setIcon(this.getIconSupplier().getOpenedCategoryIcon());
         		} else {
-        			this.setIcon(this.getFrame().getClosedCategoryIcon());
+        			this.setIcon(this.getIconSupplier().getClosedCategoryIcon());
         		}
         	} else if (node instanceof Photo){
-        		this.setIcon(this.getFrame().getPhotoIcon());
+        		this.setIcon(this.getIconSupplier().getPhotoIcon());
         	} else {
-        		this.setIcon(this.getFrame().getPhotoIcon());
+        		this.setIcon(this.getIconSupplier().getPhotoIcon());
         	}
 		}
 
