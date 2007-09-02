@@ -76,7 +76,7 @@ public class HibernateConnectionManager {
 	private static HibernateConnection findAvailableConnection() {
 		HibernateConnection connection = null;
 		for (int index = 0; index < getConnections().size(); index++) {
-			if (getConnections().get(index).isAvailable()) {
+			if (getConnections().get(index).isReleased()) {
 				connection = getConnections().get(index);
 				break;
 			}
@@ -125,7 +125,9 @@ public class HibernateConnectionManager {
 				getCfg().setProperty(DRIVER_CLASS_PROPERTY, driver);
 				getCfg().setProperty(URL_PROPERTY, url);
 			}
-			getCfg().setProperty(PASSWORD_PROPERTY, password);
+			if (!password.equals("")) {
+				getCfg().setProperty(PASSWORD_PROPERTY, password);
+			}
 			setConfigured(true);
 		}
 	}

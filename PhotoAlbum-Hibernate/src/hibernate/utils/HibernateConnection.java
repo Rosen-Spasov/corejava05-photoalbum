@@ -1,8 +1,14 @@
 package hibernate.utils;
 
+import java.util.List;
+
+import logging.Logger;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import entities.User;
 
 public class HibernateConnection {
 	
@@ -10,18 +16,27 @@ public class HibernateConnection {
 	
 	private Transaction transaction = null;
 	
-	private boolean available = false;
+	private boolean released = false;
+	
+	private Logger logger = null;
+	
+	private Logger getLogger() {
+		if (this.logger == null) {
+			this.logger = Logger.getDefaultInstance();
+		}
+		return this.logger;
+	}
 	
 	public HibernateConnection(Session session) throws IllegalArgumentException {
 		this.setSession(session);
 	}
 	
-	public boolean isAvailable() {
-		return this.available;
+	public boolean isReleased() {
+		return this.released;
 	}
 	
-	private void setAvailable(boolean available) {
-		this.available = available;
+	private void setReleased(boolean released) {
+		this.released = released;
 	}
 	
 	private Session getSession() {
@@ -53,34 +68,55 @@ public class HibernateConnection {
 		}
 	}
 	
-	public void beginTransaction() {
+	private void beginTransaction() {
 		Transaction transaction = this.getSession().beginTransaction();
 		this.setTransaction(transaction);
 	}
 	
-	public void commit() {
+	private void commit() {
 		this.getTransaction().commit();
 	}
 	
-	public void rollback() {
+	private void rollback() {
 		this.getTransaction().rollback();
 	}
 	
 	public void close() {
-		this.setAvailable(true);
+		this.setReleased(true);
 		HibernateConnectionManager.closeConnection(this);
 	}
 	
 	public void save(Object obj) {
-		this.getSession().save(obj);
+		this.beginTransaction();
+		try {
+			this.getSession().save(obj);
+			this.commit();
+		} catch (Throwable e) {
+			this.rollback();
+			this.getLogger().log(e);
+		}
 	}
 	
 	public void update(Object obj) {
-		this.getSession().update(obj);
+		this.beginTransaction();
+		try {
+			this.getSession().update(obj);
+			this.commit();
+		} catch (Throwable e) {
+			this.rollback();
+			this.getLogger().log(e);
+		}
 	}
 	
 	public void delete(Object obj) {
-		this.getSession().delete(obj);
+		this.beginTransaction();
+		try {
+			this.getSession().delete(obj);
+			this.commit();
+		} catch (Throwable e) {
+			this.rollback();
+			this.getLogger().log(e);
+		}
 	}
 	
 	public Object get(Class objClass, int primaryKey) {
@@ -89,6 +125,42 @@ public class HibernateConnection {
 	
 	public Query createQuery(String hql) {
 		return this.getSession().createQuery(hql);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllUsers() {
+		List<User> result = null;
+		
+		String hql = "from User";
+		Query query = this.createQuery(hql);
+		result = (List<User>) query.list();
+		
+		return result;
+	}
+	
+	
+	public User getUserByID(int userID) {
+		return (User) this.get(User.class, userID);
+	}
+	
+	public User getUserByUserName(String username) {
+		User user = null;
+		
+		String hql = "from User u where u.Username=:username";
+		Query query = this.createQuery(hql);
+		query.setString("userName", username);
+		List list = (List) query.list();
+		if (list != null && list.size() != 1) {
+			try {
+				user = (User) list.get(0);
+			} catch (ClassCastException exc) {
+				this.getLogger().log(exc);
+			}
+		} else {
+			this.getLogger().log("ERROR: Cannot find User with username=" + username + " or there is more than one User with the given username.");
+		}
+		
+		return user;
 	}
 	
 }

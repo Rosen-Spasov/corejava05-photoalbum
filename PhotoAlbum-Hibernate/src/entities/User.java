@@ -78,6 +78,13 @@ public class User {
 	public User() {		
 	}
 	
+	public User(String username, String password, String firstName, String lastName) {
+		this.setUsername(username);
+		this.setPassword(password);
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+	}
+	
 	public String toString() {
 		return this.getUsername();
 	}
