@@ -81,5 +81,13 @@ public class Category {
 	public String toString() {
 		return this.getCatName();
 	}
+	
+	public void addCategory(Category category) {
+		this.getCategories().add(category);
+	}
+	
+	public void addPhoto(Photo photo) {
+		this.getPhotos().add(photo);
+	}
 
 }
