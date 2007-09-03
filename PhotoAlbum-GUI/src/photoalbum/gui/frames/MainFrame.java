@@ -1,8 +1,5 @@
 package photoalbum.gui.frames;
 
-import hibernate.utils.HibernateConnection;
-import hibernate.utils.HibernateConnectionManager;
-
 import java.awt.Cursor;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -30,17 +27,17 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import logging.Logger;
-import photoalbum.gui.Common;
+import photoalbum.common.Common.DialogResult;
+import photoalbum.entities.Category;
+import photoalbum.entities.Photo;
+import photoalbum.entities.User;
 import photoalbum.gui.CustomCellRenderer;
 import photoalbum.gui.ICustomIconsSupplier;
-import photoalbum.gui.Common.DialogResult;
 import photoalbum.gui.dialogs.NewSessionDialog;
 import photoalbum.gui.dialogs.UserDialog;
-//import photoalbum.network.connection.ServerConnection;
-import entities.Category;
-import entities.Photo;
-import entities.User;
+import photoalbum.hibernate.utils.HibernateConnection;
+import photoalbum.hibernate.utils.HibernateConnectionManager;
+import photoalbum.logging.Logger;
 
 public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelectionListener, ActionListener {
 
@@ -87,12 +84,10 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	private Icon closedCategoryIcon = null;  //  @jve:decl-index=0:
 	
 	private Icon photoIcon = null;
-	
-//	private ServerConnection serverConnection = null;
 
 	private JButton btnRefresh = null;
 	
-	private HibernateConnection hbConnection = null;
+	private HibernateConnection hbConnection = null;  //  @jve:decl-index=0:
 	
 	private JFileChooser fileChooser = null;
 	
@@ -109,19 +104,6 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		}
 		return this.hbConnection;
 	}
-	
-//	private ServerConnection getServerConnection() {
-//		if (this.serverConnection == null) {
-//			this.serverConnection = new ServerConnection();
-//		}
-//		return this.serverConnection;
-//	}
-	
-//	private void setServerConnection(ServerConnection serverConnection) {
-//		if (serverConnection != null) {
-//			this.serverConnection = serverConnection;
-//		}
-//	}
 	
 	public Icon getPhotoIcon() {
 		if (this.photoIcon == null) {
@@ -435,7 +417,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	}
 	
 	private void newSession() {
-		if (this.getNewSessionDialog().showDialog() == Common.DialogResult.CONNECT) {
+		if (this.getNewSessionDialog().showDialog() == DialogResult.CONNECT) {
 			connect();
 		}
 	}
@@ -456,23 +438,6 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			JOptionPane.showMessageDialog(this, "Could not connect to DB.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
 			Logger.getDefaultInstance().log(exc);
 		}
-		
-//		String host = this.getNewSessionDialog().getHost();
-//		String port = this.getNewSessionDialog().getPort();
-//		try {
-//			ServerConnection serverConnection = new ServerConnection(host, port);
-//			this.setServerConnection(serverConnection);
-//		} catch (NumberFormatException e) {
-//			JOptionPane.showMessageDialog(this, "Port must be an integer between 0 and 65535!", "Invalid Port", JOptionPane.ERROR_MESSAGE);
-//			Logger.getDefaultInstance().log(e);
-//		} catch (UnknownHostException e) {
-//			JOptionPane.showMessageDialog(this, "Could not connect to host!", "Unknown Host", JOptionPane.ERROR_MESSAGE);
-//			Logger.getDefaultInstance().log(e);
-//		} catch (IOException e) {
-//			JOptionPane.showMessageDialog(this, "Could not connect to server, contact your system administrator!", "Server Connection Failed", JOptionPane.ERROR_MESSAGE);
-//			Logger.getDefaultInstance().log(e);
-//		}
-		
 		
 		this.setCursor(Cursor.getDefaultCursor());
 	}
@@ -498,9 +463,9 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			} else if (child instanceof Category) {
 				Category newCategory = (Category) child;
 				newChild = new DefaultMutableTreeNode(newCategory);
-				Category[] categories = new Category[newCategory.getCategories().size()];
-				newCategory.getCategories().toArray(categories);
-				loadChildren(newChild, categories);
+				Category[] childCategories = new Category[newCategory.getChildCategories().size()];
+				newCategory.getChildCategories().toArray(childCategories);
+				loadChildren(newChild, childCategories);
 			} else if (child instanceof Photo) {
 				newChild = new DefaultMutableTreeNode(child);
 			}
@@ -578,7 +543,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 				addCategory(newCategory, child);
 			}
 		}
-		parent.addCategory(newCategory);
+		parent.getCategories().add(newCategory);
 		
 		return newCategory;
 	}
@@ -602,7 +567,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 				addPhoto(newCategory, child);
 			}
 		}
-		parent.addCategory(newCategory);
+		parent.getChildCategories().add(newCategory);
 		
 		return newCategory;
 	}
@@ -618,7 +583,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		String path = parent.getPath();
 		newPhoto.setPath(path);
 		
-		parent.addPhoto(newPhoto);
+		parent.getPhotos().add(newPhoto);
 		
 		return newPhoto;
 	}

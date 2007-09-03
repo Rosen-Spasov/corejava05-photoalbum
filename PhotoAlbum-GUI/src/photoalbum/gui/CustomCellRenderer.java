@@ -6,10 +6,10 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import photoalbum.gui.frames.MainFrame;
-import entities.Category;
-import entities.Photo;
-import entities.User;
+import photoalbum.entities.Category;
+import photoalbum.entities.Photo;
+import photoalbum.entities.User;
+import photoalbum.gui.frames.MainFrame;;
 
 public class CustomCellRenderer extends DefaultTreeCellRenderer {
 
@@ -42,7 +42,7 @@ public class CustomCellRenderer extends DefaultTreeCellRenderer {
         	Object node = ((DefaultMutableTreeNode) value).getUserObject();
         	if (node instanceof User) {
         		this.setIcon(this.getIconSupplier().getUserIcon());
-        	} else if (node instanceof Category ){
+        	} else if (node instanceof Category){
         		if (expanded) {
         			this.setIcon(this.getIconSupplier().getOpenedCategoryIcon());
         		} else {
