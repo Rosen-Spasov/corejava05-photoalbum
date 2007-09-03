@@ -16,6 +16,11 @@
         	<key column="USER_ID" />
         	<one-to-many class="Category" />
         </set>
+		
+		<set name="Comments" table="COMMENTS" cascade="all">
+        	<key column="USER_ID" />
+        	<one-to-many class="Comment" />
+        </set>
         
         <property name="Username" column="USERNAME" not-null="true" />
         <property name="FirstName" column="FIRST_NAME" not-null="true" />
