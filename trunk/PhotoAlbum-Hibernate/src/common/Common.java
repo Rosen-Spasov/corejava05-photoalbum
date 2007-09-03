@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 
 public class Common {
 	
+	public static enum DialogResult {CONNECT, CREATE, OK, CANCEL, YES, NO}
+	
 	public static enum DBProvider {ORACLE, MICROSOFT};
 	
 	public static final String NEW_LINE = System.getProperty("line.separator");
