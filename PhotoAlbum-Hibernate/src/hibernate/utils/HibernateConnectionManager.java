@@ -1,14 +1,15 @@
-package hibernate.utils;
+package photoalbum.hibernate.utils;
 
 import java.util.ArrayList;
 
-import logging.Logger;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import common.Common.DBProvider;
+import photoalbum.common.Common.DBProvider;
+import photoalbum.logging.Logger;
+
 
 public class HibernateConnectionManager {
 	

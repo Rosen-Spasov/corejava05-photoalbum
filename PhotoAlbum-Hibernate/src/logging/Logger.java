@@ -1,4 +1,4 @@
-package logging;
+package photoalbum.logging;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,7 +9,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Hashtable;
 
-import common.Common;
+import photoalbum.common.Common;
+
 
 public class Logger {
 	
@@ -100,13 +101,9 @@ public class Logger {
 		return this.logWriter;
 	}
 	
-//	private synchronized void setLogWriter(PrintWriter logWriter) {
-//		if (logWriter != null) {
-//			this.logWriter = logWriter;
-//		} else {
-//			throw new IllegalArgumentException("[null] is not a valid argument for [void setLogWriter(PrintWriter)].");
-//		}
-//	}
+	private synchronized void setLogWriter(PrintWriter logWriter) {
+		this.logWriter = logWriter;
+	}
 	
 	public synchronized void log(String msg) {
 		Date currentTime = new Date();
@@ -116,8 +113,8 @@ public class Logger {
 		writer.println("[" + currentTimeString + "]");
 		writer.println(msg);
 		writer.flush();
-//		writer.close();
-//		this.setLogWriter(null);
+		writer.close();
+		this.setLogWriter(null);
 	}
 	
 	public synchronized void log(Throwable e) {
@@ -140,8 +137,8 @@ public class Logger {
 			writer.println(indent + "Caused by:");
 			this.log(cause, indent + "\t");
 		}
-//		writer.close();
-//		this.setLogWriter(null);
+		writer.close();
+		this.setLogWriter(null);
 	}
 	
 	public void close() {

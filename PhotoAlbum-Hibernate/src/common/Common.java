@@ -1,4 +1,4 @@
-package common;
+package photoalbum.common;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
