@@ -5,18 +5,22 @@
 
 <hibernate-mapping package="photoalbum.entities">
 
-    <class name="Absence" table="ABSENCES">
-		<id name="AbsenceID" column="ABSENCE_ID" type="int">
+    <class name="User" table="USERS">
+		<id name="UserID" column="USER_ID" type="int">
 			<generator class="sequence">
-				<param name="sequence">SEQ_ABSENCES</param>
+				<param name="sequence">SEQ_USERS</param>
 			</generator>
 		</id>
 		
-		<many-to-one name="Student" class="Student" column="STUDENT_ID" />
-		<many-to-one name="Subject" class="Subject" column="SUBJECT_ID" />
+		<set name="Categories" table="CATEGORIES" cascade="all">
+        	<key column="USER_ID" />
+        	<one-to-many class="Category" />
+        </set>
         
-        <property name="AbsenceDate" column="ABSENCE_DATE" />
-        <property name="Value" column="VALUE" />        
+        <property name="Username" column="USERNAME" not-null="true" />
+        <property name="FirstName" column="FIRST_NAME" not-null="true" />
+        <property name="LastName" column="LAST_NAME" not-null="true" /> 
+        <property name="Password" column="PASSWORD" not-null="true" />      
 	</class>
 
 </hibernate-mapping>
