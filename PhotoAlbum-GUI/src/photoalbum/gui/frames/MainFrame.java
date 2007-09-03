@@ -37,7 +37,7 @@ import photoalbum.gui.ICustomIconsSupplier;
 import photoalbum.gui.Common.DialogResult;
 import photoalbum.gui.dialogs.NewSessionDialog;
 import photoalbum.gui.dialogs.UserDialog;
-import photoalbum.network.connection.ServerConnection;
+//import photoalbum.network.connection.ServerConnection;
 import entities.Category;
 import entities.Photo;
 import entities.User;
@@ -88,7 +88,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	
 	private Icon photoIcon = null;
 	
-	private ServerConnection serverConnection = null;
+//	private ServerConnection serverConnection = null;
 
 	private JButton btnRefresh = null;
 	
@@ -110,18 +110,18 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		return this.hbConnection;
 	}
 	
-	private ServerConnection getServerConnection() {
-		if (this.serverConnection == null) {
-			this.serverConnection = new ServerConnection();
-		}
-		return this.serverConnection;
-	}
+//	private ServerConnection getServerConnection() {
+//		if (this.serverConnection == null) {
+//			this.serverConnection = new ServerConnection();
+//		}
+//		return this.serverConnection;
+//	}
 	
-	private void setServerConnection(ServerConnection serverConnection) {
-		if (serverConnection != null) {
-			this.serverConnection = serverConnection;
-		}
-	}
+//	private void setServerConnection(ServerConnection serverConnection) {
+//		if (serverConnection != null) {
+//			this.serverConnection = serverConnection;
+//		}
+//	}
 	
 	public Icon getPhotoIcon() {
 		if (this.photoIcon == null) {
