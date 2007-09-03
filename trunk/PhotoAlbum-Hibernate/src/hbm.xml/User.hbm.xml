@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="photoalbum.entities">
+
+    <class name="Absence" table="ABSENCES">
+		<id name="AbsenceID" column="ABSENCE_ID" type="int">
+			<generator class="sequence">
+				<param name="sequence">SEQ_ABSENCES</param>
+			</generator>
+		</id>
+		
+		<many-to-one name="Student" class="Student" column="STUDENT_ID" />
+		<many-to-one name="Subject" class="Subject" column="SUBJECT_ID" />
+        
+        <property name="AbsenceDate" column="ABSENCE_DATE" />
+        <property name="Value" column="VALUE" />        
+	</class>
+
+</hibernate-mapping>
