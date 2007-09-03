@@ -2,6 +2,8 @@ package photoalbum.gui.dialogs;
 
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -13,7 +15,7 @@ import javax.swing.JTextField;
 
 import photoalbum.common.Common.DialogResult;
 
-public class UserDialog extends JDialog {
+public class UserDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +37,7 @@ public class UserDialog extends JDialog {
 
 	private JTextField txtLastName = null;
 
-	private JButton btnCreate = null;
+	private JButton btnOK = null;
 
 	private JButton btnCancel = null;
 	
@@ -66,7 +68,7 @@ public class UserDialog extends JDialog {
 		this.setSize(300, 170);
 		this.setModal(true);
 		this.setResizable(false);
-		this.setTitle("New User Dialog");
+		this.setTitle("User Dialog");
 		this.setContentPane(getJContentPane());
 	}
 
@@ -99,7 +101,7 @@ public class UserDialog extends JDialog {
 			jContentPane.add(getTxtFirstName(), null);
 			jContentPane.add(lbLastName, null);
 			jContentPane.add(getTxtLastName(), null);
-			jContentPane.add(getBtnCreate(), null);
+			jContentPane.add(getBtnOK(), null);
 			jContentPane.add(getBtnCancel(), null);
 		}
 		return jContentPane;
@@ -158,25 +160,18 @@ public class UserDialog extends JDialog {
 	}
 
 	/**
-	 * This method initializes btnCreate	
+	 * This method initializes btnOK	
 	 * 	
 	 * @return javax.swing.JButton	
 	 */
-	private JButton getBtnCreate() {
-		if (btnCreate == null) {
-			btnCreate = new JButton();
-			btnCreate.setBounds(new Rectangle(30, 105, 91, 16));
-			btnCreate.setText("Create");
-			btnCreate.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					if (validateForm()) {
-						setDialogResult(DialogResult.CREATE);
-						setVisible(false);
-					}
-				}
-			});
+	private JButton getBtnOK() {
+		if (btnOK == null) {
+			btnOK = new JButton();
+			btnOK.setBounds(new Rectangle(30, 105, 91, 16));
+			btnOK.setText("OK");
+			btnOK.addActionListener(this);
 		}
-		return btnCreate;
+		return btnOK;
 	}
 
 	/**
@@ -189,12 +184,7 @@ public class UserDialog extends JDialog {
 			btnCancel = new JButton();
 			btnCancel.setBounds(new Rectangle(165, 105, 91, 16));
 			btnCancel.setText("Cancel");
-			btnCancel.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					setDialogResult(DialogResult.CANCEL);
-					setVisible(false);
-				}
-			});
+			btnCancel.addActionListener(this);
 		}
 		return btnCancel;
 	}
@@ -241,14 +231,27 @@ public class UserDialog extends JDialog {
 	}
 	
 	public void resetDialog() {
-		this.resetDialog("", "", "", "");
+		resetDialog("", "", "", "");
 	}
 	
 	public void resetDialog(String username, String password, String firstName, String lastName) {
 		this.getTxtUsername().setText(username);
+		this.getPwdPassword().setText(password);
 		this.getTxtFirstName().setText(firstName);
 		this.getTxtLastName().setText(lastName);
-		this.getPwdPassword().setText(password);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == this.getBtnOK()) {
+			if (validateForm()) {
+				setDialogResult(DialogResult.OK);
+				setVisible(false);
+			}
+		} else if (e.getSource() == this.getBtnCancel()) {
+			setDialogResult(DialogResult.CANCEL);
+			setVisible(false);
+		}
+		
 	}
 
 }  //  @jve:decl-index=0:visual-constraint="10,10"
