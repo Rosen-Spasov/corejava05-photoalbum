@@ -3,25 +3,25 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping>
-	<class name="entities.Photo" table="Photos">
+<hibernate-mapping package="photoalbum.entities">
+
+	<class name="Photo" table="PHOTOS">
 
 		<id name="PhotoId" column = "PHOTO_ID">
 			<generator class="sequence">
 				<param name="sequence">SEQ_PHOTOS</param>
 			</generator>
 		</id>
-
-		<property name="PhName" column="PH_NAME"/>
 		
-		<property name="Path" column="PATH"/>
-				
-		<many-to-one name="Category" class="entities.Category" column="CATEGORY_ID"/>
+		<many-to-one name="Category" class="Category" column="CATEGORY_ID"/>
 
-		<bag name="Comments" table="Comments">
+		<set name="Comments" table="COMMENTS">
 			<key column="PHOTO_ID"/>
-			<one-to-many class="entities.Comment"/>
-		</bag>		
+			<one-to-many class="Comment"/>
+		</set>
 		
+		<property name="PhName" column="PH_NAME" not-null="true" />
+		<property name="Path" column="PATH" not-null="true" />
 	</class>
+	
 </hibernate-mapping>
