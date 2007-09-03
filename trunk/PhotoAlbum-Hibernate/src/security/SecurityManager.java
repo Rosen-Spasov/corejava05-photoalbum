@@ -1,9 +1,9 @@
-package security;
+package photoalbum.security;
 
-import hibernate.utils.HibernateConnection;
-import hibernate.utils.HibernateConnectionManager;
-import logging.Logger;
-import entities.User;
+import photoalbum.entities.User;
+import photoalbum.hibernate.utils.HibernateConnection;
+import photoalbum.hibernate.utils.HibernateConnectionManager;
+import photoalbum.logging.Logger;
 
 public class SecurityManager {
 	

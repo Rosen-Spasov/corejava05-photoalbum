@@ -1,14 +1,15 @@
-package hibernate.utils;
+package photoalbum.hibernate.utils;
 
 import java.util.List;
 
-import logging.Logger;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import entities.User;
+import photoalbum.entities.User;
+import photoalbum.logging.Logger;
+
 
 public class HibernateConnection {
 	

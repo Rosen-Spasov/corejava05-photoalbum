@@ -1,4 +1,4 @@
-package entities;
+package photoalbum.entities;
 
 public class Comment {
 
