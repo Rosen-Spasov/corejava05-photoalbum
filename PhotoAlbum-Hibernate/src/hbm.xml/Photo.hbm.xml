@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="entities.Photo" table="Photos">
+
+		<id name="PhotoId" column = "PHOTO_ID">
+			<generator class="sequence">
+				<param name="sequence">SEQ_PHOTOS</param>
+			</generator>
+		</id>
+
+		<property name="PhName" column="PH_NAME"/>
+		
+		<property name="Path" column="PATH"/>
+				
+		<many-to-one name="Category" class="entities.Category" column="CATEGORY_ID"/>
+
+		<bag name="Comments" table="Comments">
+			<key column="PHOTO_ID"/>
+			<one-to-many class="entities.Comment"/>
+		</bag>		
+		
+	</class>
+</hibernate-mapping>
