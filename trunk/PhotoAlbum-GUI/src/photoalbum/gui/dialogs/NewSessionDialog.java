@@ -13,9 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import photoalbum.gui.Common;
-
-import common.Common.DBProvider;
+import photoalbum.common.Common.DBProvider;
+import photoalbum.common.Common.DialogResult;
 
 public class NewSessionDialog extends JDialog {
 	
@@ -43,7 +42,7 @@ public class NewSessionDialog extends JDialog {
 
 	private JPasswordField pwdPassword = null;
 	
-	private Common.DialogResult dialogResult = Common.DialogResult.CANCEL;  //  @jve:decl-index=0:
+	private DialogResult dialogResult = DialogResult.CANCEL;  //  @jve:decl-index=0:
 
 	private JTextField txtSid = null;
 
@@ -57,11 +56,11 @@ public class NewSessionDialog extends JDialog {
 
 	private JLabel lbPort = null;
 	
-	public Common.DialogResult getDialogResult() {
+	public DialogResult getDialogResult() {
 		return this.dialogResult;
 	}
 	
-	private void setDialogResult(Common.DialogResult dialogResult) {
+	private void setDialogResult(DialogResult dialogResult) {
 		this.dialogResult = dialogResult;
 	}
 
@@ -150,7 +149,7 @@ public class NewSessionDialog extends JDialog {
 			btnConnect.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					if (validateForm()) {
-						setDialogResult(Common.DialogResult.CONNECT);
+						setDialogResult(DialogResult.CONNECT);
 						setVisible(false);
 					}
 				}
@@ -171,7 +170,7 @@ public class NewSessionDialog extends JDialog {
 			btnCancel.setText("Cancel");
 			btnCancel.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					setDialogResult(Common.DialogResult.CANCEL);
+					setDialogResult(DialogResult.CANCEL);
 					setVisible(false);
 				}
 			});
@@ -236,7 +235,7 @@ public class NewSessionDialog extends JDialog {
 		return pwdPassword;
 	}
 	
-	public Common.DialogResult showDialog() {
+	public DialogResult showDialog() {
 		this.setVisible(true);
 		return this.getDialogResult();
 	}

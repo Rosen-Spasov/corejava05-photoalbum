@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import photoalbum.gui.Common.DialogResult;
+import photoalbum.common.Common.DialogResult;
 
 public class UserDialog extends JDialog {
 
