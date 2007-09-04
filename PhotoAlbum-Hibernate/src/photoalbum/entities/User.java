@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class User implements Serializable {
+public class User implements Serializable, ICategoryContainer {
 
 	private static final long serialVersionUID = 3756410723326541585L;
 
