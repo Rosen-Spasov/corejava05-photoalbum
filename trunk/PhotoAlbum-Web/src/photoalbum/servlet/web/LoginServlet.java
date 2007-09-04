@@ -1,12 +1,17 @@
 package photoalbum.servlet.web;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.classic.Session;
+
+import photoalbum.entities.User;
+import photoalbum.hibernate.utils.HibernateConnection;
 
 import com.ibm.CORBA.iiop.Request;
 import com.ibm.xml.b2b.util.RewindableInputStream;
@@ -41,7 +46,7 @@ import com.ibm.xml.b2b.util.RewindableInputStream;
 		String pass = request.getParameter("pass");
 		if (isValid(userName,pass,request)){
 		System.out.println(userName+" "+ pass);
-		if (userExist()){
+		if (userExist(userName,pass)){
 			session.setAttribute("login", "true");
 			request.getRequestDispatcher("MainPage.jsp").forward(request, response);
 		}else{
@@ -55,12 +60,13 @@ import com.ibm.xml.b2b.util.RewindableInputStream;
 		}
 	}
 
-	private boolean userExist() {
-		/*
-		 * tuk trqbwa da se prowerqwa dali ima takyw user i da izwede syotwetno syob6tenie
-		 * ako ne
-		 */
-		return true;
+	private boolean userExist(String userName, String pass) {
+		HibernateConnection hc = new HibernateConnection(null);
+		User user = hc.getUserByUserName(userName);
+		if (user.getPassword().equalsIgnoreCase(pass)){
+			return true;
+		}
+		return false;
 	}
 
 	private boolean isValid(String userName, String pass, HttpServletRequest request) {

@@ -36,7 +36,7 @@ import photoalbum.hibernate.utils.HibernateConnection;
 		String pass = (String)request.getParameter("pass");
 		String confPass = (String)request.getParameter("confPass");
 		
-		String[] errors = new String[6];
+		String[] errors = new String[7];
 		boolean result = true;
 		System.out.println(fName);
 		if (fName.length()>0){
@@ -90,7 +90,7 @@ import photoalbum.hibernate.utils.HibernateConnection;
 			 * tuk se setwa kym bina na hibernate
 			 */
 		}else{
-			errors[6]="wrong password";
+			errors[6]="repeat password corect";
 			result = false;
 		}
 		
