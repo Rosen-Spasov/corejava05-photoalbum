@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Category implements Serializable, ICategoryContainer, IPhotoContainer {
+public class Category implements Serializable, Comparable<Category>, ICategoryContainer, IPhotoContainer {
 
 	private static final long serialVersionUID = 591870800372000848L;
 
@@ -107,6 +107,10 @@ public class Category implements Serializable, ICategoryContainer, IPhotoContain
 			result = this.getPath().equals(category.getPath());
 		}
 		return result;
+	}
+
+	public int compareTo(Category category) {
+		return this.getPath().compareTo(category.getPath());
 	}
 
 }

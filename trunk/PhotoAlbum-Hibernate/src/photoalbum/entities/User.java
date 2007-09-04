@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class User implements Serializable, ICategoryContainer {
+public class User implements Serializable, Comparable<User>, ICategoryContainer {
 
 	private static final long serialVersionUID = 3756410723326541585L;
 
@@ -99,6 +99,10 @@ public class User implements Serializable, ICategoryContainer {
 			result = user.getUsername().equals(user.getUsername());
 		}
 		return result;
+	}
+
+	public int compareTo(User user) {
+		return user.getUsername().compareTo(user.getUsername());
 	}
 
 }

@@ -12,7 +12,7 @@
 			</generator>
 		</id>
 		
-		<set name="Categories" table="CATEGORIES" cascade="all">
+		<set name="Categories" table="CATEGORIES" cascade="all" order-by="CAT_NAME">
         	<key column="USER_ID" />
         	<one-to-many class="Category" />
         </set>
