@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Category implements Serializable {
+public class Category implements Serializable, ICategoryContainer {
 
 	private static final long serialVersionUID = 591870800372000848L;
 
@@ -20,14 +20,14 @@ public class Category implements Serializable {
 
 	private Set<Photo> photos = new HashSet<Photo>();
 
-	private Set<Category> childCategories = new HashSet<Category>();
+	private Set<Category> categories = new HashSet<Category>();
 
-	public Set<Category> getChildCategories() {
-		return childCategories;
+	public Set<Category> getCategories() {
+		return categories;
 	}
 
-	public void setChildCategories(Set<Category> childCategories) {
-		this.childCategories = childCategories;
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
 	}
 
 	public Set<Photo> getPhotos() {
