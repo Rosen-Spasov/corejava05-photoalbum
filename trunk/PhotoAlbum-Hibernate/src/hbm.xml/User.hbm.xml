@@ -17,7 +17,7 @@
         	<one-to-many class="Category" />
         </set>
 		
-		<set name="Comments" table="COMMENTS" cascade="all">
+		<set name="Comments" table="COMMENTS" cascade="save-update">
         	<key column="USER_ID" />
         	<one-to-many class="Comment" />
         </set>

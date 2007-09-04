@@ -16,12 +16,12 @@
 	
 		<many-to-one name="User" class="User" column="USER_ID" />
 		
-		<set name="Photos" table="Photos">
+		<set name="Photos" table="Photos" cascade="all">
 			<key column="CATEGORY_ID" />
 			<one-to-many class="Photo" />
 		</set>
 		
-		<set name="Categories" table="Categories">
+		<set name="Categories" table="Categories" cascade="all">
 			<key column="PARENT_CATEGORY_ID" />
 			<one-to-many class="Category" />
 		</set>
