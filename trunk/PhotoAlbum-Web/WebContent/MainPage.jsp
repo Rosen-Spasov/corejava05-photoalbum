@@ -8,15 +8,7 @@
 	<script type="text/javascript"></script>
 </head>	
 <body onload="">
-	<table border="0" width="100%" cellspacing="0" cellpadding="0" style="padding:0px 0px 0px 0px; border:1px solid White;">
-	<tr style="background-image:url(Themes/headBG.png)" >
-		<td width="124" style="border-right:0px solid White;"><img src="Themes/top-left.gif"></td>
-		<td style=" background-image: Themes/headBG.png; text-align:center; border-right:  " >
-			<span style="font-size: 30px;">Добре дошли във фото албум</span>
-		</td>
-		<td width="125"><img src="Themes/top-right.gif"></td>
-	</tr>
-</table>
+	
 	<table class="mainTable" cellpadding="0" cellspacing="0" align="center">
 		<tr><td colspan="3" class="mainTop"></td></tr>
 		<td class="vseparator">&nbsp;</td>
@@ -24,8 +16,7 @@
 			<table cellspacing="0" class="flex">
 				<tr><td class="left pLeft10">Най-големият сайт за снимки в България!</td><td class="right">
 				<a href="register.jsp">Регистрация</a><span class="separator"><img src="http://img.elmaz.com/style/img/separator.png" align="absmiddle" /></span>
-				<a href="Search.jsp">Търсене</a><span class="separator"><span class="separator"><img src="http://img.elmaz.com/style/img/separator.png" align="absmiddle" /></span>
-				<a href="LostPassword.jsp">Забравена парола</a><span class="separator"><span class="separator"><img src="http://img.elmaz.com/style/img/separator.png" align="absmiddle" /></span>
+				<a href="SearchServlet">Търсене</a><span class="separator"><span class="separator"><img src="http://img.elmaz.com/style/img/separator.png" align="absmiddle" /></span>
 				<a href="Help.jsp">Помощ</a>
 					</td>
 				</tr>
@@ -33,10 +24,14 @@
 		</tr>
 		<tr><td class="mainLeft vtop">
 					<!--loginform -->
-			<form action="Login.jsp" method="post">
+			<form action="LoginServlet" method="post">
 				<table cellpadding="0" cellspacing="0">
+				
 					<tr><td class="leftLoginTop">&nbsp;</td></tr>
 					<tr><td><table cellpadding="0" cellspacing="0" class="leftLoginForm">
+					<% String login = (String)session.getAttribute("login");
+					if (login != "true"){
+				 %>
 					<tr><td class="left pTop10 pLeft10"><label for="userName">Име: </label></td>
 						<td class="left pTop10 pRight10"><input type="text" class="textInput" name="username" id="username" /></td>
 					</tr>
@@ -50,7 +45,13 @@
 					<tr>
 						<td class="right">&nbsp;</td>
 						<td class="left pBottom10">
-							<a href="LostPassword.jsp" class="loginRegister">Забравена парола</a>
+						<% String[] errors = (String[])request.getAttribute("errors"); 
+							if (errors != null){
+							for (String err: errors){
+							if (err != null){
+						%>
+							<a href="register.jsp" class="loginRegister"><%= err %></a>
+							<% }}} %>
 						</td>
 					</tr>
 				</table>
@@ -58,7 +59,7 @@
 		</tr>
 			<tr>
 				<td class="leftLoginBottom">&nbsp;</td>
-			</tr>
+			</tr><%} %>
 	</table>
 				</form>
 								<!--left menu -->
@@ -164,14 +165,10 @@
 				<tr>
 					<td class="mainSearchTd">
 						<div class="fLeft pLeft10 pTop10">
-							<form action="Search.jsp" method="post">
+							<form action="SearchServlet" method="post">
 								<table cellpadding="0" cellspacing="0" class="searchTable">
 								<tr><td colspan="2">търсенето става по име и/или категория</td></tr>
-									<tr><td class="pRight10">Аз съм</td>
-										<td><select name="selMyGender"><option value="1">Мъж</option>
-																		<option value="2">Жена</option>
-																		<option value="2">Друго</option>
-											</select>
+									
 											<tr><td>Име: </td><td><input type="text" class="textInput" name="searchName" id="searchName" /></td></tr>
 											<tr><td>Категория: </td><td><input type="text" class="textInput" name="category" id="category" /></td></tr>
 										</td>
@@ -365,7 +362,7 @@
 							<div class="weddings top10" style="border: 1px solid white;">
 				<div class="top10 left10">
 					<img src="http://img.elmaz.com/style/img/num1.gif" align="absmiddle" />
-					<a href="Search.jsp" class="link yellow">Намери</a> своята снимка или на твои приятел сред 666 регистрирани потребители
+					<a href="SearchServlet" class="link yellow">Намери</a> своята снимка или на твои приятел сред 666 регистрирани потребители
 				</div>
 				<div class="left10 top10">
 					<img src="http://img.elmaz.com/style/img/num2.gif" align="absmiddle" />
