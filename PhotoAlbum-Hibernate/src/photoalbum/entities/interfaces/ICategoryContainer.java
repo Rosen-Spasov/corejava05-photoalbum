@@ -1,6 +1,8 @@
-package photoalbum.entities;
+package photoalbum.entities.interfaces;
 
 import java.util.Set;
+
+import photoalbum.entities.Category;
 
 public interface ICategoryContainer {
 	

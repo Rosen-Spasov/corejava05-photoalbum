@@ -71,7 +71,7 @@ public class Comment implements Serializable, Comparable<Comment> {
 	}
 
 	public int compareTo(Comment comment) {
-		return this.getText().compareTo(comment.getText());
+		return this.getText().compareToIgnoreCase(comment.getText());
 	}
 
 }

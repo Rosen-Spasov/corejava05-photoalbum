@@ -9,14 +9,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Hashtable;
 
-import photoalbum.common.Common;
+import photoalbum.common.PhotoAlbumManager;
 
 
 public class Logger {
 	
-	public static final String LOGS_DIRECTORY = Common.LOGS_DIRECTORY;
+	public static final String LOGS_DIRECTORY = PhotoAlbumManager.LOGS_DIRECTORY;
 	
-	public static final String DEFAULT_LOG_FILENAME = Common.DEFAULT_LOG_FILENAME;
+	public static final String DEFAULT_LOG_FILENAME = PhotoAlbumManager.DEFAULT_LOG_FILENAME;
 	
 	private static Logger defaultInstance = null;
 	
@@ -78,8 +78,8 @@ public class Logger {
 	
 	private void setLogFileName(String logFileName) {
 		if (logFileName != null) {
-			if (!Common.parentDirExists(logFileName)) {
-				Common.createParentDirs(logFileName);
+			if (!PhotoAlbumManager.parentDirExists(logFileName)) {
+				PhotoAlbumManager.createParentDirs(logFileName);
 			}
 			this.logFileName = Logger.LOGS_DIRECTORY + "/" + logFileName;
 		} else {
@@ -107,7 +107,7 @@ public class Logger {
 	
 	public synchronized void log(String msg) {
 		Date currentTime = new Date();
-		String currentTimeString = Common.defaultDateTimeFormat.format(currentTime);
+		String currentTimeString = PhotoAlbumManager.defaultDateTimeFormat.format(currentTime);
 		PrintWriter writer = this.getLogWriter();
 		writer.println("*************************************************************************");
 		writer.println("[" + currentTimeString + "]");
@@ -123,7 +123,7 @@ public class Logger {
 	
 	private synchronized void log(Throwable e, String indent) {
 		Date currentTime = new Date();
-		String currentTimeString = Common.defaultDateTimeFormat.format(currentTime);
+		String currentTimeString = PhotoAlbumManager.defaultDateTimeFormat.format(currentTime);
 		PrintWriter writer = this.getLogWriter();
 		writer.println("*************************************************************************");
 		writer.println(indent + "[" + currentTimeString + "] ERROR");

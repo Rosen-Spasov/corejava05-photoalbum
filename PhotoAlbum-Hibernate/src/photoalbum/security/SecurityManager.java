@@ -1,9 +1,8 @@
 package photoalbum.security;
 
-import photoalbum.entities.Category;
 import photoalbum.entities.User;
-import photoalbum.hibernate.utils.HibernateConnection;
-import photoalbum.hibernate.utils.HibernateConnectionManager;
+import photoalbum.hibernate.HibernateConnection;
+import photoalbum.hibernate.HibernateConnectionManager;
 import photoalbum.logging.Logger;
 
 public class SecurityManager {
@@ -38,15 +37,4 @@ public class SecurityManager {
 		return result;
 	}
 	
-//	public static synchronized boolean categoryExists(Category category) {		
-//		String path = category.getPath();
-//		return categoryExists(path);
-//	}
-//	
-//	public static synchronized boolean categoryExists(String path) {
-//		if (getHbConnection().getCategoryByPath(path) == null) {
-//			return false;
-//		}		
-//		return true;
-//	}
 }

@@ -1,4 +1,4 @@
-package photoalbum.hibernate.utils;
+package photoalbum.hibernate;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import photoalbum.common.Common.DBProvider;
+import photoalbum.common.PhotoAlbumManager.DBProvider;
 import photoalbum.logging.Logger;
 
 
