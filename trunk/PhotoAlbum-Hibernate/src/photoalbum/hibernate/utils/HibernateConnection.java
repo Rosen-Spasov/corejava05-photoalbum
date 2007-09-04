@@ -7,6 +7,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import photoalbum.entities.Category;
+import photoalbum.entities.Photo;
 import photoalbum.entities.User;
 import photoalbum.logging.Logger;
 
@@ -145,7 +147,7 @@ public class HibernateConnection {
 	}
 	
 	public User getUserByUserName(String username) {
-		User user = null;
+		User result = null;
 		
 		String hql = "from User u where u.Username=:username";
 		Query query = this.createQuery(hql);
@@ -153,7 +155,7 @@ public class HibernateConnection {
 		List list = (List) query.list();
 		if (list != null && list.size() != 1) {
 			try {
-				user = (User) list.get(0);
+				result = (User) list.get(0);
 			} catch (ClassCastException exc) {
 				this.getLogger().log(exc);
 			}
@@ -161,7 +163,47 @@ public class HibernateConnection {
 			this.getLogger().log("ERROR: Cannot find User with username=" + username + " or there is more than one User with the given username.");
 		}
 		
-		return user;
+		return result;
+	}
+	
+	public Category getCategoryByPath(String path) {
+		Category result = null;
+		
+		String hql = "from Category c where c.Path=:path";
+		Query query = this.createQuery(hql);
+		query.setString("path", path);
+		List list = (List) query.list();
+		if (list != null && list.size() != 1) {
+			try {
+				result = (Category) list.get(0);
+			} catch (ClassCastException exc) {
+				this.getLogger().log(exc);
+			}
+		} else {
+			this.getLogger().log("ERROR: Cannot find Category with path [" + path + "] or there is more than one Category with the given path.");
+		}
+		
+		return result;
+	}
+	
+	public Photo getPhotoByPath(String path) {
+		Photo result = null;
+		
+		String hql = "from Photo p where p.Path=:path";
+		Query query = this.createQuery(hql);
+		query.setString("path", path);
+		List list = (List) query.list();
+		if (list != null && list.size() != 1) {
+			try {
+				result = (Photo) list.get(0);
+			} catch (ClassCastException exc) {
+				this.getLogger().log(exc);
+			}
+		} else {
+			this.getLogger().log("ERROR: Cannot find Photo with path [" + path + "] or there is more than one Photo with the given path.");
+		}
+		
+		return result;
 	}
 	
 }

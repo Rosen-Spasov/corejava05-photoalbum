@@ -64,7 +64,8 @@ public class Comment implements Serializable {
 		if (obj instanceof Comment) {
 			Comment comment = (Comment) obj;
 			result = this.getText().equals(comment.getText()) &&
-						this.getPhoto().equals(comment.getPhoto());
+						this.getPhoto().equals(comment.getPhoto()) &&
+						this.getUser().equals(comment.getUser());
 		}
 		return result;
 	}
