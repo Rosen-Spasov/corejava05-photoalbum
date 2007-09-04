@@ -30,15 +30,18 @@ import javax.swing.tree.TreeSelectionModel;
 import photoalbum.common.Common.DialogResult;
 import photoalbum.entities.Category;
 import photoalbum.entities.ICategoryContainer;
+import photoalbum.entities.IPhotoContainer;
 import photoalbum.entities.Photo;
 import photoalbum.entities.User;
 import photoalbum.gui.CustomCellRenderer;
 import photoalbum.gui.ICustomIconsSupplier;
+import photoalbum.gui.ImageFileFilter;
 import photoalbum.gui.dialogs.NewSessionDialog;
 import photoalbum.gui.dialogs.UserDialog;
 import photoalbum.hibernate.utils.HibernateConnection;
 import photoalbum.hibernate.utils.HibernateConnectionManager;
 import photoalbum.logging.Logger;
+import photoalbum.security.SecurityManager;
 
 public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelectionListener, ActionListener {
 
@@ -95,6 +98,9 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	private JFileChooser getFileChooser() {
 		if (this.fileChooser == null) {
 			this.fileChooser = new JFileChooser();
+			this.fileChooser.setMultiSelectionEnabled(true);
+			this.fileChooser.setFileFilter(new ImageFileFilter());
+			this.fileChooser.setAcceptAllFileFilterUsed(false);
 		}
 		return this.fileChooser;
 	}
@@ -432,9 +438,9 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		String dbProvider = this.getNewSessionDialog().getDbProvider();
 		try {
 			HibernateConnectionManager.configure(password, dbHost, dbPort, sid, dbProvider);
+			refreshTree();
 			this.getTreeData().setEnabled(true);
 			this.getBtnRefresh().setEnabled(true);
-			refreshTree();
 		} catch (Throwable exc) {
 			JOptionPane.showMessageDialog(this, "Could not connect to DB.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
 			Logger.getDefaultInstance().log(exc);
@@ -460,6 +466,12 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 				Category[] categories = new Category[categoryContainer.getCategories().size()];
 				categoryContainer.getCategories().toArray(categories);
 				loadChildren(childNode, categories);
+			}
+			if (child instanceof IPhotoContainer) {
+				IPhotoContainer photoContainer = (IPhotoContainer) child;
+				Photo[] photos = new Photo[photoContainer.getPhotos().size()];
+				photoContainer.getPhotos().toArray(photos);
+				loadChildren(childNode, photos);
 			}
 			parent.add(childNode);
 		}
@@ -493,6 +505,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	}
 	
 	private void addFileStructure(Object parentObject) {
+		this.getFileChooser().setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		if (this.getFileChooser().showDialog(this, "Add") == JFileChooser.APPROVE_OPTION) {
 			File[] selectedFiles = this.getFileChooser().getSelectedFiles();
 			for (File selectedFile : selectedFiles) {
@@ -506,83 +519,68 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		}
 	}
 	
-	private Category addCategory(Object parent, File category) {
-		if (parent instanceof User) {
-			return addCategory((User) parent, category);
-		} else if (parent instanceof Category) {
-			return addCategory((Category) parent, category);
-		} else {
-			return null;
+	private Category addCategory(Object parentObject, File category) {
+		if (parentObject instanceof ICategoryContainer) {
+			return addCategory((ICategoryContainer) parentObject, category);
 		}
+		return null;
 	}
 	
-	private Category addCategory(User parent, File category) {
-		Category newCategory = new Category();
+	private Category addCategory(ICategoryContainer parentObject, File directory) {		
+		boolean parentIsUser = true;
 		
-		newCategory.setUser(parent);
+		String catName = directory.getName();
+		String path = "";
+		if (parentObject instanceof User) {
+			path = "./PhotoAlbum/" + ((User) parentObject).getUsername() + "/" + catName;
+		} else if (parentObject instanceof Category) {
+			path = ((Category) parentObject).getPath() + "/" + catName;
+			parentIsUser = false;
+		}
 		
-		String catName = category.getName();
-		newCategory.setCatName(catName);
-				
-		String path = "./PhotoAlbum" + catName;
-		newCategory.setPath(path);
-		
-		File[] children = category.listFiles();
-		for (File child : children) {
-			if (child.isDirectory()) {
-				addCategory(newCategory, child);
+		Category category = this.getHbConnection().getCategoryByPath(path);
+		if (category == null) {
+			category = new Category();
+			category.setCatName(catName);
+			category.setPath(path);
+			if (parentIsUser) {
+				category.setUser((User) parentObject);
 			}
+			parentObject.getCategories().add(category);
 		}
-		parent.getCategories().add(newCategory);
-		
-		return newCategory;
-	}
-	
-	private Category addCategory(Category parent, File category) {
-		Category newCategory = new Category();
-		
-		newCategory.setUser(parent.getUser());
-		
-		String catName = category.getName();
-		newCategory.setCatName(catName);
-		
-		String path = parent.getPath() + "/" + catName;
-		newCategory.setPath(path);
-		
-		File[] children = category.listFiles();
+		File[] children = directory.listFiles();
 		for (File child : children) {
 			if (child.isDirectory()) {
-				addCategory(newCategory, child);
+				addCategory(category, child);
 			} else if (isValidFile(child)) {
-				addPhoto(newCategory, child);
+				addPhoto(category, child);
 			}
 		}
-		parent.getCategories().add(newCategory);
-		
-		return newCategory;
+		return category;
 	}
 	
-	private Photo addPhoto(Category parent, File photo) {
-		Photo newPhoto = new Photo();
+	private Photo addPhoto(Category parent, File imageFile) {
 		
-		newPhoto.setCategory(parent);
+		String phName = imageFile.getName();
+		String path = parent.getPath() + "/" + phName;
+		Photo photo = this.getHbConnection().getPhotoByPath(path);
+		if (photo == null) {
+			photo = new Photo();
+			photo.setPhName(phName);
+			photo.setPath(path);
+			photo.setCategory(parent);
+			parent.getPhotos().add(photo);
+		}
 		
-		String phName = photo.getName();
-		newPhoto.setPhName(phName);
-		
-		String path = parent.getPath();
-		newPhoto.setPath(path);
-		
-		parent.getPhotos().add(newPhoto);
-		
-		return newPhoto;
+		return photo;
 	}
 	
 	private boolean isValidFile(File file) {
-		return 	file.isFile() &&
-				file.getName().endsWith(".jpg") &&
-				file.getName().endsWith(".gif") &&
-				file.getName().endsWith(".png");
+		return 	file.isFile() && (
+					file.getName().endsWith(".jpg") ||
+					file.getName().endsWith(".gif") ||
+					file.getName().endsWith(".png")
+				);
 	}
 	
 	private void editSelectedObject() {

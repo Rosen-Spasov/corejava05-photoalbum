@@ -6,7 +6,7 @@
 <hibernate-mapping package="photoalbum.entities">
 
 	<class name="Comment" table="Comments">
-		<id name="CommentId">
+		<id name="CommentId" column="COMMENT_ID">
 			<generator class="sequence">
 				<param name="sequence">SEQ_COMMENTS</param>
 			</generator>

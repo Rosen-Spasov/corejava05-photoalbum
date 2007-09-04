@@ -173,7 +173,7 @@ public class HibernateConnection {
 		Query query = this.createQuery(hql);
 		query.setString("path", path);
 		List list = (List) query.list();
-		if (list != null && list.size() != 1) {
+		if (list != null && list.size() == 1) {
 			try {
 				result = (Category) list.get(0);
 			} catch (ClassCastException exc) {
@@ -193,7 +193,7 @@ public class HibernateConnection {
 		Query query = this.createQuery(hql);
 		query.setString("path", path);
 		List list = (List) query.list();
-		if (list != null && list.size() != 1) {
+		if (list != null && list.size() == 1) {
 			try {
 				result = (Photo) list.get(0);
 			} catch (ClassCastException exc) {
