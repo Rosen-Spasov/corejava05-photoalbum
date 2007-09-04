@@ -12,7 +12,7 @@
 			</generator>
 		</id>
 		
-		<many-to-one name="ParentCategory" class="Category" column="CHILD_CATEGORY_ID"/>
+		<many-to-one name="ParentCategory" class="Category" column="PARENT_CATEGORY_ID" />
 	
 		<many-to-one name="User" class="User" column="USER_ID" />
 		
@@ -22,7 +22,7 @@
 		</set>
 		
 		<set name="Categories" table="Categories">
-			<key column="CHILD_CATEGORY_ID" />
+			<key column="PARENT_CATEGORY_ID" />
 			<one-to-many class="Category" />
 		</set>
 		
