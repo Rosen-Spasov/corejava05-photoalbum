@@ -6,7 +6,6 @@
 <hibernate-mapping package="photoalbum.entities">
 
 	<class name="Photo" table="PHOTOS">
-
 		<id name="PhotoId" column = "PHOTO_ID">
 			<generator class="sequence">
 				<param name="sequence">SEQ_PHOTOS</param>
