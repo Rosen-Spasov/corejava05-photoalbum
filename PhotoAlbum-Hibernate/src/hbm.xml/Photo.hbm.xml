@@ -13,9 +13,9 @@
 			</generator>
 		</id>
 		
-		<many-to-one name="Category" class="Category" column="CATEGORY_ID"/>
+		<many-to-one name="Category" class="Category" column="CATEGORY_ID" />
 
-		<set name="Comments" table="COMMENTS">
+		<set name="Comments" table="COMMENTS" cascade="all">
 			<key column="PHOTO_ID"/>
 			<one-to-many class="Comment"/>
 		</set>
