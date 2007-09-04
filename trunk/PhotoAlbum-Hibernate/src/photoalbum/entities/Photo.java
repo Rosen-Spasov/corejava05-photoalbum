@@ -81,7 +81,7 @@ public class Photo implements Serializable, Comparable<Photo> {
 	}
 
 	public int compareTo(Photo photo) {
-		return this.getPath().compareTo(photo.getPath());
+		return this.getPath().compareToIgnoreCase(photo.getPath());
 	}
 	
 }

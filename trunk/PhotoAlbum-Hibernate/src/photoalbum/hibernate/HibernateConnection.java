@@ -1,4 +1,4 @@
-package photoalbum.hibernate.utils;
+package photoalbum.hibernate;
 
 import java.util.List;
 
@@ -151,9 +151,9 @@ public class HibernateConnection {
 		
 		String hql = "from User u where u.Username=:username";
 		Query query = this.createQuery(hql);
-		query.setString("userName", username);
+		query.setString("username", username);
 		List list = (List) query.list();
-		if (list != null && list.size() != 1) {
+		if (list != null && list.size() == 1) {
 			try {
 				result = (User) list.get(0);
 			} catch (ClassCastException exc) {
