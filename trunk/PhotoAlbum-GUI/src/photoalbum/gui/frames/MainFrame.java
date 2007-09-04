@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -28,19 +27,21 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import photoalbum.common.Common.DialogResult;
+import photoalbum.common.CreateUserException;
+import photoalbum.common.PhotoAlbumManager;
+import photoalbum.common.PhotoAlbumManager.DialogResult;
 import photoalbum.entities.Category;
-import photoalbum.entities.ICategoryContainer;
-import photoalbum.entities.IPhotoContainer;
 import photoalbum.entities.Photo;
 import photoalbum.entities.User;
+import photoalbum.entities.interfaces.ICategoryContainer;
+import photoalbum.entities.interfaces.IPhotoContainer;
 import photoalbum.gui.CustomCellRenderer;
 import photoalbum.gui.ICustomIconsSupplier;
 import photoalbum.gui.ImageFileFilter;
 import photoalbum.gui.dialogs.NewSessionDialog;
 import photoalbum.gui.dialogs.UserDialog;
-import photoalbum.hibernate.utils.HibernateConnection;
-import photoalbum.hibernate.utils.HibernateConnectionManager;
+//import photoalbum.hibernate.HibernateConnection;
+import photoalbum.hibernate.HibernateConnectionManager;
 import photoalbum.logging.Logger;
 
 public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelectionListener, ActionListener {
@@ -91,7 +92,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 
 	private JButton btnRefresh = null;
 	
-	private HibernateConnection hbConnection = null;  //  @jve:decl-index=0:
+//	private HibernateConnection hbConnection = null;  //  @jve:decl-index=0:
 	
 	private JFileChooser fileChooser = null;
 	
@@ -101,16 +102,17 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			this.fileChooser.setMultiSelectionEnabled(true);
 			this.fileChooser.setFileFilter(new ImageFileFilter());
 			this.fileChooser.setAcceptAllFileFilterUsed(false);
+			this.fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		}
 		return this.fileChooser;
 	}
 	
-	private HibernateConnection getHbConnection() {
-		if (this.hbConnection == null || this.hbConnection.isReleased()) {
-			this.hbConnection = HibernateConnectionManager.openConnection();
-		}
-		return this.hbConnection;
-	}
+//	private HibernateConnection getHbConnection() {
+//		if (this.hbConnection == null || this.hbConnection.isReleased()) {
+//			this.hbConnection = HibernateConnectionManager.openConnection();
+//		}
+//		return this.hbConnection;
+//	}
 	
 	public Icon getPhotoIcon() {
 		if (this.photoIcon == null) {
@@ -210,7 +212,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	 * @return void
 	 */
 	private void initialize() {
-		this.setSize(584, 339);
+		this.setSize(580, 327);
 		this.setJMenuBar(getMBarMain());
 		this.setContentPane(getJContentPane());
 		this.getTreeData().setEnabled(false);
@@ -450,9 +452,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	}
 	
 	private void loadTree() {
-		List<User> usersList = this.getHbConnection().getAllUsers();
-		User[] users = new User[usersList.size()];
-		usersList.toArray(users);
+		User[] users = PhotoAlbumManager.getAllUsers();
 		loadChildren(this.getRootNode(), users);
 		this.getTreeData().expandPath(new TreePath(this.getRootNode().getPath()));
 		this.reloadTree();
@@ -494,95 +494,26 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	
 	private void addUser() {
 		this.getUserDialog().resetDialog();
+		this.getUserDialog().setEditMode(false);
 		if (this.getUserDialog().showDialog() == DialogResult.OK) {
 			String username = this.getUserDialog().getUsername();
 			String password = this.getUserDialog().getPassword();
 			String firstName = this.getUserDialog().getFirstName();
 			String lastName = this.getUserDialog().getLastName();
 			
-			User newUser = new User(username, password, firstName, lastName);
-			this.getHbConnection().save(newUser);
+			try {
+				PhotoAlbumManager.addUser(username, password, firstName, lastName);
+			} catch (CreateUserException e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "User Creation Failed", JOptionPane.ERROR_MESSAGE);
+			}
 		}
-		
 	}
 	
 	private void addFileStructure(Object parentObject) {
-		this.getFileChooser().setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		if (this.getFileChooser().showDialog(this, "Add") == JFileChooser.APPROVE_OPTION) {
 			File[] selectedFiles = this.getFileChooser().getSelectedFiles();
-			for (File selectedFile : selectedFiles) {
-				if (selectedFile.isDirectory()) {
-					addCategory(parentObject, selectedFile);
-				} else if (isValidFile(selectedFile) && parentObject instanceof Category) {
-					addPhoto((Category) parentObject, selectedFile);
-				}
-			}
-			this.getHbConnection().update(parentObject);
+			PhotoAlbumManager.addFileStructure(parentObject, selectedFiles);
 		}
-	}
-	
-	private Category addCategory(Object parentObject, File category) {
-		if (parentObject instanceof ICategoryContainer) {
-			return addCategory((ICategoryContainer) parentObject, category);
-		}
-		return null;
-	}
-	
-	private Category addCategory(ICategoryContainer parentObject, File directory) {		
-		boolean parentIsUser = true;
-		
-		String catName = directory.getName();
-		String path = "";
-		if (parentObject instanceof User) {
-			path = "./PhotoAlbum/" + ((User) parentObject).getUsername() + "/" + catName;
-		} else if (parentObject instanceof Category) {
-			path = ((Category) parentObject).getPath() + "/" + catName;
-			parentIsUser = false;
-		}
-		
-		Category category = this.getHbConnection().getCategoryByPath(path);
-		if (category == null) {
-			category = new Category();
-			category.setCatName(catName);
-			category.setPath(path);
-			if (parentIsUser) {
-				category.setUser((User) parentObject);
-			}
-			parentObject.getCategories().add(category);
-		}
-		File[] children = directory.listFiles();
-		for (File child : children) {
-			if (child.isDirectory()) {
-				addCategory(category, child);
-			} else if (isValidFile(child)) {
-				addPhoto(category, child);
-			}
-		}
-		return category;
-	}
-	
-	private Photo addPhoto(Category parent, File imageFile) {
-		
-		String phName = imageFile.getName();
-		String path = parent.getPath() + "/" + phName;
-		Photo photo = this.getHbConnection().getPhotoByPath(path);
-		if (photo == null) {
-			photo = new Photo();
-			photo.setPhName(phName);
-			photo.setPath(path);
-			photo.setCategory(parent);
-			parent.getPhotos().add(photo);
-		}
-		
-		return photo;
-	}
-	
-	private boolean isValidFile(File file) {
-		return 	file.isFile() && (
-					file.getName().endsWith(".jpg") ||
-					file.getName().endsWith(".gif") ||
-					file.getName().endsWith(".png")
-				);
 	}
 	
 	private void editSelectedObject() {
@@ -611,7 +542,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			if (!password.equals("")) {
 				user.setPassword(this.getUserDialog().getPassword());
 			}
-			this.getHbConnection().update(user);
+			PhotoAlbumManager.editUser(user, username);
 
 			this.reloadTree();
 		}
@@ -621,12 +552,16 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		if (!this.getTreeData().isSelectionEmpty()) {
 			DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getTreeData().getLastSelectedPathComponent();
 			if (selectedNode != null && selectedNode != getRootNode()) {
-				this.getHbConnection().delete(selectedNode.getUserObject());
-				DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
-				parentNode.remove(selectedNode);
+				try {
+					PhotoAlbumManager.deleteObject(selectedNode.getUserObject());
+					DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
+					parentNode.remove(selectedNode);
+				} catch (Throwable e) {
+					JOptionPane.showMessageDialog(this, "Cannot delete selected object.", "Delete Object Failed", JOptionPane.ERROR_MESSAGE);
+				}
 				this.reloadTree();
 			}
-		}		
+		}
 	}
 
 	public void valueChanged(TreeSelectionEvent e) {
