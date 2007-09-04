@@ -134,7 +134,7 @@ public class HibernateConnection {
 	public List<User> getAllUsers() {
 		List<User> result = null;
 		
-		String hql = "from User";
+		String hql = "from User order by Username";
 		Query query = this.createQuery(hql);
 		result = (List<User>) query.list();
 		

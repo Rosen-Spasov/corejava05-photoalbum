@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -41,7 +42,6 @@ import photoalbum.gui.dialogs.UserDialog;
 import photoalbum.hibernate.utils.HibernateConnection;
 import photoalbum.hibernate.utils.HibernateConnectionManager;
 import photoalbum.logging.Logger;
-import photoalbum.security.SecurityManager;
 
 public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelectionListener, ActionListener {
 
@@ -465,12 +465,14 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 				ICategoryContainer categoryContainer = (ICategoryContainer) child;
 				Category[] categories = new Category[categoryContainer.getCategories().size()];
 				categoryContainer.getCategories().toArray(categories);
+				Arrays.sort(categories);
 				loadChildren(childNode, categories);
 			}
 			if (child instanceof IPhotoContainer) {
 				IPhotoContainer photoContainer = (IPhotoContainer) child;
 				Photo[] photos = new Photo[photoContainer.getPhotos().size()];
 				photoContainer.getPhotos().toArray(photos);
+				Arrays.sort(photos);
 				loadChildren(childNode, photos);
 			}
 			parent.add(childNode);

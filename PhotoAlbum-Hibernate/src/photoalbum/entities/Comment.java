@@ -2,7 +2,7 @@ package photoalbum.entities;
 
 import java.io.Serializable;
 
-public class Comment implements Serializable {
+public class Comment implements Serializable, Comparable<Comment> {
 
 	private static final long serialVersionUID = 2989246789276241609L;
 
@@ -68,6 +68,10 @@ public class Comment implements Serializable {
 						this.getUser().equals(comment.getUser());
 		}
 		return result;
+	}
+
+	public int compareTo(Comment comment) {
+		return this.getText().compareTo(comment.getText());
 	}
 
 }

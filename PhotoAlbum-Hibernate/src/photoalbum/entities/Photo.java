@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Photo implements Serializable {
+public class Photo implements Serializable, Comparable<Photo> {
 
 	private static final long serialVersionUID = -876226176760185873L;
 
@@ -80,4 +80,8 @@ public class Photo implements Serializable {
 		return result;
 	}
 
+	public int compareTo(Photo photo) {
+		return this.getPath().compareTo(photo.getPath());
+	}
+	
 }
