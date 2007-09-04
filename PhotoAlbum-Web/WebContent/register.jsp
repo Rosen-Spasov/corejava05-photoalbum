@@ -8,6 +8,27 @@
 <meta name="GENERATOR" content="Rational Application Developer">
 </head>
 <body>
-6a ta registriram de
+<% String[] errorsRegistration = (String[])request.getAttribute("errorsRegistration"); 
+	if (errorsRegistration == null){
+	out.println("null");
+	errorsRegistration = new String[6];
+	for (int k=0;k<errorsRegistration.length;k++){
+	errorsRegistration[k]="";
+	}
+	}
+%>
+	<table cellspacing="0" cellpadding="5" border="1" bgcolor="#FFcf66" align="left" bordercolor="ff0000">
+		<form method="POST" action="RegisterServlet">
+			<tr><td>enter first name</td><td><input type="text" name="fName" value=""></td><td>${errorsRegistration[1]}</td></tr>
+			<tr><td>enter last name</td><td><input type="text" name="lName" value=""></td><td>${errorsRegistration[2]}</td></tr>
+			<tr><td>enter user name</td><td><input type="text" name="uName" value=""></td><td>${errorsRegistration[3]}</td></tr>
+			<tr><td>enter password</td><td><input type="password" name="pass"></td><td>${errorsRegistration[4]}</td></tr>
+			<tr><td>confirm password</td><td><input type="password" name="confPass"></td><td>${errorsRegistration[5]}</td></tr>
+			<% if (errorsRegistration[0] != null) {
+			%><tr><td colspan="2"><%= errorsRegistration[0] %></td><td>
+			<%} %>
+			<tr><td width="150"><input type="submit" value="register"></td></tr>
+		</form>
+	</table>
 </body>
 </html>
