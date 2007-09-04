@@ -1,5 +1,6 @@
 package photoalbum.security;
 
+import photoalbum.entities.Category;
 import photoalbum.entities.User;
 import photoalbum.hibernate.utils.HibernateConnection;
 import photoalbum.hibernate.utils.HibernateConnectionManager;
@@ -7,33 +8,45 @@ import photoalbum.logging.Logger;
 
 public class SecurityManager {
 	
-	private Logger logger = null;
+	private static Logger logger = null;
 	
-	private HibernateConnection hbConnection = null;
+	private static HibernateConnection hbConnection = null;
 	
-	private HibernateConnection getHbConnection() {
-		if (this.hbConnection == null || this.hbConnection.isReleased()) {
-			this.hbConnection = HibernateConnectionManager.openConnection();
+	private static synchronized HibernateConnection getHbConnection() {
+		if (hbConnection == null || hbConnection.isReleased()) {
+			hbConnection = HibernateConnectionManager.openConnection();
 		}
-		return this.hbConnection;
+		return hbConnection;
 	}
 	
-	private Logger getLogger() {
-		if (this.logger == null) {
-			this.logger = Logger.getLogger("security.log");
+	private static synchronized Logger getLogger() {
+		if (logger == null) {
+			logger = Logger.getLogger("security.log");
 		}
-		return this.logger;
+		return logger;
 	}
 	
-	public boolean accessGranted(String userName, String password) {
+	public static synchronized boolean accessGranted(String userName, String password) {
 		boolean result = false;
 		
-		User user = this.getHbConnection().getUserByUserName(userName);
+		User user = getHbConnection().getUserByUserName(userName);
 		if (user != null && user.getPassword().equals(password)) {
 			result = true;
 		}
-		this.getHbConnection().close();
+		getHbConnection().close();
 
 		return result;
 	}
+	
+//	public static synchronized boolean categoryExists(Category category) {		
+//		String path = category.getPath();
+//		return categoryExists(path);
+//	}
+//	
+//	public static synchronized boolean categoryExists(String path) {
+//		if (getHbConnection().getCategoryByPath(path) == null) {
+//			return false;
+//		}		
+//		return true;
+//	}
 }
