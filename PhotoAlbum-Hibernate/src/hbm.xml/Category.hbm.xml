@@ -21,7 +21,7 @@
 			<one-to-many class="Photo" />
 		</set>
 		
-		<set name="ChildCategories" table="Categories">
+		<set name="Categories" table="Categories">
 			<key column="CHILD_CATEGORY_ID" />
 			<one-to-many class="Category" />
 		</set>
