@@ -29,6 +29,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import photoalbum.common.Common.DialogResult;
 import photoalbum.entities.Category;
+import photoalbum.entities.ICategoryContainer;
 import photoalbum.entities.Photo;
 import photoalbum.entities.User;
 import photoalbum.gui.CustomCellRenderer;
@@ -451,27 +452,16 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		this.reloadTree();
 	}
 	
-	private void loadChildren(DefaultMutableTreeNode root, Object[] children) {
+	private void loadChildren(DefaultMutableTreeNode parent, Object[] children) {
 		for (Object child : children) {
-			DefaultMutableTreeNode newChild = null;
-			if (child instanceof User) {
-				User newUser = (User) child;
-				newChild = new DefaultMutableTreeNode(newUser);
-				Category[] categories = new Category[newUser.getCategories().size()];
-				newUser.getCategories().toArray(categories);
-				loadChildren(newChild, categories);
-			} else if (child instanceof Category) {
-				Category newCategory = (Category) child;
-				newChild = new DefaultMutableTreeNode(newCategory);
-				Category[] childCategories = new Category[newCategory.getChildCategories().size()];
-				newCategory.getChildCategories().toArray(childCategories);
-				loadChildren(newChild, childCategories);
-			} else if (child instanceof Photo) {
-				newChild = new DefaultMutableTreeNode(child);
+			DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(child);
+			if (child instanceof ICategoryContainer) {
+				ICategoryContainer categoryContainer = (ICategoryContainer) child;
+				Category[] categories = new Category[categoryContainer.getCategories().size()];
+				categoryContainer.getCategories().toArray(categories);
+				loadChildren(childNode, categories);
 			}
-			if (newChild != null) {
-				root.add(newChild);
-			}
+			parent.add(childNode);
 		}
 	}
 	
@@ -567,7 +557,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 				addPhoto(newCategory, child);
 			}
 		}
-		parent.getChildCategories().add(newCategory);
+		parent.getCategories().add(newCategory);
 		
 		return newCategory;
 	}
