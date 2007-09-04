@@ -4,6 +4,10 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import photoalbum.entities.User;
+import photoalbum.hibernate.utils.HibernateConnection;
 
 /**
  * Servlet implementation class for Servlet: SearchServlet
@@ -17,12 +21,20 @@ import javax.servlet.http.HttpServletResponse;
 	
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		User user = new User();
 		String name =(String)request.getParameter("searchName");
 		String category = (String)request.getParameter("category");
 		System.out.println(name + category);
-		int id = 2;
-		String url = "ShowUser.jsp?param1="+id;
-		request.getRequestDispatcher(url).forward(request, response);
+		HibernateConnection hc = new HibernateConnection(null);
+		user = hc.getUserByUserName(name);
+		session.setAttribute("user", user);
+		session.setAttribute("category", category);
+		request.getRequestDispatcher("ShowUser.jsp").forward(request, response);
+		
+//		int id = 2;
+//		String url = "ShowUser.jsp?param1="+id;
+//		request.getRequestDispatcher(url).forward(request, response);
 	}   	  	    
 }
  
