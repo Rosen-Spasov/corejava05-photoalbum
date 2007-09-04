@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import photoalbum.common.Common.DBProvider;
-import photoalbum.common.Common.DialogResult;
+import photoalbum.common.PhotoAlbumManager.DBProvider;
+import photoalbum.common.PhotoAlbumManager.DialogResult;
 
 public class NewSessionDialog extends JDialog {
 	
@@ -215,7 +215,7 @@ public class NewSessionDialog extends JDialog {
 	private JComboBox getComboBoxDbProvider() {
 		if (comboBoxDbProvider == null) {
 			comboBoxDbProvider = new JComboBox(DBProvider.values());
-			comboBoxDbProvider.setBounds(new Rectangle(105, 150, 123, 16));
+			comboBoxDbProvider.setBounds(new Rectangle(105, 150, 121, 16));
 		}
 		return comboBoxDbProvider;
 	}
