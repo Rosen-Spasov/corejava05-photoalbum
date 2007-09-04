@@ -602,6 +602,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		String firstName = user.getFirstName();
 		String lastName = user.getLastName();
 		this.getUserDialog().resetDialog(username, "", firstName, lastName);
+		this.getUserDialog().setEditMode(true);
 		if (this.getUserDialog().showDialog() == DialogResult.OK) {
 			user.setUsername(this.getUserDialog().getUsername());
 			user.setFirstName(this.getUserDialog().getFirstName());

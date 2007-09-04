@@ -43,6 +43,17 @@ public class UserDialog extends JDialog implements ActionListener {
 	
 	private DialogResult dialogResult = DialogResult.CANCEL;
 	
+	private boolean editMode = false;
+	
+	public boolean isEditMode() {
+		return editMode;
+	}
+
+	public void setEditMode(boolean editMode) {
+		this.editMode = editMode;
+		this.getTxtUsername().setEnabled(!editMode);
+	}
+
 	public DialogResult getDialogResult() {
 		return this.dialogResult;
 	}
