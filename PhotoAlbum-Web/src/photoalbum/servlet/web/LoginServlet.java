@@ -1,20 +1,18 @@
 package photoalbum.servlet.web;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 
 import photoalbum.entities.User;
 import photoalbum.hibernate.utils.HibernateConnection;
+import photoalbum.hibernate.utils.HibernateConnectionManager;
 
-import com.ibm.CORBA.iiop.Request;
-import com.ibm.xml.b2b.util.RewindableInputStream;
+
 
 /**
  * Servlet implementation class for Servlet: LoginServlet
@@ -41,12 +39,13 @@ import com.ibm.xml.b2b.util.RewindableInputStream;
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		Session hbSession = (Session) HibernateConnectionManager.openConnection();
 		System.out.println("tuk sme");
 		String userName = request.getParameter("username");
 		String pass = request.getParameter("pass");
 		if (isValid(userName,pass,request)){
 		System.out.println(userName+" "+ pass);
-		if (userExist(userName,pass)){
+		if (userExist(userName,pass,hbSession)){
 			session.setAttribute("login", "true");
 			request.getRequestDispatcher("MainPage.jsp").forward(request, response);
 		}else{
@@ -60,8 +59,9 @@ import com.ibm.xml.b2b.util.RewindableInputStream;
 		}
 	}
 
-	private boolean userExist(String userName, String pass) {
-		HibernateConnection hc = new HibernateConnection(null);
+	private boolean userExist(String userName, String pass, Session hbSession) {
+		
+		HibernateConnection hc = new HibernateConnection(hbSession);
 		User user = hc.getUserByUserName(userName);
 		if (user.getPassword().equalsIgnoreCase(pass)){
 			return true;
