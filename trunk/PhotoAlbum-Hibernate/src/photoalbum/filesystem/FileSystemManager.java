@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import photoalbum.common.PhotoAlbumManager;
+import photoalbum.PhotoAlbumManager;
 import photoalbum.entities.Category;
 import photoalbum.entities.Photo;
 import photoalbum.entities.User;
