@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import photoalbum.common.PhotoAlbumManager.DBProvider;
-import photoalbum.common.PhotoAlbumManager.DialogResult;
+import photoalbum.gui.frames.MainFrame.DialogResult;
+import photoalbum.hibernate.HibernateConnectionManager.DBProvider;
 
 public class NewSessionDialog extends JDialog {
 	
