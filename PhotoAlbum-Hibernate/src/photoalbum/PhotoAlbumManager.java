@@ -66,6 +66,10 @@ public class PhotoAlbumManager {
 		return users;
 	}
 	
+	public User getUserByUsername(String username) {
+		return getHbConnection().getUserByUserName(username);
+	}
+	
 	public User addUser(String username, String password, String firstName, String lastName) throws CreateUserException {
 		User user = getHbConnection().getUserByUserName(username);
 		if (user == null) {
