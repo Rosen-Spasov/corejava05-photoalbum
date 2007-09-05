@@ -6,11 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.hibernate.Session;
-
+import photoalbum.PhotoAlbumManager;
 import photoalbum.entities.User;
-import photoalbum.hibernate.utils.HibernateConnection;
-import photoalbum.hibernate.utils.HibernateConnectionManager;
+
+
 
 /**
  * Servlet implementation class for Servlet: SearchServlet
@@ -25,13 +24,11 @@ import photoalbum.hibernate.utils.HibernateConnectionManager;
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Session hbSession = (Session) HibernateConnectionManager.openConnection();
-		User user = new User();
 		String name =(String)request.getParameter("searchName");
 		String category = (String)request.getParameter("category");
 		System.out.println(name + category);
-		HibernateConnection hc = new HibernateConnection(hbSession);
-		user = hc.getUserByUserName(name);
+		PhotoAlbumManager pam = PhotoAlbumManager.getDefaultIntance();
+		User user = pam.getUserByUsername(name);
 		session.setAttribute("user", user);
 		session.setAttribute("category", category);
 		request.getRequestDispatcher("ShowUser.jsp").forward(request, response);

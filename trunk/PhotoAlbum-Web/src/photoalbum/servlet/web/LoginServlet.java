@@ -5,12 +5,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.hibernate.Session;
-
+import photoalbum.PhotoAlbumManager;
 import photoalbum.entities.User;
-import photoalbum.hibernate.utils.HibernateConnection;
-import photoalbum.hibernate.utils.HibernateConnectionManager;
+
 
 
 
@@ -39,13 +36,13 @@ import photoalbum.hibernate.utils.HibernateConnectionManager;
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Session hbSession = (Session) HibernateConnectionManager.openConnection();
+		PhotoAlbumManager pam = PhotoAlbumManager.getDefaultIntance();
 		System.out.println("tuk sme");
 		String userName = request.getParameter("username");
 		String pass = request.getParameter("pass");
 		if (isValid(userName,pass,request)){
 		System.out.println(userName+" "+ pass);
-		if (userExist(userName,pass,hbSession)){
+		if (userExist(userName,pass, pam)){
 			session.setAttribute("login", "true");
 			request.getRequestDispatcher("MainPage.jsp").forward(request, response);
 		}else{
@@ -59,13 +56,16 @@ import photoalbum.hibernate.utils.HibernateConnectionManager;
 		}
 	}
 
-	private boolean userExist(String userName, String pass, Session hbSession) {
+
+	private boolean userExist(String userName, String pass, PhotoAlbumManager pam) {
 		
-		HibernateConnection hc = new HibernateConnection(hbSession);
-		User user = hc.getUserByUserName(userName);
-		if (user.getPassword().equalsIgnoreCase(pass)){
+		
+		User[] user = pam.getAllUsers();
+		for (User u:user){
+		if (u.getUsername().equalsIgnoreCase(userName)){
+			if(u.getPassword().equalsIgnoreCase(pass)){
 			return true;
-		}
+		}}}
 		return false;
 	}
 

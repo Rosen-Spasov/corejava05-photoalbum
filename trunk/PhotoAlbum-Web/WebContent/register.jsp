@@ -26,8 +26,9 @@
 	</tr>
 
 <tr><td></td><td>
+<form method="POST" action="RegisterServlet">
 	<table cellspacing="0" cellpadding="5" border="1" bgcolor="#FFcf66" align="left" bordercolor="ff0000">
-		<form method="POST" action="RegisterServlet">
+		
 			<tr><td>Въведи име</td><td><input type="text" name="fName" value=""></td><td>${errorsRegistration[1]}</td></tr>
 			<tr><td>Въведи фамилия</td><td><input type="text" name="lName" value=""></td><td>${errorsRegistration[2]}</td></tr>
 			<tr><td>enter user name</td><td><input type="text" name="uName" value=""></td><td>${errorsRegistration[3]}</td></tr>
@@ -35,7 +36,8 @@
 			<tr><td>confirm password</td><td><input type="password" name="confPass"></td><td>${errorsRegistration[5]}</td></tr>
 		
 			<tr><td width="150"><input type="submit" value="register"></td><td>${errorsRegistration[6]}</td></tr>
-		</form>
-	</table></table>
+		
+	</table></form>
+	</table>
 </body>
 </html>
