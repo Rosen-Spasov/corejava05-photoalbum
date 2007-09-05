@@ -1,6 +1,5 @@
 package photoalbum.logging;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,14 +8,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Hashtable;
 
-import photoalbum.common.PhotoAlbumManager;
+import photoalbum.util.Utilities;
 
 
 public class Logger {
 	
-	public static final String LOGS_DIRECTORY = PhotoAlbumManager.LOGS_DIRECTORY;
+	public static final String LOGS_DIRECTORY = Utilities.LOGS_DIRECTORY;
 	
-	public static final String DEFAULT_LOG_FILENAME = PhotoAlbumManager.DEFAULT_LOG_FILENAME;
+	public static final String DEFAULT_LOG_FILENAME = Utilities.DEFAULT_LOG_FILENAME;
 	
 	private static Logger defaultInstance = null;
 	
@@ -33,14 +32,14 @@ public class Logger {
 		this.setLogFileName(logFileName);
 	}
 
-	private static Hashtable<String, Logger> getLoggers() {
+	private static synchronized Hashtable<String, Logger> getLoggers() {
 		if (loggers == null) {
 			loggers = new Hashtable<String, Logger>();
 		}
 		return loggers;
 	}
 	
-	public static Logger getDefaultInstance() {
+	public static synchronized Logger getDefaultInstance() {
 		if (Logger.defaultInstance == null) {
 			Logger.defaultInstance = new Logger();
 			Logger.getLoggers().put(Logger.defaultInstance.getLogFileName(), Logger.defaultInstance);
@@ -48,7 +47,7 @@ public class Logger {
 		return Logger.defaultInstance;
 	}
 	
-	public static Logger getLogger(String logFileName) {
+	public static synchronized Logger getLogger(String logFileName) {
 		Logger result = null;
 		if (logFileName != null) {
 			result = Logger.getLoggers().get(logFileName);
@@ -60,7 +59,7 @@ public class Logger {
 		return result;
 	}
 	
-	public static void closeAll() {
+	public static synchronized void closeAll() {
 		Collection<Logger> loggers = Logger.getLoggers().values();
 		for (Logger logger : loggers) {
 			logger.close();
@@ -68,18 +67,13 @@ public class Logger {
 	}
 	
 	public String getLogFileName() {
-		File file = new File(logFileName);
-		File parent = new File(file.getParent());
-		if (!parent.exists()) {
-			parent.mkdirs();
-		}
 		return this.logFileName;
 	}
 	
 	private void setLogFileName(String logFileName) {
 		if (logFileName != null) {
-			if (!PhotoAlbumManager.parentDirExists(logFileName)) {
-				PhotoAlbumManager.createParentDirs(logFileName);
+			if (!Utilities.parentDirExists(logFileName)) {
+				Utilities.createParentDirs(logFileName);
 			}
 			this.logFileName = Logger.LOGS_DIRECTORY + "/" + logFileName;
 		} else {
@@ -107,7 +101,7 @@ public class Logger {
 	
 	public synchronized void log(String msg) {
 		Date currentTime = new Date();
-		String currentTimeString = PhotoAlbumManager.defaultDateTimeFormat.format(currentTime);
+		String currentTimeString = Utilities.defaultDateTimeFormat.format(currentTime);
 		PrintWriter writer = this.getLogWriter();
 		writer.println("*************************************************************************");
 		writer.println("[" + currentTimeString + "]");
@@ -123,7 +117,7 @@ public class Logger {
 	
 	private synchronized void log(Throwable e, String indent) {
 		Date currentTime = new Date();
-		String currentTimeString = PhotoAlbumManager.defaultDateTimeFormat.format(currentTime);
+		String currentTimeString = Utilities.defaultDateTimeFormat.format(currentTime);
 		PrintWriter writer = this.getLogWriter();
 		writer.println("*************************************************************************");
 		writer.println(indent + "[" + currentTimeString + "] ERROR");
@@ -141,7 +135,7 @@ public class Logger {
 		this.setLogWriter(null);
 	}
 	
-	public void close() {
+	public synchronized void close() {
 		this.getLogWriter().close();
 		Logger.getLoggers().remove(this);
 	}

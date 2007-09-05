@@ -9,14 +9,7 @@ public class SecurityManager {
 	
 	private static Logger logger = null;
 	
-	private static HibernateConnection hbConnection = null;
-	
-	private static synchronized HibernateConnection getHbConnection() {
-		if (hbConnection == null || hbConnection.isReleased()) {
-			hbConnection = HibernateConnectionManager.openConnection();
-		}
-		return hbConnection;
-	}
+	private static SecurityManager defaultInstance = null;
 	
 	private static synchronized Logger getLogger() {
 		if (logger == null) {
@@ -25,7 +18,32 @@ public class SecurityManager {
 		return logger;
 	}
 	
-	public static synchronized boolean accessGranted(String userName, String password) {
+	public static synchronized SecurityManager getDefaultInstance() {
+		if (defaultInstance == null) {
+			defaultInstance = new SecurityManager();
+		}
+		return defaultInstance;
+	}
+	
+	private HibernateConnectionManager hibernateConnectionManager = null;
+	
+	private HibernateConnection hbConnection = null;
+	
+	private HibernateConnectionManager getHibernateConnectionManager() {
+		if (this.hibernateConnectionManager == null) {
+			this.hibernateConnectionManager = HibernateConnectionManager.getDefaultInstance();
+		}
+		return this.hibernateConnectionManager;
+	}
+	
+	private HibernateConnection getHbConnection() {
+		if (this.hbConnection == null || this.hbConnection.isReleased()) {
+			this.hbConnection = getHibernateConnectionManager().openConnection();
+		}
+		return this.hbConnection;
+	}
+	
+	public boolean accessGranted(String userName, String password) {
 		boolean result = false;
 		
 		User user = getHbConnection().getUserByUserName(userName);
