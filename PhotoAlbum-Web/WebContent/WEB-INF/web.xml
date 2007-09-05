@@ -161,15 +161,6 @@ included, depending on the components used on the page.Default is false.</descri
 	<listener>
 		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
 	</listener>
-	<servlet>
-		<description>
-		</description>
-		<display-name>
-		GetPicturesFromDatabase</display-name>
-		<servlet-name>GetPicturesFromDatabase</servlet-name>
-		<servlet-class>
-		GetPicturesFromDatabase</servlet-class>
-	</servlet>
 	<servlet id="Servlet_1188895509230">
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>
@@ -213,28 +204,10 @@ included, depending on the components used on the page.Default is false.</descri
 		<description>
 		</description>
 		<display-name>
-		ShowAllPictuers</display-name>
-		<servlet-name>ShowAllPictuers</servlet-name>
-		<servlet-class>
-		photoalbum.servlet.web.ShowAllPictuers</servlet-class>
-	</servlet>
-	<servlet>
-		<description>
-		</description>
-		<display-name>
 		DeletePictureServlet</display-name>
 		<servlet-name>DeletePictureServlet</servlet-name>
 		<servlet-class>
 		photoalbum.servlet.web.DeletePictureServlet</servlet-class>
-	</servlet>
-	<servlet>
-		<description>
-		</description>
-		<display-name>
-		DeleteCategoryServlet</display-name>
-		<servlet-name>DeleteCategoryServlet</servlet-name>
-		<servlet-class>
-		photoalbum.servlet.web.DeleteCategoryServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<description>
@@ -245,10 +218,15 @@ included, depending on the components used on the page.Default is false.</descri
 		<servlet-class>
 		photoalbum.servlet.web.RenamePictureServlet</servlet-class>
 	</servlet>
-	<servlet-mapping>
-		<servlet-name>GetPicturesFromDatabase</servlet-name>
-		<url-pattern>/GetPicturesFromDatabase</url-pattern>
-	</servlet-mapping>
+	<servlet>
+		<description>
+		</description>
+		<display-name>
+		ShowAllPictuers</display-name>
+		<servlet-name>ShowAllPictuers</servlet-name>
+		<servlet-class>
+		photoalbum.servlet.web.ShowAllPictuers</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>/faces/*</url-pattern>
@@ -278,24 +256,28 @@ included, depending on the components used on the page.Default is false.</descri
 		<url-pattern>/SearchServlet</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
+		<servlet-name>DeletePictureServlet</servlet-name>
+		<url-pattern>/DeletePictureServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DeletePictureServlet</servlet-name>
+		<url-pattern>/delete</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RenamePictureServlet</servlet-name>
+		<url-pattern>/RenamePictureServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RenamePictureServlet</servlet-name>
+		<url-pattern>/rename</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>ShowAllPictuers</servlet-name>
 		<url-pattern>/ShowAllPictuers</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>ShowAllPictuers</servlet-name>
 		<url-pattern>/show</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>DeletePictureServlet</servlet-name>
-		<url-pattern>/DeletePictureServlet</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>DeleteCategoryServlet</servlet-name>
-		<url-pattern>/DeleteCategoryServlet</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>RenamePictureServlet</servlet-name>
-		<url-pattern>/RenamePictureServlet</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

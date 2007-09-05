@@ -5,7 +5,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import photoalbum.hibernate.utils.HibernateConnection;
 
 /**
  * Servlet implementation class for Servlet: RegisterServlet
