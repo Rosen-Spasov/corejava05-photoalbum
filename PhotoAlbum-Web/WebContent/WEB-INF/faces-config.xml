@@ -21,6 +21,21 @@
 		<render-kit-factory>
 		com.ibm.faces.renderkit.AjaxRenderKitFactory</render-kit-factory>
 	</factory>
+	<managed-bean>
+		<managed-bean-name>pc_FullScreen</managed-bean-name>
+		<managed-bean-class>pagecode.FullScreen</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>pc_DeleteCategory</managed-bean-name>
+		<managed-bean-class>pagecode.DeleteCategory</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>pc_RenamePicture</managed-bean-name>
+		<managed-bean-class>pagecode.RenamePicture</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	<lifecycle>
 		<phase-listener>
 		com.ibm.faces.webapp.ValueResourcePhaseListener</phase-listener>
