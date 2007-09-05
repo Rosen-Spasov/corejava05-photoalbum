@@ -23,15 +23,29 @@ public class HibernateConnection {
 	
 	private Logger logger = null;
 	
+	private HibernateConnectionManager hibernateConnectionManager = null;
+	
+	public HibernateConnection(HibernateConnectionManager hibernateConnectionManager, Session session) throws IllegalArgumentException {
+		this.setHibernateConnectionManager(hibernateConnectionManager);
+		this.setSession(session);
+	}
+	
+	private HibernateConnectionManager getHibernateConnectionManager() {
+		if (this.hibernateConnectionManager == null) {
+			this.hibernateConnectionManager = HibernateConnectionManager.getDefaultInstance();
+		}
+		return this.hibernateConnectionManager;
+	}
+	
+	private void setHibernateConnectionManager(HibernateConnectionManager hibernateConnectionManager) {
+		this.hibernateConnectionManager = hibernateConnectionManager;
+	}
+	
 	private Logger getLogger() {
 		if (this.logger == null) {
 			this.logger = Logger.getDefaultInstance();
 		}
 		return this.logger;
-	}
-	
-	public HibernateConnection(Session session) throws IllegalArgumentException {
-		this.setSession(session);
 	}
 	
 	public boolean isReleased() {
@@ -86,7 +100,7 @@ public class HibernateConnection {
 	
 	public void close() {
 		this.setReleased(true);
-		HibernateConnectionManager.closeConnection(this);
+		this.getHibernateConnectionManager().closeConnection(this);
 	}
 	
 	public void save(Object obj) {
