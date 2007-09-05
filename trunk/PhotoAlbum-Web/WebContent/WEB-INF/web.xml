@@ -209,6 +209,42 @@ included, depending on the components used on the page.Default is false.</descri
 		<servlet-class>
 		photoalbum.servlet.web.SearchServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>
+		ShowAllPictuers</display-name>
+		<servlet-name>ShowAllPictuers</servlet-name>
+		<servlet-class>
+		photoalbum.servlet.web.ShowAllPictuers</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>
+		DeletePictureServlet</display-name>
+		<servlet-name>DeletePictureServlet</servlet-name>
+		<servlet-class>
+		photoalbum.servlet.web.DeletePictureServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>
+		DeleteCategoryServlet</display-name>
+		<servlet-name>DeleteCategoryServlet</servlet-name>
+		<servlet-class>
+		photoalbum.servlet.web.DeleteCategoryServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>
+		RenamePictureServlet</display-name>
+		<servlet-name>RenamePictureServlet</servlet-name>
+		<servlet-class>
+		photoalbum.servlet.web.RenamePictureServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>GetPicturesFromDatabase</servlet-name>
 		<url-pattern>/GetPicturesFromDatabase</url-pattern>
@@ -240,6 +276,26 @@ included, depending on the components used on the page.Default is false.</descri
 	<servlet-mapping>
 		<servlet-name>SearchServlet</servlet-name>
 		<url-pattern>/SearchServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ShowAllPictuers</servlet-name>
+		<url-pattern>/ShowAllPictuers</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ShowAllPictuers</servlet-name>
+		<url-pattern>/show</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DeletePictureServlet</servlet-name>
+		<url-pattern>/DeletePictureServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DeleteCategoryServlet</servlet-name>
+		<url-pattern>/DeleteCategoryServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RenamePictureServlet</servlet-name>
+		<url-pattern>/RenamePictureServlet</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

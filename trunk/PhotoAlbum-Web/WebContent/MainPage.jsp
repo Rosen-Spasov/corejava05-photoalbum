@@ -15,8 +15,8 @@
 		<tr><td colspan="3" class="mainTopMenu">
 			<table cellspacing="0" class="flex">
 				<tr><td class="left pLeft10">Най-големият сайт за снимки в България!</td><td class="right">
-				<a href="register.jsp">Регистрация</a><span class="separator"><img src="http://img.elmaz.com/style/img/separator.png" align="absmiddle" /></span>
-				<a href="SearchServlet">Търсене</a><span class="separator"><span class="separator"><img src="http://img.elmaz.com/style/img/separator.png" align="absmiddle" /></span>
+				<a href="register.jsp">Регистрация</a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+				<a href="SearchServlet">Търсене</a><span class="separator"><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
 				<a href="Help.jsp">Помощ</a>
 					</td>
 				</tr>
@@ -95,10 +95,11 @@
 	<table cellpadding="0" cellspacing="0" class="top10">
 		<tr>
 			<td>
-				<a href="http://www.sibir.bg" target="_blank" title="Блог, видео, снимки, групи"><img src="http://img.elmaz.com/style/img/kare/kare1.png" alt="Блог, видео, снимки, групи" align="left" /></a>
-			</td>
+				<a href="http://academy.devbg.org/" target="_blank" title="Н А Р С"><img src="img/logo.gif" alt="Национална академия за разработка на софтуер" align="left" /></a>
+			</td></tr>
+			<tr>
 			<td class="pLeft10">
-				<div><a href="http://academy.devbg.org/" class="bold purple2" target="_blank" title="Блог, видео, снимки, групи">НАРС</a></div>
+				<div><a href="http://academy.devbg.org/" class="bold purple2" target="_blank" title="Национална академия за разработка на софтуер">НАРС</a></div>
 				<div class="size10"><a href="http://academy.devbg.org/" class="black" target="_blank" title="Обучение">Обучение и професионална реализация</a></div>
 			</td>
 		</tr>
@@ -180,6 +181,9 @@
 											<input type="submit" class="button" style="width:90px;" name="btnSearch" value="Търси" />
 										</td>
 									</tr>
+									<% String search = (String) session.getAttribute("search");
+									if (search != null){
+									%><tr><td><%= search %><%} %>
 								</table>
 							</form>
 						</div>
@@ -189,15 +193,15 @@
 								<div>Общо: <span class="bold">666</span></div>
 								<div>
 									Днес:
-									<a href="http://www.elmaz.com/index.php?page=regToday" class="link bold">6</a>
+									<a href="" class="link bold">6</a>
 								</div>
 								<div>
 									Вчера:
-									<a href="http://www.elmaz.com/index.php?page=regYesterday" class="link bold">33</a>
+									<a href="" class="link bold">33</a>
 								</div>
 								<div>
 									Онлайн:
-									<a href="http://www.elmaz.com/index.php?page=onlineUsers" class="link bold">333</a>
+									<a href="" class="link bold">333</a>
 								</div>
 							</div>
 							<div class="center" style="line-height:17px;">
@@ -327,9 +331,9 @@
 	<tr>
 		<td class="tabsBottomMid">
 			<div class="fLeft left10">
-				<a href="#" onclick="return toPage('prev','men');"><img src="http://img.elmaz.com/style/img/btnLeft.gif" align="absmiddle" /></a>
-				<a href="#" onclick="return toPage('next','men');"><img src="http://img.elmaz.com/style/img/btnRight.gif" align="absmiddle" /></a>
-				<span id="menPage">1</span> от <span id="menTotalPages">714</span>
+				<a href="#" onclick="return toPage('prev','men');"><img src="img/btnLeft.gif" align="absmiddle" /></a>
+				<a href="#" onclick="return toPage('next','men');"><img src="img/btnRight.gif" align="absmiddle" /></a>
+				<span id="menPage">1</span> от <span id="menTotalPages">666</span>
 			</div>
 			<div class="fRight right10">
 				<div style="line-height:17px;">
