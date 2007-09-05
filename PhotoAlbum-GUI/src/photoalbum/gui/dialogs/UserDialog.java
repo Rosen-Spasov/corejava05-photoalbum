@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import photoalbum.common.PhotoAlbumManager.DialogResult;
+import photoalbum.gui.frames.MainFrame.DialogResult;
 
 public class UserDialog extends JDialog implements ActionListener {
 

@@ -27,9 +27,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import photoalbum.common.CreateUserException;
-import photoalbum.common.PhotoAlbumManager;
-import photoalbum.common.PhotoAlbumManager.DialogResult;
+import photoalbum.CreateUserException;
+import photoalbum.PhotoAlbumManager;
 import photoalbum.entities.Category;
 import photoalbum.entities.Photo;
 import photoalbum.entities.User;
@@ -40,13 +39,14 @@ import photoalbum.gui.ICustomIconsSupplier;
 import photoalbum.gui.ImageFileFilter;
 import photoalbum.gui.dialogs.NewSessionDialog;
 import photoalbum.gui.dialogs.UserDialog;
-//import photoalbum.hibernate.HibernateConnection;
 import photoalbum.hibernate.HibernateConnectionManager;
 import photoalbum.logging.Logger;
 
 public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelectionListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	public static enum DialogResult {CONNECT, CREATE, OK, CANCEL, YES, NO}
 
 	private JPanel jContentPane = null;
 
@@ -92,9 +92,29 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 
 	private JButton btnRefresh = null;
 	
-//	private HibernateConnection hbConnection = null;  //  @jve:decl-index=0:
-	
 	private JFileChooser fileChooser = null;
+	
+	private HibernateConnectionManager hibernateConnectionManager = null;  //  @jve:decl-index=0:
+	
+	private PhotoAlbumManager photoAlbumManager = null;
+	
+	private PhotoAlbumManager getPhotoAlbumManager() {
+		if (this.photoAlbumManager == null) {
+			this.photoAlbumManager = new PhotoAlbumManager(getHibernateConnectionManager());
+		}
+		return this.photoAlbumManager;
+	}
+	
+	private void setPhotoAlbumManager(PhotoAlbumManager photoAlbumManager) {
+		this.photoAlbumManager = photoAlbumManager;
+	}
+	
+	private HibernateConnectionManager getHibernateConnectionManager() {
+		if (this.hibernateConnectionManager == null) {
+			this.hibernateConnectionManager = new HibernateConnectionManager();
+		}
+		return this.hibernateConnectionManager;
+	}
 	
 	private JFileChooser getFileChooser() {
 		if (this.fileChooser == null) {
@@ -106,13 +126,6 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		}
 		return this.fileChooser;
 	}
-	
-//	private HibernateConnection getHbConnection() {
-//		if (this.hbConnection == null || this.hbConnection.isReleased()) {
-//			this.hbConnection = HibernateConnectionManager.openConnection();
-//		}
-//		return this.hbConnection;
-//	}
 	
 	public Icon getPhotoIcon() {
 		if (this.photoIcon == null) {
@@ -439,12 +452,18 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		String sid = this.getNewSessionDialog().getSid();
 		String dbProvider = this.getNewSessionDialog().getDbProvider();
 		try {
-			HibernateConnectionManager.configure(password, dbHost, dbPort, sid, dbProvider);
-			refreshTree();
-			this.getTreeData().setEnabled(true);
-			this.getBtnRefresh().setEnabled(true);
+			if (getHibernateConnectionManager().accessGranted(password)) {
+				getHibernateConnectionManager().configure(dbHost, dbPort, sid, dbProvider);
+				setPhotoAlbumManager(new PhotoAlbumManager(getHibernateConnectionManager()));
+				refreshTree();
+				this.getTreeData().setEnabled(true);
+				this.getBtnRefresh().setEnabled(true);
+				this.getMItemNewSession().setEnabled(false);
+			} else {
+				JOptionPane.showMessageDialog(this, "Invalid password. Connection refused.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
+			}
 		} catch (Throwable exc) {
-			JOptionPane.showMessageDialog(this, "Could not connect to DB.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Could not connect to DB. Check your connection settings and contact your system administrator.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
 			Logger.getDefaultInstance().log(exc);
 		}
 		
@@ -452,7 +471,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	}
 	
 	private void loadTree() {
-		User[] users = PhotoAlbumManager.getAllUsers();
+		User[] users = getPhotoAlbumManager().getAllUsers();
 		loadChildren(this.getRootNode(), users);
 		this.getTreeData().expandPath(new TreePath(this.getRootNode().getPath()));
 		this.reloadTree();
@@ -502,7 +521,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			String lastName = this.getUserDialog().getLastName();
 			
 			try {
-				PhotoAlbumManager.addUser(username, password, firstName, lastName);
+				getPhotoAlbumManager().addUser(username, password, firstName, lastName);
 			} catch (CreateUserException e) {
 				JOptionPane.showMessageDialog(this, e.getMessage(), "User Creation Failed", JOptionPane.ERROR_MESSAGE);
 			}
@@ -512,7 +531,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	private void addFileStructure(Object parentObject) {
 		if (this.getFileChooser().showDialog(this, "Add") == JFileChooser.APPROVE_OPTION) {
 			File[] selectedFiles = this.getFileChooser().getSelectedFiles();
-			PhotoAlbumManager.addFileStructure(parentObject, selectedFiles);
+			getPhotoAlbumManager().addFileStructure(parentObject, selectedFiles);
 		}
 	}
 	
@@ -542,7 +561,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			if (!password.equals("")) {
 				user.setPassword(this.getUserDialog().getPassword());
 			}
-			PhotoAlbumManager.editUser(user, username);
+			getPhotoAlbumManager().editUser(user, username);
 
 			this.reloadTree();
 		}
@@ -553,7 +572,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getTreeData().getLastSelectedPathComponent();
 			if (selectedNode != null && selectedNode != getRootNode()) {
 				try {
-					PhotoAlbumManager.deleteObject(selectedNode.getUserObject());
+					getPhotoAlbumManager().deleteObject(selectedNode.getUserObject());
 					DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
 					parentNode.remove(selectedNode);
 				} catch (Throwable e) {
