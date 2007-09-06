@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Arrays;
 
 import javax.swing.Icon;
@@ -28,7 +30,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import photoalbum.CreateUserException;
-import photoalbum.PhotoAlbumManager;
+import photoalbum.PhotoAlbumManipulator;
 import photoalbum.entities.Category;
 import photoalbum.entities.Photo;
 import photoalbum.entities.User;
@@ -39,8 +41,8 @@ import photoalbum.gui.ICustomIconsSupplier;
 import photoalbum.gui.ImageFileFilter;
 import photoalbum.gui.dialogs.NewSessionDialog;
 import photoalbum.gui.dialogs.UserDialog;
-import photoalbum.hibernate.HibernateConnectionManager;
 import photoalbum.logging.Logger;
+import photoalbum.network.NetworkConnection;
 
 public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelectionListener, ActionListener {
 
@@ -82,40 +84,29 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	
 	private CustomCellRenderer customCellRenderer = null;
 	
-	private Icon userIcon = null;
+	private Icon userIcon = null;  //  @jve:decl-index=0:
 	
 	private Icon openedCategoryIcon = null;
 	
 	private Icon closedCategoryIcon = null;  //  @jve:decl-index=0:
 	
-	private Icon photoIcon = null;
+	private Icon photoIcon = null;  //  @jve:decl-index=0:
 
 	private JButton btnRefresh = null;
 	
 	private JFileChooser fileChooser = null;
 	
-	private HibernateConnectionManager hibernateConnectionManager = null;  //  @jve:decl-index=0:
+	private NetworkConnection networkConnection = null;
 	
-	private PhotoAlbumManager photoAlbumManager = null;
+	private PhotoAlbumManipulator photoAlbumManipulator = null;
 	
-	private PhotoAlbumManager getPhotoAlbumManager() {
-		if (this.photoAlbumManager == null) {
-			this.photoAlbumManager = new PhotoAlbumManager(getHibernateConnectionManager());
+	private PhotoAlbumManipulator getPhotoAlbumManipulator() {
+		if (this.photoAlbumManipulator == null) {
+			this.photoAlbumManipulator = new PhotoAlbumManipulator();
 		}
-		return this.photoAlbumManager;
+		return photoAlbumManipulator;
 	}
-	
-	private void setPhotoAlbumManager(PhotoAlbumManager photoAlbumManager) {
-		this.photoAlbumManager = photoAlbumManager;
-	}
-	
-	private HibernateConnectionManager getHibernateConnectionManager() {
-		if (this.hibernateConnectionManager == null) {
-			this.hibernateConnectionManager = new HibernateConnectionManager();
-		}
-		return this.hibernateConnectionManager;
-	}
-	
+
 	private JFileChooser getFileChooser() {
 		if (this.fileChooser == null) {
 			this.fileChooser = new JFileChooser();
@@ -445,39 +436,53 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	}
 	
 	private void connect() {
-		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));		
+		String host = this.getNewSessionDialog().getHost();
+		String port = this.getNewSessionDialog().getPort();
 		String password = this.getNewSessionDialog().getPassword();
-		String dbHost = this.getNewSessionDialog().getDbHost();
-		String dbPort = this.getNewSessionDialog().getDbPort();
-		String sid = this.getNewSessionDialog().getSid();
-		String dbProvider = this.getNewSessionDialog().getDbProvider();
+		
 		try {
-			if (getHibernateConnectionManager().accessGranted(password)) {
-				getHibernateConnectionManager().configure(dbHost, dbPort, sid, dbProvider);
-				setPhotoAlbumManager(new PhotoAlbumManager(getHibernateConnectionManager()));
+			this.networkConnection = new NetworkConnection(host, port);
+			if (!password.equals("") && this.networkConnection.adminAccessGranted(password)) {
 				refreshTree();
 				this.getTreeData().setEnabled(true);
 				this.getBtnRefresh().setEnabled(true);
-				this.getMItemNewSession().setEnabled(false);
+				this.getMItemNewSession().setEnabled(false);				
 			} else {
 				JOptionPane.showMessageDialog(this, "Invalid password. Connection refused.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
 			}
-		} catch (Throwable exc) {
-			JOptionPane.showMessageDialog(this, "Could not connect to DB. Check your connection settings and contact your system administrator.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
-			Logger.getDefaultInstance().log(exc);
+		} catch (MalformedURLException e) {
+			JOptionPane.showMessageDialog(this, "Could not connect to server. Check your connection settings and contact your system administrator.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
+			Logger.getDefaultInstance().log(e);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, "Could not connect to server. Check your connection settings and contact your system administrator.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
+			Logger.getDefaultInstance().log(e);
+		} catch (ClassNotFoundException e) {
+			JOptionPane.showMessageDialog(this, "Could not connect to server. Check your connection settings and contact your system administrator.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
+			Logger.getDefaultInstance().log(e);
+		} finally {
+			this.setCursor(Cursor.getDefaultCursor());
 		}
-		
-		this.setCursor(Cursor.getDefaultCursor());
 	}
 	
 	private void loadTree() {
-		User[] users = getPhotoAlbumManager().getAllUsers();
-		loadChildren(this.getRootNode(), users);
-		this.getTreeData().expandPath(new TreePath(this.getRootNode().getPath()));
-		this.reloadTree();
+		User[] users = null;
+		try {
+			users = this.networkConnection.getAllUsers();
+			loadChildren(this.getRootNode(), users);
+			this.getTreeData().expandPath(new TreePath(this.getRootNode().getPath()));
+			this.reloadTree();
+		} catch (IOException e) {
+			Logger.getDefaultInstance().log(e);
+		} catch (ClassNotFoundException e) {
+			Logger.getDefaultInstance().log(e);
+		}
 	}
 	
 	private void loadChildren(DefaultMutableTreeNode parent, Object[] children) {
+		if (parent == null || children == null) {
+			return;
+		}
 		for (Object child : children) {
 			DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(child);
 			if (child instanceof ICategoryContainer) {
@@ -507,7 +512,6 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			} else if (selectedObject instanceof User || selectedObject instanceof Category) {
 				addFileStructure(selectedObject);
 			}
-			this.refreshTree();
 		}
 	}
 	
@@ -521,7 +525,8 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			String lastName = this.getUserDialog().getLastName();
 			
 			try {
-				getPhotoAlbumManager().addUser(username, password, firstName, lastName);
+				this.networkConnection.addUser(username, password, firstName, lastName);
+				this.refreshTree();
 			} catch (CreateUserException e) {
 				JOptionPane.showMessageDialog(this, e.getMessage(), "User Creation Failed", JOptionPane.ERROR_MESSAGE);
 			}
@@ -531,7 +536,8 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	private void addFileStructure(Object parentObject) {
 		if (this.getFileChooser().showDialog(this, "Add") == JFileChooser.APPROVE_OPTION) {
 			File[] selectedFiles = this.getFileChooser().getSelectedFiles();
-			getPhotoAlbumManager().addFileStructure(parentObject, selectedFiles);
+			getPhotoAlbumManipulator().addFileStructure(parentObject, selectedFiles);
+			this.refreshTree();
 		}
 	}
 	
@@ -554,15 +560,20 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		this.getUserDialog().resetDialog(username, "", firstName, lastName);
 		this.getUserDialog().setEditMode(true);
 		if (this.getUserDialog().showDialog() == DialogResult.OK) {
-			user.setUsername(this.getUserDialog().getUsername());
-			user.setFirstName(this.getUserDialog().getFirstName());
-			user.setLastName(this.getUserDialog().getLastName());
-			String password = this.getUserDialog().getPassword();
-			if (!password.equals("")) {
-				user.setPassword(this.getUserDialog().getPassword());
+			try {
+				user.setUsername(this.getUserDialog().getUsername());
+				user.setFirstName(this.getUserDialog().getFirstName());
+				user.setLastName(this.getUserDialog().getLastName());
+				String password = this.getUserDialog().getPassword();
+				if (!password.equals("")) {
+					user.setPassword(this.getUserDialog().getPassword());
+				}
+				this.networkConnection.editUser(user);
+			} catch (IOException e) {
+				Logger.getDefaultInstance().log(e);
+			} catch (ClassNotFoundException e) {
+				Logger.getDefaultInstance().log(e);
 			}
-			getPhotoAlbumManager().editUser(user, username);
-
 			this.reloadTree();
 		}
 	}
@@ -572,7 +583,8 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getTreeData().getLastSelectedPathComponent();
 			if (selectedNode != null && selectedNode != getRootNode()) {
 				try {
-					getPhotoAlbumManager().deleteObject(selectedNode.getUserObject());
+//					getPhotoAlbumManager().deleteObject(selectedNode.getUserObject());
+					this.networkConnection.deleteObject(selectedNode.getUserObject());
 					DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
 					parentNode.remove(selectedNode);
 				} catch (Throwable e) {
