@@ -12,9 +12,9 @@
 			</generator>
 		</id>
 		
-		<many-to-one name="User" class="User" column="USER_ID" />
+		<many-to-one name="User" class="User" column="USER_ID" outer-join="true" />
 		
-		<many-to-one name="Photo" class="Photo" column="PHOTO_ID" />
+		<many-to-one name="Photo" class="Photo" column="PHOTO_ID" outer-join="true" />
 		
 		<property name="Text" column="TEXT" not-null="true" />
 	</class>

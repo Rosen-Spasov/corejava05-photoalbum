@@ -57,34 +57,36 @@ public class NetworkConnection {
 		return this.connectionString;
 	}
 	
+	private void openConnection() throws IOException {
+		this.url = new URL(this.getConnectionString());
+		this.httpUrlConnection = (HttpURLConnection) getUrl().openConnection();
+		this.httpUrlConnection.setRequestMethod("POST");
+		this.httpUrlConnection.setDoOutput(true);
+		this.httpUrlConnection.setDoInput(true);
+	}
+	
+	private Object exchangeData(Object outputData) throws IOException, ClassNotFoundException {
+		openConnection();
+		writeObject(outputData);
+		Object inputData = readObject();
+		return inputData;
+	}
+	
 	private URL getUrl() throws MalformedURLException {
-		if (this.url == null) {
-			this.url = new URL(this.getConnectionString());
-		}
 		return this.url;
 	}
 	
 	private HttpURLConnection getHttpUrlConnection() throws IOException {
-		if (this.httpUrlConnection == null) {
-			this.httpUrlConnection = (HttpURLConnection) getUrl().openConnection();
-			this.httpUrlConnection.setRequestMethod("POST");
-			this.httpUrlConnection.setDoOutput(true);
-			this.httpUrlConnection.setDoInput(true);
-		}
 		return this.httpUrlConnection;
 	}
 
 	private ObjectInputStream getObjectInputStream() throws IOException {
-		if (this.objectInputStream == null) {
-			this.objectInputStream = new ObjectInputStream(getHttpUrlConnection().getInputStream());
-		}
+		this.objectInputStream = new ObjectInputStream(getHttpUrlConnection().getInputStream());
 		return this.objectInputStream;
 	}
 
 	private ObjectOutputStream getObjectOutputStream() throws IOException {
-		if (this.objectOutputStream == null) {
-			this.objectOutputStream = new ObjectOutputStream(getHttpUrlConnection().getOutputStream());
-		}
+		this.objectOutputStream = new ObjectOutputStream(getHttpUrlConnection().getOutputStream());
 		return this.objectOutputStream;
 	}
 	
@@ -100,8 +102,7 @@ public class NetworkConnection {
 	public boolean adminAccessGranted(String password) throws IOException, ClassNotFoundException {
 		String cmd = CMD_ADMIN_ACCESS_GRANTED;
 		Object[] outputData = new Object[] { cmd, password };
-		writeObject(outputData);
-		Object inputData = readObject();
+		Object inputData = exchangeData(outputData);
 		Boolean result = false;
 		if (inputData instanceof Boolean) {
 			result = (Boolean) inputData;
@@ -110,7 +111,13 @@ public class NetworkConnection {
 	}
 
 	public User[] getAllUsers() throws IOException, ClassNotFoundException {
-		User[] users = (User[]) readObject();
+		String cmd = CMD_GET_ALL_USERS;
+		Object[] outputData = new Object[] { cmd };
+		Object inputData = exchangeData(outputData);
+		User[] users = null;
+		if (inputData instanceof User[]) {
+			users = (User[]) inputData;
+		}
 		return users;
 	}
 	
@@ -121,9 +128,16 @@ public class NetworkConnection {
 	
 	public void addUser(User user) throws CreateUserException {
 		try {
-			writeObject(user);
+			String cmd = CMD_ADD_USER;
+			Object[] outputData = new Object[] { cmd, user };
+			Object inputData = exchangeData(outputData);
+			if (inputData instanceof CreateUserException) {
+				throw (CreateUserException) inputData;
+			}
 		} catch (IOException e) {
-			throw new CreateUserException("Cannot create user [" + user.getUsername() + "].");
+			throw new CreateUserException("Cannot create user [" + user.getUsername() + "].", e);
+		} catch (ClassNotFoundException e) {
+			throw new CreateUserException("Cannot create user [" + user.getUsername() + "].", e);
 		}
 	}
 	
@@ -131,17 +145,14 @@ public class NetworkConnection {
 		writeObject(category);
 	}
 	
-	public void editUser(User user) throws IOException {
-		writeObject(user);
+	public void editUser(User user) throws IOException, ClassNotFoundException {
+		String cmd = CMD_EDIT_USER;
+		Object[] outputData = new Object[] { cmd, user };
+		Object inputData = exchangeData(outputData);
 	}
 	
 	public void deleteObject(Object obj) throws IOException {
 		writeObject(obj);
-	}
-	
-	public void close() throws IOException {
-		getObjectInputStream().close();
-		getObjectOutputStream().close();
 	}
 
 }

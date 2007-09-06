@@ -98,7 +98,10 @@ public class User implements Serializable, Comparable<User>, ICategoryContainer 
 		boolean result = false;
 		if (obj instanceof User) {
 			User user = (User) obj;
-			result = user.getUsername().equals(user.getUsername());
+			result = this.getUsername().equals(user.getUsername()) &&
+						this.getPassword().equals(user.getPassword()) &&
+						this.getFirstName().equals(user.getFirstName()) &&
+						this.getLastName().equals(user.getLastName());
 		}
 		return result;
 	}
