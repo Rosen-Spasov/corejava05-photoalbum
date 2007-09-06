@@ -16,46 +16,32 @@ import photoalbum.hibernate.HibernateConnection;
 import photoalbum.hibernate.HibernateConnectionManager;
 import photoalbum.logging.Logger;
 
-public class PhotoAlbumManager {
+public class PhotoAlbumManipulator {
 	
 	public static final String ROOT_DIR = "../PhotoAlbum";
 	
-	private static PhotoAlbumManager defaultInstance = null;
-	
-	public static PhotoAlbumManager getDefaultIntance() {
-		if (defaultInstance == null) {
-			defaultInstance = new PhotoAlbumManager();
-		}
-		return defaultInstance;
+	public static boolean adminAccessGranted(String password) {
+		return HibernateConnectionManager.adminAccessGranted(password);
 	}
-	
-	private HibernateConnectionManager hibernateConnectionManager = null;
 	
 	private HibernateConnection hbConnection = null;
-	
-	private PhotoAlbumManager() {
-	}
-	
-	public PhotoAlbumManager(HibernateConnectionManager hibernateConnectionManager) {
-		this.setHibernateConnectionManager(hibernateConnectionManager);
-	}
-	
-	private HibernateConnectionManager getHibernateConnectionManager() {
-		if (this.hibernateConnectionManager == null) {
-			this.hibernateConnectionManager = HibernateConnectionManager.getDefaultInstance();
-		}
-		return this.hibernateConnectionManager;
-	}
-	
-	private void setHibernateConnectionManager(HibernateConnectionManager hibernateConnectionManager) {
-		this.hibernateConnectionManager = hibernateConnectionManager;
-	}
 
 	private HibernateConnection getHbConnection() {
-		if (hbConnection == null || hbConnection.isReleased()) {
-			hbConnection = this.getHibernateConnectionManager().openConnection();
+		if (hbConnection == null) {
+			hbConnection = HibernateConnectionManager.openConnection();
 		}
 		return hbConnection;
+	}
+	
+	public boolean accessGranted(String userName, String password) {
+		
+		User user = getHbConnection().getUserByUserName(userName);
+		if (user != null && user.getPassword().equals(password)) {
+			return true;
+		}
+		getHbConnection().close();
+
+		return false;
 	}
 	
 	public User[] getAllUsers() {
@@ -184,5 +170,5 @@ public class PhotoAlbumManager {
 				image.getName().endsWith(".png")
 				);
 	}
-	
+
 }

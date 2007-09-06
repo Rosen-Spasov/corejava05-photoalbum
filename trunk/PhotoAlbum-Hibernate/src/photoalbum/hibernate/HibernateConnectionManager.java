@@ -9,7 +9,7 @@ import org.hibernate.cfg.Configuration;
 import photoalbum.logging.Logger;
 
 
-public class HibernateConnectionManager {
+public abstract class HibernateConnectionManager {
 	
 	public static enum DBProvider {ORACLE, MICROSOFT}
 	
@@ -33,61 +33,55 @@ public class HibernateConnectionManager {
 	
 	public static final String DIALECT_PROPERTY = "hibernate.dialect";
 	
-	public static int CONNECTION_POOL_SIZE = 20;	
+	public static int CONNECTION_POOL_SIZE = 20;
 	
-	private static HibernateConnectionManager defaultInstance = null;
-	
-	public static synchronized HibernateConnectionManager getDefaultInstance() {
-		if (defaultInstance == null) {
-			defaultInstance = new HibernateConnectionManager();
-		}
-		return defaultInstance;
-	}
-	
-	public HibernateConnectionManager() {
-	}
-	
-	private Configuration cfg = null;
+	private static Configuration cfg = null;
 
-	private SessionFactory sessionFactory = null;
+	private static SessionFactory sessionFactory = null;
 	
-	private ArrayList<HibernateConnection> connections = null;
+	private static ArrayList<HibernateConnection> connections = null;
 	
-	private boolean configured = false;
+	private static boolean configured = false;
 	
-	private Configuration getCfg() {
-		if (this.cfg == null) {
-			this.cfg = new Configuration();
+	static {
+		for (int i = 0; i < CONNECTION_POOL_SIZE; i++) {
+			openConnection();
 		}
-		return this.cfg;
 	}
 	
-	private SessionFactory getSessionFactory() {
-		if (this.sessionFactory == null) {
+	private static Configuration getCfg() {
+		if (cfg == null) {
+			cfg = new Configuration();
+		}
+		return cfg;
+	}
+	
+	private static SessionFactory getSessionFactory() {
+		if (sessionFactory == null) {
 			if (!isConfigured()) {
 				configure();
 			}
-			this.sessionFactory = getCfg().buildSessionFactory(); 
+			sessionFactory = getCfg().buildSessionFactory(); 
 		}
-		return this.sessionFactory;
+		return sessionFactory;
 	}
 	
-	private ArrayList<HibernateConnection> getConnections() {
-		if (this.connections == null) {
-			this.connections = new ArrayList<HibernateConnection>();
+	private static ArrayList<HibernateConnection> getConnections() {
+		if (connections == null) {
+			connections = new ArrayList<HibernateConnection>();
 		}
-		return this.connections;
+		return connections;
 	}
 	
-	public boolean isConfigured() {
-		return this.configured;
+	public static boolean isConfigured() {
+		return configured;
 	}
 
-	private void setConfigured(boolean configured) {
-		this.configured = configured;
+	private static void setConfigured(boolean configured) {
+		HibernateConnectionManager.configured = configured;
 	}
 	
-	private HibernateConnection findAvailableConnection() {
+	private static HibernateConnection findAvailableConnection() {
 		HibernateConnection connection = null;
 		for (int index = 0; index < getConnections().size(); index++) {
 			if (getConnections().get(index).isReleased()) {
@@ -98,12 +92,12 @@ public class HibernateConnectionManager {
 		return connection;
 	}
 	
-	public synchronized HibernateConnection openConnection() {
+	public static synchronized HibernateConnection openConnection() {
 		HibernateConnection connection = findAvailableConnection();
 		if (connection == null) {
 			Session session = getSessionFactory().openSession();
 			try {
-				connection = new HibernateConnection(this, session);
+				connection = new HibernateConnection(session);
 			} catch (IllegalArgumentException exc) {
 				Logger.getDefaultInstance().log(exc);
 			}
@@ -112,24 +106,24 @@ public class HibernateConnectionManager {
 		return connection;
 	}
 	
-	public synchronized void closeConnection(HibernateConnection connection) {
+	public static synchronized void closeConnection(HibernateConnection connection) {
 		if (getConnections().size() > CONNECTION_POOL_SIZE) {
 			getConnections().remove(connection);
 		}
 	}
 	
-	public void configure() {
+	public static void configure() {
 		getCfg().configure(CONFIG_FILE);
 		setConfigured(true);
 	}
 	
-	public void configure(String host, String port, String sid, String dbProvider) {
+	public static void configure(String host, String port, String sid, String dbProvider) {
 		if ( dbProvider.compareToIgnoreCase(DBProvider.ORACLE.toString()) == 0 ) {
 			configure(host, port, sid, DBProvider.ORACLE);
 		}
 	}
 	
-	public void configure(String host, String port, String sid, DBProvider dbProvider) {
+	public static void configure(String host, String port, String sid, DBProvider dbProvider) {
 		if (!isConfigured()) {
 			if (dbProvider == DBProvider.ORACLE) {
 				String dialect = "org.hibernate.dialect.OracleDialect";
@@ -148,27 +142,7 @@ public class HibernateConnectionManager {
 		}
 	}
 	
-	public void initialize() throws Throwable {
-		try {
-			for (int i = 0; i < CONNECTION_POOL_SIZE; i++) {
-				openConnection();
-			}
-			setConfigured(true);
-		} catch (Throwable e) {
-			Logger.getDefaultInstance().log(e);
-			reset();
-			throw e;
-		}
-	}
-	
-	public void reset() {
-		cfg = null;
-		sessionFactory = null;
-		connections = null;
-		setConfigured(false);
-	}
-	
-	public boolean accessGranted(String password) {
+	public static boolean adminAccessGranted(String password) {
 		return getCfg().getProperty(PASSWORD_PROPERTY).equals(password);
 	}
 	
