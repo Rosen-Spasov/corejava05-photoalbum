@@ -7,15 +7,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import photoalbum.PhotoAlbumManager;
+import photoalbum.PhotoAlbumManipulator;
 import photoalbum.entities.Category;
 import photoalbum.entities.Photo;
 import photoalbum.entities.User;
 import photoalbum.logging.Logger;
 
-public class FileSystemManager {
+public abstract class FileSystemManager {
 	
-	public static final String ROOT_DIR = PhotoAlbumManager.ROOT_DIR;
+	public static final String ROOT_DIR = PhotoAlbumManipulator.ROOT_DIR;
 	
 	public static final int BUFF_SIZE = 1 * 1024 * 1024;
 	
