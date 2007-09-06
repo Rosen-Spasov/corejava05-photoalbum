@@ -21,11 +21,12 @@ public class Logger {
 	
 	private static Hashtable<String, Logger> loggers = null;
 	
-	private String logFileName = Logger.LOGS_DIRECTORY + "/" + Logger.DEFAULT_LOG_FILENAME;
+	private String logFileName = null;
 	
 	private PrintWriter logWriter = null;
 	
 	private Logger() {
+		this(Logger.DEFAULT_LOG_FILENAME);
 	}
 	
 	private Logger(String logFileName) {
@@ -72,10 +73,10 @@ public class Logger {
 	
 	private void setLogFileName(String logFileName) {
 		if (logFileName != null) {
-			if (!Utilities.parentDirExists(logFileName)) {
-				Utilities.createParentDirs(logFileName);
-			}
 			this.logFileName = Logger.LOGS_DIRECTORY + "/" + logFileName;
+			if (!Utilities.parentDirExists(this.logFileName)) {
+				Utilities.createParentDirs(this.logFileName);
+			}
 		} else {
 			throw new IllegalArgumentException("[null] is not a valid argument for [void setLogFileName(String)].");
 		}

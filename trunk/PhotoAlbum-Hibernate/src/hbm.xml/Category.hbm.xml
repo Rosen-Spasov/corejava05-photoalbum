@@ -12,16 +12,16 @@
 			</generator>
 		</id>
 		
-		<many-to-one name="ParentCategory" class="Category" column="PARENT_CATEGORY_ID" />
+		<many-to-one name="ParentCategory" class="Category" column="PARENT_CATEGORY_ID" lazy="false" outer-join="true" />
 	
-		<many-to-one name="User" class="User" column="USER_ID" />
+		<many-to-one name="User" class="User" column="USER_ID" lazy="false" outer-join="true" />
 		
-		<set name="Photos" table="Photos" cascade="all" order-by="PH_NAME">
+		<set name="Photos" table="Photos" cascade="all" order-by="PH_NAME" lazy="false" outer-join="true">
 			<key column="CATEGORY_ID" />
 			<one-to-many class="Photo" />
 		</set>
 		
-		<set name="Categories" table="Categories" cascade="all" order-by="CAT_NAME">
+		<set name="Categories" table="Categories" cascade="all" order-by="CAT_NAME" lazy="false" outer-join="true">
 			<key column="PARENT_CATEGORY_ID" />
 			<one-to-many class="Category" />
 		</set>

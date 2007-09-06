@@ -12,9 +12,9 @@
 			</generator>
 		</id>
 		
-		<many-to-one name="Category" class="Category" column="CATEGORY_ID" />
+		<many-to-one name="Category" class="Category" column="CATEGORY_ID" lazy="false" outer-join="true" />
 
-		<set name="Comments" table="COMMENTS" cascade="all">
+		<set name="Comments" table="COMMENTS" cascade="all" lazy="false" outer-join="true">
 			<key column="PHOTO_ID"/>
 			<one-to-many class="Comment"/>
 		</set>

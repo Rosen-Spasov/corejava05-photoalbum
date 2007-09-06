@@ -68,7 +68,7 @@ public class PhotoAlbumManipulator {
 				throw new CreateUserException("Cannot create user [" + username + "].", e);
 			}
 		} else {
-			throw new CreateUserException("User [" + username + "] already exists.");			
+			throw new CreateUserException("User [" + username + "] already exists.");
 		}
 		return user;
 	}
