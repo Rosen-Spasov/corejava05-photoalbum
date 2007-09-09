@@ -547,7 +547,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			if (selectedNode != null && selectedNode != getRootNode()) {
 				Object selectedObject = selectedNode.getUserObject();
 				if (selectedObject instanceof User) {
-					editUser((User) selectedObject);
+					editUser( (User) selectedObject );
 				}
 			}
 		}
