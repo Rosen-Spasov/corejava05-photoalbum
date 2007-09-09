@@ -52,25 +52,31 @@ public class PhotoAlbumManipulator {
 		return users;
 	}
 	
+	public User getUserById(int userId) {
+		return getHbConnection().getUserById(userId);
+	}
+	
 	public User getUserByUsername(String username) {
 		return getHbConnection().getUserByUserName(username);
 	}
 	
-	public User addUser(String username, String password, String firstName, String lastName) throws CreateUserException {
-		User user = getHbConnection().getUserByUserName(username);
-		if (user == null) {
-			user = new User(username, password, firstName, lastName);
+	public void addUser(String username, String password, String firstName, String lastName) throws CreateUserException {
+		User user = new User(username, password, firstName, lastName);
+		addUser(user);
+	}
+	
+	public void addUser(User user) throws CreateUserException {
+		if (getHbConnection().getUserByUserName(user.getUsername()) == null) {
 			try {
-				FileSystemManager.addUser(username);
+				FileSystemManager.addUser(user.getUsername());
 				getHbConnection().save(user);
 			} catch (Throwable e) {				
 				Logger.getDefaultInstance().log(e);
-				throw new CreateUserException("Cannot create user [" + username + "].", e);
+				throw new CreateUserException("Cannot create user [" + user.getUsername() + "].", e);
 			}
 		} else {
-			throw new CreateUserException("User [" + username + "] already exists.");
+			throw new CreateUserException("User [" + user.getUsername() + "] already exists.");
 		}
-		return user;
 	}
 	
 	public void addFileStructure(Object parentObject, File[] selectedFiles) {
@@ -125,6 +131,10 @@ public class PhotoAlbumManipulator {
 		return category;
 	}
 	
+	public Category getCategoryById(int categoryId) {
+		return getHbConnection().getCategoryById(categoryId);
+	}
+	
 	private Photo addPhoto(Category parent, File imageFile) {
 		
 		String phName = imageFile.getName();
@@ -149,17 +159,61 @@ public class PhotoAlbumManipulator {
 		return photo;
 	}
 	
-	public void editUser(User user, String username) {		
-		getHbConnection().update(user);
+	public void editUser(User user) {
+		int userId = user.getUserId();
+		editUser(userId);
 	}
 	
-	public void deleteObject(Object obj) throws Throwable {
+	public void editUser(int userId) {
+		User user = getUserById(userId);
+		
+		getHbConnection().beginTransaction();
 		try {
-			FileSystemManager.deleteObject(obj);
-			getHbConnection().delete(obj);
+			getHbConnection().update(user);
+			getHbConnection().commit();
 		} catch (Throwable e) {
+			getHbConnection().rollback();
 			Logger.getDefaultInstance().log(e);
-			throw e;
+		}
+	}
+	
+	public void delete(Object obj) {
+		if (obj instanceof User) {
+			User user = (User) obj;
+			deleteUser(user.getUserId());
+		} else if (obj instanceof Category) {
+			Category category = (Category) obj;
+			deleteCategory(category.getCategoryId());
+		} else if (obj instanceof Photo) {
+			Photo photo = (Photo) obj;
+			deletePhoto(photo.getPhotoId());
+		}
+	}
+	
+	public void deleteUser(int userId) {
+		User user = getHbConnection().getUserById(userId);
+		deleteObject(user);
+	}
+	
+	public void deleteCategory(int categoryId) {
+		Category category = getHbConnection().getCategoryById(categoryId);
+		deleteObject(category);
+	}
+	
+	public void deletePhoto(int photoId) {
+		Photo photo = getHbConnection().getPhotoById(photoId);
+		deleteObject(photo);
+	}
+	
+	private void deleteObject(Object obj) {
+		getHbConnection().beginTransaction();
+		try {
+			getHbConnection().delete(obj);
+			FileSystemManager.delete(obj);
+			getHbConnection().commit();
+		} catch (Throwable e) {
+			getHbConnection().rollback();
+			Logger.getDefaultInstance().log(e);
 		}
 	}
 	
