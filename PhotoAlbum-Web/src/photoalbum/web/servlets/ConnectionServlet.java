@@ -47,15 +47,21 @@ import photoalbum.network.NetworkConnection;
 			if (obj instanceof Object[]) {
 				Object[] inputData = (Object[]) obj;
 				Object outputData = null;
-				String cmd = (String) inputData[0];
-				if (NetworkConnection.CMD_ADMIN_ACCESS_GRANTED.equals(cmd) && inputData.length == 2) {
-					outputData = adminAccessGranted(inputData[1]);
-				} else if (NetworkConnection.CMD_GET_ALL_USERS.equals(cmd)) {
-					outputData = getAllUsers();
-				} else if (NetworkConnection.CMD_ADD_USER.equals(cmd) && inputData.length == 2) {
-					outputData = addUser(inputData[1]);
+				if (inputData.length > 0) {
+					String cmd = (String) inputData[0];
+					if (NetworkConnection.CMD_ADMIN_ACCESS_GRANTED.equals(cmd) && inputData.length == 2) {
+						outputData = adminAccessGranted(inputData[1]);
+					} else if (NetworkConnection.CMD_GET_ALL_USERS.equals(cmd)) {
+						outputData = getAllUsers();
+					} else if (NetworkConnection.CMD_ADD_USER.equals(cmd) && inputData.length == 2) {
+						outputData = addUser(inputData[1]);
+					} else if (NetworkConnection.CMD_EDIT_USER.equals(cmd) && inputData.length == 2) {
+						editUser(inputData[1]);
+					} else if (NetworkConnection.CMD_DELETE_OBJECT.equals(cmd) && inputData.length == 2) {
+						delete(inputData[1]);
+					}
+					writeData(response, outputData);
 				}
-				writeData(response, outputData);
 			}
 		} catch (ClassNotFoundException e) {
 			Logger.getDefaultInstance().log(e);
@@ -83,17 +89,27 @@ import photoalbum.network.NetworkConnection;
 		return getPhotoAlbumManipulator().getAllUsers();
 	}
 	
-	private Object addUser(Object obj) {
-		User user = null;
+	private CreateUserException addUser(Object obj) {
 		if (obj instanceof User) {
-			user = (User) obj;
+			User user = (User) obj;
 			try {
-				user = getPhotoAlbumManipulator().addUser(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName());
+				getPhotoAlbumManipulator().addUser(user);
 			} catch (CreateUserException e) {
 				Logger.getDefaultInstance().log(e);
 				return e;
 			}
 		}
-		return obj.equals(user) ? obj : user;
+		return null;
+	}
+	
+	private void editUser(Object obj) {
+		if (obj instanceof User) {
+			User user = (User) obj;
+			getPhotoAlbumManipulator().editUser(user.getUserId());
+		}
+	}
+	
+	private void delete(Object obj) {
+		getPhotoAlbumManipulator().delete(obj);
 	}
 }
