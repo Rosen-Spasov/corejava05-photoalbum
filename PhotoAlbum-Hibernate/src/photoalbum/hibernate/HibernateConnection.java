@@ -57,30 +57,24 @@ public class HibernateConnection {
 	}
 	
 	private Transaction getTransaction() {
-		if (this.transaction == null) {
-			this.transaction = this.getSession().beginTransaction();
-		}
 		return this.transaction;
 	}
 	
 	private void setTransaction(Transaction transaction) throws IllegalArgumentException {
-		if (transaction != null) {
-			this.transaction = transaction;
-		} else {
-			throw new IllegalArgumentException("[null] is not a valid argument for [void setTransaction(Transaction)].");
-		}
+		this.transaction = transaction;
 	}
 	
-	private void beginTransaction() {
+	public void beginTransaction() {
 		Transaction transaction = this.getSession().beginTransaction();
+		transaction.begin();
 		this.setTransaction(transaction);
 	}
 	
-	private void commit() {
+	public void commit() {
 		this.getTransaction().commit();
 	}
 	
-	private void rollback() {
+	public void rollback() {
 		this.getTransaction().rollback();
 	}
 	
@@ -101,14 +95,7 @@ public class HibernateConnection {
 	}
 	
 	public void update(Object obj) {
-		this.beginTransaction();
-		try {
-			this.getSession().update(obj);
-			this.commit();
-		} catch (Throwable e) {
-			this.rollback();
-			this.getLogger().log(e);
-		}
+		this.getSession().update(obj);
 	}
 	
 	public void delete(Object obj) {
@@ -142,8 +129,16 @@ public class HibernateConnection {
 	}
 	
 	
-	public User getUserByID(int userID) {
-		return (User) this.get(User.class, userID);
+	public User getUserById(int userId) {
+		return (User) this.get(User.class, userId);
+	}
+	
+	public Category getCategoryById(int categoryId) {
+		return (Category) this.get(Category.class, categoryId);
+	}
+	
+	public Photo getPhotoById(int photoId) {
+		return (Photo) this.get(Photo.class, photoId);
 	}
 	
 	public User getUserByUserName(String username) {

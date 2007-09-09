@@ -35,7 +35,10 @@ public abstract class FileSystemManager {
 		return file.delete();
 	}
 	
-	public static boolean deleteObject(Object obj) {
+	public static boolean delete(Object obj) {
+		if (obj == null) {
+			return false;
+		}
 		if (obj instanceof User) {
 			return deleteUser((User) obj);
 		} else if (obj instanceof Category) {

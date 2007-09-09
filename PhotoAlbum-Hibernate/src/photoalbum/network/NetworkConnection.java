@@ -148,11 +148,13 @@ public class NetworkConnection {
 	public void editUser(User user) throws IOException, ClassNotFoundException {
 		String cmd = CMD_EDIT_USER;
 		Object[] outputData = new Object[] { cmd, user };
-		Object inputData = exchangeData(outputData);
+		exchangeData(outputData);
 	}
 	
-	public void deleteObject(Object obj) throws IOException {
-		writeObject(obj);
+	public void deleteObject(Object obj) throws IOException, ClassNotFoundException {
+		String cmd = CMD_DELETE_OBJECT;
+		Object[] outputData = new Object[] { cmd, obj };
+		exchangeData(outputData);
 	}
 
 }
