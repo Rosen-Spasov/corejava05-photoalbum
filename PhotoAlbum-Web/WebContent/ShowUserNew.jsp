@@ -24,16 +24,16 @@
 		</td>
 		<td width="125"><img src="Themes/top-right.gif"></td>
 	</tr></table>
+<% String id = (String)request.getParameter("param1");%>
 <% User userLogin = (User)session.getAttribute("login"); %>
 <% User user = (User)session.getAttribute("user"); 
 	if (user == null){
-	
 	%>
 	<table class="main_table" align="center" cellpadding="0" cellspacing="0" >
 	<tr><td></td><td><div style="color: red;">За съжаление няма намерен потребител с това име</div></td></tr>
 	<tr><td></td><td><a href="MainPage.jsp">връщане в начална страница</a>
 	<% }else{%>
-	<tr><td></td><td></td></tr>
+	<tr><td></td><td>${user.firstName}</td></tr>
 	<tr><td></td><td style="" align="center"><div style="font-size: 20px; color: maroon; background-color: aqua" align="center"> <%= "Това е профила на "+user.getFirstName()+ " "+ user.getLastName() %></div></td></tr>
 						<tr>
 				<td colspan="2" style="width: 950px; height: 21px; padding:0; margin:0; background-color: white;" class="">
@@ -81,22 +81,21 @@
 				Set<Category> category = user.getCategories();
 				String[] type = {"mainTab searchTab","mainTab profileTab","mainTab messagesTab","mainTab invTab",
 				"mainTab startTab selectedStart","mainTab videoTab","mainTab photoTab","mainTab groupsTab"};
+				  int catSize = category.size();
+				  out.println(catSize);
+				 for (int cat=0;cat<=catSize;){ 
 				
 				 %>
 				<tr>
 		<td class="mainMenu">	
-				<% int t=0;
-				for (Category categ : category){
-				
-				%>
+		<%int t=0;
+		 for(Category categ : category){%>
 				<div class="<%= type[t] %>">
 					<img src="img/tl.gif" class="tl" alt="tl" />
 					<span class="mainTab1"><a href="ShowAllPictuers?param=<%= categ %>" title="<%= categ %>"><%= categ %></a></span>
 					<img src="img/tr.gif" class="tr" alt="tr" />
 				</div>
-				
-			<% t++;} %>
-			
+				<% }%>
 		</td>
 	</tr>
 </table>				</td>
@@ -115,36 +114,86 @@
 		<td class="tabsTableMiddle">
 			<div class="loadingPictures" id="PicturesLoading" style="display:none;">&nbsp;</div>
 			<div id="women">
-					<%String firstPath = "C:\\ZaharyAnastasov\\Project";
-					Set<Category> category = user.getCategories();
-					String path = (String)session.getAttribute("path");
-					
-					%>			
+									
 <div class="smallestProfile" >
 	<div class="smallProfilePicOnline" >
-		<a href="fullScreen.jsp?pic=<%= firstPath+path %>"><img src="<%=firstPath+path %>" alt="alonso" title="title" height="150px"/></a>
+		<a href="fullScreen.jsp?pic=C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\alonso.jpg"><img src="C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\alonso.jpg" alt="alonso" title="alonso" height="150px"/></a>
 	</div>
 			<div class="vipPic">&nbsp;</div>
 		<div class="lh17">
-		<a href="fullScreen.jsp?pic=<%=firstPath+path %>" class="link bold">Виж в цял размер</a>
-		<%= "cska"  %>
+		<a href="fullScreen.jsp?pic=C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\alonso.jpg" class="link bold">Виж в цял размер</a>
+		Алонсо
 	</div>
 	<div class="lh17">София</div>
 	<div class="lh17">Koментари <span class="bold">2851</span></div>
-	<div style="color: blue;">
-	<a href="comment.JSP?picPath=<%=firstPath+path %>" class="link bold" >Добави коментар</a>
-	</div>
 	<%if (userLogin.equals(user)){%>
 	<br><br>
 	<div style="color: red;">
-	<a href="DeletePictureServlet?pic=<%=firstPath+path %>" class="link bold" >Изтрии</a>
+	<a href="DeletePictureServlet?pic=C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\alonso.jpg" class="link bold" >Изтрии</a>
 	</div>
 	<div style="color: green;">
-	<a href="renamePicture.jsp?pic=<%=firstPath+path %>" class="link bold" >Преименувай</a>
+	<a href="renamePicture.jsp?pic=C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\alonso.jpg" class="link bold" >Преименувай</a>
 	</div>
 	<%} %>
 </div>			
-</td>
+</td><td>
+
+<div class="smallestProfile">
+	<div class="smallProfilePicOnline">
+		<a href="fullScreen.jsp?pic=C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\briatore.jpg"><img src="C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\briatore.jpg" alt="alonso" title="alonso" height="150px"/></a>
+	</div>
+			<div class="vipPic">&nbsp;</div>
+		<div class="lh17">
+		<a href="fullScreen.jsp?pic=C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\briatore.jpg" class="link bold">Виж в цял размер</a>
+		Алонсо
+	</div>
+	<div class="lh17">София</div>
+	<div class="lh17">Koментари <span class="bold">2851</span></div>
+	<%if (userLogin.equals(user)){%>
+	<br><br>
+	<div style="color: red;">
+	<a href="DeletePictureServlet?pic=alonso.jpg" class="link bold" >Изтрии</a>
+	</div>
+	<%} %>
+</div>			
+</td><td>
+<div class="smallestProfile">
+	<div class="smallProfilePicOnline">
+		<a href="fullScreen.jsp?pic=C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\ferrari.jpg"><img src="C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\ferrari.jpg" alt="alonso" title="alonso" height="150px"/></a>
+	</div>
+			<div class="vipPic">&nbsp;</div>
+		<div class="lh17">
+		<a href="fullScreen.jsp?pic=C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\ferrari.jpg" class="link bold">Виж в цял размер</a>
+		Алонсо
+	</div>
+	<div class="lh17">София</div>
+	<div class="lh17">Koментари <span class="bold">2851</span></div>
+	<%if (userLogin.equals(user)){%>
+	<br><br>
+	<div style="color: red;">
+	<a href="DeletePictureServlet?pic=alonso.jpg" class="link bold" >Изтрии</a>
+	</div>
+	<%} %>
+</div></td>
+<td>
+<div class="smallestProfile">
+	<div class="smallProfilePicOnline">
+		<a href="fullScreen.jsp?pic=C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\renault.gif"><img src="C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\renault.gif" alt="alonso" title="alonso" height="150px"/></a>
+	</div>
+			<div class="vipPic">&nbsp;</div>
+		<div class="lh17">
+		<a href="fullScreen.jsp?pic=C:\ZaharyAnastasov\Project\PhotoAlbum\marin85\formula1\renault.gif" class="link bold">Виж в цял размер</a>
+		Алонсо
+	</div>
+	<div class="lh17">София</div>
+	<div class="lh17">Koментари <span class="bold">2851</span></div>
+	<%if (userLogin.equals(user)){%>
+	<br><br>
+	<div style="color: red;">
+	<a href="DeletePictureServlet?pic=alonso.jpg" class="link bold" >Изтрии</a>
+	</div>
+	<%} %>
+</div></td>
 	<tr><td>
 	<div class="fLeft left10">
 				<a href="ShowUser.jsp?page=1" onclick="MainPage.jsp; return false; "><img src="img/btnLeft.gif" align="absmiddle" /></a>
@@ -154,9 +203,6 @@
 			
 
 </div></td></tr>
-
-
-
 </table>
 </body>
 </html>

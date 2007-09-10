@@ -19,29 +19,11 @@
 			photoalbum.servlet.web.aaa</servlet-class>
 		</servlet>
 		<servlet>
-			<description>
-			</description>
-			<display-name>
-			ShowAllPictuers</display-name>
-			<servlet-name>ShowAllPictuers</servlet-name>
-			<servlet-class>
-			photoalbum.servlet.web.ShowAllPictuers</servlet-class>
-		</servlet>
-		<servlet>
   <description /> 
   <display-name>LoginServlet</display-name> 
   <servlet-name>LoginServlet</servlet-name> 
   <servlet-class>photoalbum.servlet.web.LoginServlet</servlet-class> 
   </servlet>
-  <servlet>
-		<description>
-		</description>
-		<display-name>
-		SearchServlet</display-name>
-		<servlet-name>SearchServlet</servlet-name>
-		<servlet-class>
-		photoalbum.servlet.web.SearchServlet</servlet-class>
-	</servlet>
 		<servlet-mapping>
 			<servlet-name>GetAllUserServlet</servlet-name>
 			<url-pattern>/GetAllUserServlet</url-pattern>
@@ -51,19 +33,8 @@
 			<url-pattern>/allUser</url-pattern>
 		</servlet-mapping>
 		<servlet-mapping>
-			<servlet-name>SearchServlet</servlet-name>
-			<url-pattern>/SearchServlet</url-pattern>
+			<servlet-name>aaa</servlet-name>
+			<url-pattern>/aaa</url-pattern>
 		</servlet-mapping>
-		<servlet-mapping>
-			<servlet-name>ShowAllPictuers</servlet-name>
-			<url-pattern>/ShowAllPictuers</url-pattern>
-		</servlet-mapping>
-		
-		ShowAllPictuers
-		<servlet-mapping>
-  <servlet-name>LoginServlet</servlet-name> 
-  <url-pattern>/LoginServlet</url-pattern> 
-  </servlet-mapping>
-
 		
 	</web-app>

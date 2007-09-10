@@ -31,12 +31,13 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.common.modulecore.ModuleCoreNature</nature>
 		<nature>org.eclipse.jem.workbench.JavaEMFNature</nature>
+		<nature>org.eclipse.jem.beaninfo.BeanInfoNature</nature>
 	</natures>
 	<linkedResources>
 		<link>
 			<name>src-hibernate</name>
 			<type>2</type>
-			<location>C:/ZahariAnastasov/Project/PhotoAlbum-Hibernate/src</location>
+			<location>C:/ZaharyAnastasov/Project/PhotoAlbum-Hibernate/src</location>
 		</link>
 	</linkedResources>
 </projectDescription>

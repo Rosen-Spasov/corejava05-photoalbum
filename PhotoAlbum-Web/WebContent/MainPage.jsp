@@ -1,6 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="photoalbum.entities.User"%>
+<%@page import="photoalbum.PhotoAlbumManipulator"%>
 <html>
 <head>
 	<title>Фото албум - Намери снимките, които търсиш!</title>
@@ -8,14 +10,19 @@
 	<script type="text/javascript"></script>
 </head>	
 <body onload="">
-	
+	<% User userLogin = (User)session.getAttribute("login");%>
 	<table class="mainTable" cellpadding="0" cellspacing="0" align="center">
 		<tr><td colspan="3" class="mainTop"></td></tr>
 		<td class="vseparator">&nbsp;</td>
 		<tr><td colspan="3" class="mainTopMenu">
 			<table cellspacing="0" class="flex">
-				<tr><td class="left pLeft10">Най-големият сайт за снимки в България!</td><td class="right">
+				<tr><td class="left pLeft10">Най-големият сайт за снимки в България! </td><td class="right">
+				<% if (userLogin == null){ %>
 				<a href="register.jsp">Регистрация</a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+				<% }else {  %>
+				<a href="ShowUser.jsp"><%= "Добре дошъл " +userLogin.getFirstName()+" " +userLogin.getLastName() %></a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+				<% session.setAttribute("user",userLogin); %>
+				<% } %>
 				<a href="SearchServlet">Търсене</a><span class="separator"><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
 				<a href="Help.jsp">Помощ</a>
 					</td>
@@ -29,8 +36,9 @@
 				
 					<tr><td class="leftLoginTop">&nbsp;</td></tr>
 					<tr><td><table cellpadding="0" cellspacing="0" class="leftLoginForm">
-					<% String login = (String)session.getAttribute("login");
-					if (login != "true"){
+					
+					
+				<% if (userLogin == null){
 				 %>
 					<tr><td class="left pTop10 pLeft10"><label for="userName">Име: </label></td>
 						<td class="left pTop10 pRight10"><input type="text" class="textInput" name="username" id="username" /></td>
@@ -63,7 +71,7 @@
 	</table>
 				</form>
 								<!--left menu -->
-	<div style="width:170px ; height:580px; overflow: scroll">				
+	<div style="width:170px ; height:300px; overflow: scroll">				
 <table cellpadding="0" cellspacing="0" class="leftMenu top10" >
 
 	<tr>
@@ -76,9 +84,17 @@
 	<td class="pRight10 pTop10">
 	
 		<ol type="disc">
-			<% for (int k=0;k<80;k++){ %>
+		<% User[] allUser = (User[])session.getAttribute("allUser"); 
+				if (allUser == null){
+				PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
+				allUser = edit.getAllUsers();
+				session.setAttribute("allUser",allUser);
+				}
+		%>
 		
-		<tr><td><li><a href="ShowUser.jsp?param1=<%= k %>">user <%= k %></a></li></td></tr>
+			<% for (User user: allUser){ %>
+		
+		<tr><td><li><a href="SearchServlet?searchName=<%= user.getUsername() %>"><%= user.getUsername() %></a></li></td></tr>
 			<%} %>	
 		</ol>
 			</td>
@@ -181,7 +197,8 @@
 											<input type="submit" class="button" style="width:90px;" name="btnSearch" value="Търси" />
 										</td>
 									</tr>
-									<% String search = (String) session.getAttribute("search");
+									<% String search = (String) request.getAttribute("search");
+									
 									if (search != null){
 									%><tr><td><%= search %><%} %>
 								</table>
