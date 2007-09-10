@@ -568,7 +568,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 				if (!password.equals("")) {
 					user.setPassword(this.getUserDialog().getPassword());
 				}
-				this.networkConnection.editUser(user);
+				this.networkConnection.updateUser(user);
 			} catch (IOException e) {
 				Logger.getDefaultInstance().log(e);
 			} catch (ClassNotFoundException e) {
