@@ -43,8 +43,6 @@ public class HibernateConnection {
 	}
 	
 	private Session getSession() {
-		if (this.session == null) {
-		}
 		return this.session;
 	}
 	
@@ -84,14 +82,7 @@ public class HibernateConnection {
 	}
 	
 	public void save(Object obj) {
-		this.beginTransaction();
-		try {
-			this.getSession().save(obj);
-			this.commit();
-		} catch (Throwable e) {
-			this.rollback();
-			this.getLogger().log(e);
-		}
+		this.getSession().save(obj);
 	}
 	
 	public void update(Object obj) {
@@ -99,14 +90,7 @@ public class HibernateConnection {
 	}
 	
 	public void delete(Object obj) {
-		this.beginTransaction();
-		try {
-			this.getSession().delete(obj);
-			this.commit();
-		} catch (Throwable e) {
-			this.rollback();
-			this.getLogger().log(e);
-		}
+		this.getSession().delete(obj);
 	}
 	
 	public Object get(Class objClass, int primaryKey) {

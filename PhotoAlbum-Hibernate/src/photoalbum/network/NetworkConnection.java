@@ -21,7 +21,7 @@ public class NetworkConnection {
 	
 	public static final String CMD_ADD_CATEGORY = "addCategory";
 	
-	public static final String CMD_EDIT_USER = "editUser";
+	public static final String CMD_UPDATE_USER = "editUser";
 	
 	public static final String CMD_DELETE_OBJECT = "deleteObject";
 	
@@ -145,8 +145,8 @@ public class NetworkConnection {
 		writeObject(category);
 	}
 	
-	public void editUser(User user) throws IOException, ClassNotFoundException {
-		String cmd = CMD_EDIT_USER;
+	public void updateUser(User user) throws IOException, ClassNotFoundException {
+		String cmd = CMD_UPDATE_USER;
 		Object[] outputData = new Object[] { cmd, user };
 		exchangeData(outputData);
 	}

@@ -67,10 +67,13 @@ public class PhotoAlbumManipulator {
 	
 	public void addUser(User user) throws CreateUserException {
 		if (getHbConnection().getUserByUserName(user.getUsername()) == null) {
+			getHbConnection().beginTransaction();
 			try {
 				FileSystemManager.addUser(user.getUsername());
 				getHbConnection().save(user);
-			} catch (Throwable e) {				
+				getHbConnection().commit();
+			} catch (Throwable e) {
+				getHbConnection().rollback();
 				Logger.getDefaultInstance().log(e);
 				throw new CreateUserException("Cannot create user [" + user.getUsername() + "].", e);
 			}
@@ -159,50 +162,56 @@ public class PhotoAlbumManipulator {
 		return photo;
 	}
 	
-	public void editUser(User user) {
+	public void updateUser(User user) {
 		int userId = user.getUserId();
-		editUser(userId);
-	}
-	
-	public void editUser(int userId) {
-		User user = getUserById(userId);
 		
-		getHbConnection().beginTransaction();
-		try {
-			getHbConnection().update(user);
-			getHbConnection().commit();
-		} catch (Throwable e) {
-			getHbConnection().rollback();
-			Logger.getDefaultInstance().log(e);
+		User userInDB = getUserById(userId);
+		
+		if (userInDB != null) {
+			userInDB.setUsername(user.getUsername());
+			userInDB.setFirstName(user.getFirstName());
+			userInDB.setLastName(user.getLastName());
+			userInDB.setPassword(user.getPassword());
+			
+			getHbConnection().beginTransaction();
+			try {
+				getHbConnection().update(userInDB);
+				getHbConnection().commit();
+			} catch (Throwable e) {
+				getHbConnection().rollback();
+				Logger.getDefaultInstance().log(e);
+			}
 		}
 	}
 	
 	public void delete(Object obj) {
 		if (obj instanceof User) {
 			User user = (User) obj;
-			deleteUser(user.getUserId());
+			deleteUser(user);
 		} else if (obj instanceof Category) {
 			Category category = (Category) obj;
-			deleteCategory(category.getCategoryId());
+			deleteCategory(category);
 		} else if (obj instanceof Photo) {
 			Photo photo = (Photo) obj;
-			deletePhoto(photo.getPhotoId());
+			deletePhoto(photo);
 		}
 	}
 	
-	public void deleteUser(int userId) {
-		User user = getHbConnection().getUserById(userId);
-		deleteObject(user);
+	public void deleteUser(User user) {
+		User userInDB = getHbConnection().getUserById(user.getUserId());		
+		deleteObject(userInDB);
 	}
 	
-	public void deleteCategory(int categoryId) {
-		Category category = getHbConnection().getCategoryById(categoryId);
-		deleteObject(category);
+	public void deleteCategory(Category category) {
+		Category categoryInDB = getHbConnection().getCategoryById(category.getCategoryId());
+		categoryInDB.getParent().remove(categoryInDB);
+		deleteObject(categoryInDB);
 	}
 	
-	public void deletePhoto(int photoId) {
-		Photo photo = getHbConnection().getPhotoById(photoId);
-		deleteObject(photo);
+	public void deletePhoto(Photo photo) {
+		Photo photoInDB = getHbConnection().getPhotoById(photo.getPhotoId());
+		photoInDB.getCategory().remove(photoInDB);
+		deleteObject(photoInDB);
 	}
 	
 	private void deleteObject(Object obj) {

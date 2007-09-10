@@ -3,6 +3,7 @@ package photoalbum.web.servlets;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,7 @@ import photoalbum.network.NetworkConnection;
 
 	private static final long serialVersionUID = -6318374395824273211L;
 	
-	private PhotoAlbumManipulator photoAlbumManipulator = null;
+	private static PhotoAlbumManipulator photoAlbumManipulator = null;
 
 	public ConnectionServlet() {
 		super();
@@ -26,10 +27,9 @@ import photoalbum.network.NetworkConnection;
 	
 	public void init() throws ServletException {
 		super.init();
-		photoAlbumManipulator = new PhotoAlbumManipulator();
 	}
 	
-	private PhotoAlbumManipulator getPhotoAlbumManipulator() {
+	private static PhotoAlbumManipulator getPhotoAlbumManipulator() {
 		if (photoAlbumManipulator == null) {
 			photoAlbumManipulator = new PhotoAlbumManipulator();
 		}
@@ -42,6 +42,7 @@ import photoalbum.network.NetworkConnection;
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ObjectInputStream oiStream = new ObjectInputStream(request.getInputStream());
+		Enumeration names = this.getServletContext().getAttributeNames();
 		try {
 			Object obj = oiStream.readObject();
 			if (obj instanceof Object[]) {
@@ -55,8 +56,8 @@ import photoalbum.network.NetworkConnection;
 						outputData = getAllUsers();
 					} else if (NetworkConnection.CMD_ADD_USER.equals(cmd) && inputData.length == 2) {
 						outputData = addUser(inputData[1]);
-					} else if (NetworkConnection.CMD_EDIT_USER.equals(cmd) && inputData.length == 2) {
-						editUser(inputData[1]);
+					} else if (NetworkConnection.CMD_UPDATE_USER.equals(cmd) && inputData.length == 2) {
+						updateUser(inputData[1]);
 					} else if (NetworkConnection.CMD_DELETE_OBJECT.equals(cmd) && inputData.length == 2) {
 						delete(inputData[1]);
 					}
@@ -102,10 +103,10 @@ import photoalbum.network.NetworkConnection;
 		return null;
 	}
 	
-	private void editUser(Object obj) {
+	private void updateUser(Object obj) {
 		if (obj instanceof User) {
 			User user = (User) obj;
-			getPhotoAlbumManipulator().editUser(user.getUserId());
+			getPhotoAlbumManipulator().updateUser(user);
 		}
 	}
 	
