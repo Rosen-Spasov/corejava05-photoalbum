@@ -27,7 +27,7 @@
 		</set>
 		
 		<property name="CatName" column="CAT_NAME" not-null="false" />
-		<property name="Path" column="PATH" not-null="false" />
+		<property name="Path" column="PATH" not-null="false" unique="true"/>
     </class>
     
 </hibernate-mapping>

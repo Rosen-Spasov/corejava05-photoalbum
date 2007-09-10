@@ -7,5 +7,7 @@ import photoalbum.entities.Photo;
 public interface IPhotoContainer {
 	
 	public Set<Photo> getPhotos();
+	
+	public void remove(Photo photo);
 
 }

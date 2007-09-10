@@ -116,4 +116,21 @@ public class Category implements Serializable, Comparable<Category>, ICategoryCo
 		return this.getPath().compareToIgnoreCase(category.getPath());
 	}
 
+	public void remove(Category category) {
+		getCategories().remove(category);
+	}
+	
+	public ICategoryContainer getParent() {
+		if (getUser() != null) {
+			return getUser();
+		} else if (getParentCategory() != null) {
+			return getParentCategory();
+		}
+		return null;
+	}
+
+	public void remove(Photo photo) {
+		getPhotos().remove(photo);
+	}
+
 }
