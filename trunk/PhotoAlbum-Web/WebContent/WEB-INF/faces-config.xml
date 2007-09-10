@@ -36,6 +36,11 @@
 		<managed-bean-class>pagecode.RenamePicture</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>pc_Asd</managed-bean-name>
+		<managed-bean-class>pagecode.Asd</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	<lifecycle>
 		<phase-listener>
 		com.ibm.faces.webapp.ValueResourcePhaseListener</phase-listener>
