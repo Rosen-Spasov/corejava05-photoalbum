@@ -1,18 +1,11 @@
 package photoalbum.servlet.web;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import photoalbum.PhotoAlbumManipulator;
-import photoalbum.entities.Category;
 import photoalbum.entities.User;
 
 /**
@@ -31,13 +24,12 @@ public class SearchServlet extends javax.servlet.http.HttpServlet implements
 			HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
-		String searchName = (String) request.getParameter("searchName");
-		String category = (String) request.getParameter("category");
+		String searchName = (String)request.getParameter("searchName");
+		String category = (String)request.getParameter("category");
 		System.out.println(searchName + category);
 		if (searchName.length()>0) {
 			User user = edit.getUserByUsername(searchName);
-			if (user != null) {
-				session.setAttribute("user", user);
+			session.setAttribute("user", user);
 				if (category != null) {
 					boolean cat = user.getCategories().contains(category);
 					session.setAttribute("category", cat);
@@ -48,14 +40,7 @@ public class SearchServlet extends javax.servlet.http.HttpServlet implements
 					request.getRequestDispatcher("ShowUser.jsp").forward(
 							request, response);
 				}
-			} else {
-				request.setAttribute("search", "user not found");
-				request.getRequestDispatcher("MainPage.jsp").forward(request,
-						response);
-			}
 		} else {
-			System.out.println("aha");
-			String search = "enter user name";
 			request.setAttribute("search", "enter user name");
 			request.getRequestDispatcher("MainPage.jsp").forward(request,
 					response);

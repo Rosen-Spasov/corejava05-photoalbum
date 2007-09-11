@@ -31,6 +31,12 @@ import photoalbum.entities.User;
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String cat = request.getParameter("param");
+		String allPictures = request.getParameter("allPictures");
+		System.out.println(allPictures);
+		if (allPictures != null){
+			session.setAttribute("allPictures", "allPictures");
+			request.getRequestDispatcher("ShowUser.jsp").forward(request, response);
+		}
 		User user = (User)session.getAttribute("user");
 		System.out.println(cat);
 		Set<Category> category = user.getCategories();
@@ -39,7 +45,8 @@ import photoalbum.entities.User;
 			System.out.println(c.getCatName());
 			if (c.getCatName().equalsIgnoreCase(cat)){
 				String path = c.getPath();
-				session.setAttribute("path", path);
+				session.setAttribute("allPictures", null);
+				session.setAttribute("path", c);
 				request.getRequestDispatcher("ShowUser.jsp").forward(request, response);
 			}
 		}

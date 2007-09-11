@@ -6,6 +6,9 @@
 <%@page import="photoalbum.entities.User"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="photoalbum.entities.Category"%>
+<%@page import="photoalbum.entities.Photo"%>
+<%@page import="photoalbum.entities.Comment"%>
+<%@page import="bean.WebBean"%>
 <html>
 <link rel="stylesheet" type="text/css" href="Themes/showUser.css" />
 
@@ -50,7 +53,7 @@
 					<span class="mainTab1"><a href="Search.jsp" title="Търсене">Търсене</a></span>
 					<img src="img/tr.gif" class="tr" alt="tr" />
 				</div>
-				<%if (userLogin.equals(user)){
+				<%if (user.equals(userLogin)){
 			%>
 				<div class="mainTab blogsTab">
 					<img src="img/tl.gif" class="tl" alt="tl" />
@@ -75,7 +78,10 @@
 			
 			<div class="sideMenuLinks"><a class="grey" href="register.jsp" title="Регистрация в Sibir.bg">Регистрация</a></div>
 			<div class="sideMenuLinks"><a class="grey" href="MainPage.jsp" title="Вход в photo album">Вход</a><span class="separator grey">|</span></div>
+			<% }else{ %>
+			<div class="sideMenuLinks"><a class="grey" href="ExitServlet" title="Регистрация в Sibir.bg">Излез</a></div>
 			<% } %>
+			<div class="sideMenuLinks"><a class="grey" href="MainPage.jsp" title="Вход в photo album">Начална страница</a><span class="separator grey">|</span></div>	
 				</td></tr>
 				<% 
 				Set<Category> category = user.getCategories();
@@ -85,8 +91,13 @@
 				 %>
 				<tr>
 		<td class="mainMenu">	
-				<% int t=0;
-				for (Category categ : category){
+				<% int t=1;%>
+				<div class="<%= type[0] %>">
+					<img src="img/tl.gif" class="tl" alt="tl" />
+					<span class="mainTab1"><a href="ShowAllPictuers?allPictures=allPictures" title="allPictures">Виж всички снимки</a></span>
+					<img src="img/tr.gif" class="tr" alt="tr" />
+				</div>
+				<%for (Category categ : category){
 				
 				%>
 				<div class="<%= type[t] %>">
@@ -94,15 +105,14 @@
 					<span class="mainTab1"><a href="ShowAllPictuers?param=<%= categ %>" title="<%= categ %>"><%= categ %></a></span>
 					<img src="img/tr.gif" class="tr" alt="tr" />
 				</div>
-				
-			<% t++;} %>
+			<%t++;} %>
 			
 		</td>
 	</tr>
 </table>				</td>
 			</tr>
 	<% }%>
-	<table class="tabsMiddle top10" cellpadding="0" cellspacing="0" align="center">
+	<table class="tabsMiddle top10" cellpadding="2" cellspacing="0" align="center">
 	<tr>
 		<td class="tabs">
 			<div class="rightTabStub">&nbsp;</div>
@@ -111,45 +121,93 @@
 			<div class="leftTabStubMiddle">&nbsp;</div>
 		</td>
 	</tr>
-	<tr>
-		<td class="tabsTableMiddle">
-			<div class="loadingPictures" id="PicturesLoading" style="display:none;">&nbsp;</div>
-			<div id="women">
-					<%String firstPath = "C:\\ZaharyAnastasov\\Project";
+	
+	
+		<tr><div class="smallestProfile" >
+					<%String firstPath = WebBean.firstPath;
+					int row = 0;
+					int pages = 1;
+					String allPictures = (String) session.getAttribute("allPictures");
+					String path = null;
+					if (allPictures != null){
 					Set<Category> category = user.getCategories();
-					String path = (String)session.getAttribute("path");
-					
+					for (Category categ: category){
+					Set<Photo> photos = categ.getPhotos();
+						for (Photo photo : photos){
+							path = firstPath+ photo.getPath()+photo.getPhName();
 					%>			
-<div class="smallestProfile" >
-	<div class="smallProfilePicOnline" >
-		<a href="fullScreen.jsp?pic=<%= firstPath+path %>"><img src="<%=firstPath+path %>" alt="alonso" title="title" height="150px"/></a>
+	<% if (row == 4){
+	%></tr><tr>
+	<%row = 0;}else{
+	row++;
+	} %>
+	<td class="tabsTableMiddle" ><div class="smallProfilePicOnline">
+		<a href="fullScreen.jsp?pic=<%= photo.getPhotoId() %>"><img src="<%=path %>" alt="<%= photo.getPhName() %>" title="<%= photo.getPhName() %>" height="150px"/></a>
 	</div>
-			<div class="vipPic">&nbsp;</div>
+		<div class="vipPic">&nbsp;</div>
 		<div class="lh17">
-		<a href="fullScreen.jsp?pic=<%=firstPath+path %>" class="link bold">Виж в цял размер</a>
-		<%= "cska"  %>
+		<a href="fullScreen.jsp?pic=<%= photo.getPhotoId() %>" class="link bold">Виж в цял размер</a>
+		<%= photo.getPhName()  %>
 	</div>
-	<div class="lh17">София</div>
-	<div class="lh17">Koментари <span class="bold">2851</span></div>
-	<div style="color: blue;">
-	<a href="comment.JSP?picPath=<%=firstPath+path %>" class="link bold" >Добави коментар</a>
-	</div>
-	<%if (userLogin.equals(user)){%>
+	
+	<div class="lh17">Коментари <span class="bold"><%= photo.getComments().size() %></span></div>
 	<br><br>
+	<% if (userLogin != null){ %>
+	<div style="color: blue;">
+	<a href="comment.JSP?picPath=<%= photo.getPhotoId() %>" class="link bold" >Добави коментар</a>
+	</div><% } %>
+	<%if (user.equals(userLogin)){%>
 	<div style="color: red;">
-	<a href="DeletePictureServlet?pic=<%=firstPath+path %>" class="link bold" >Изтрии</a>
+	<a href="DeletePictureServlet?pic=<%= photo.getPhotoId() %>" class="link bold" >Изтрии</a>
 	</div>
 	<div style="color: green;">
-	<a href="renamePicture.jsp?pic=<%=firstPath+path %>" class="link bold" >Преименувай</a>
+	<a href="renamePicture.jsp?pic=<%= photo.getPhotoId() %>" class="link bold" >Преименувай</a>
+	</div></td>
+	
+	<%}}}}else{
+		Category categ = (Category)session.getAttribute("path");
+		if (categ != null){
+		Set<Photo> photos = categ.getPhotos();
+		for (Photo photo : photos){
+		path = firstPath+ photo.getPath()+photo.getPhName();
+		pages = 1+photos.size()/8;
+		%>
+		<% if (row == 4){
+	%></tr><tr>
+	<%row = 0;}else{
+	row++;
+	} %>
+			<td class="tabsTableMiddle" ><div class="smallProfilePicOnline">
+		<a href="fullScreen.jsp?pic=<%= photo.getPhotoId() %>"><img src="<%=path %>" alt="<%= photo.getPhName() %>" title="<%= photo.getPhName() %>" height="150px"/></a>
 	</div>
-	<%} %>
+		<div class="vipPic">&nbsp;</div>
+		<div class="lh17">
+		<a href="fullScreen.jsp?pic=<%= photo.getPhotoId() %>" class="link bold">Виж в цял размер</a>
+		<%= photo.getPhName()  %>
+	</div>
+	
+	<div class="lh17">Коментари <span class="bold"><%= photo.getComments().size() %></span></div>
+	<br><br>
+	<% if (userLogin != null){ %>
+	<div style="color: blue;">
+	<a href="comment.JSP?picPath=<%= photo.getPhotoId() %>" class="link bold" >Добави коментар</a>
+	</div><% } %>
+	<%if (user.equals(userLogin)){%>
+	
+	<div style="color: red;">
+	<a href="DeletePictureServlet?pic=<%= photo.getPhotoId() %>" class="link bold" >Изтрии</a>
+	</div>
+	<div style="color: green;">
+	<a href="renamePicture.jsp?pic=<%= photo.getPhotoId() %>" class="link bold" >Преименувай</a>
+	</div></td>
+	<% }}}}%>
 </div>			
 </td>
 	<tr><td>
 	<div class="fLeft left10">
 				<a href="ShowUser.jsp?page=1" onclick="MainPage.jsp; return false; "><img src="img/btnLeft.gif" align="absmiddle" /></a>
 				<a href="ShowUser.jsp?page=3" onclick="return toPage('next','men');"><img src="img/btnRight.gif" align="absmiddle" /></a>
-				<span id="menPage">1</span> от <span id="menTotalPages">666</span>
+				<span id="menPage">1</span> от <span id="menTotalPages"><%= pages %></span>
 			</div></tr></td>
 			
 

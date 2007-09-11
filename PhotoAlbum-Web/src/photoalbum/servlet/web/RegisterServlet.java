@@ -5,6 +5,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import photoalbum.entities.User;
+
 
 /**
  * Servlet implementation class for Servlet: RegisterServlet
@@ -29,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 	}
 
 	private boolean isValid(HttpServletRequest request) {
+		User newUser = new User();
 		String fName = (String)request.getParameter("fName");
 		String lName = (String)request.getParameter("lName");
 		String uName = (String)request.getParameter("uName");
@@ -39,18 +42,14 @@ import javax.servlet.http.HttpServletResponse;
 		boolean result = true;
 		System.out.println(fName);
 		if (fName.length()>0){
-			/*
-			 * tuk se setwa kym bina na hibernate
-			 */
+			newUser.setFirstName(fName);
 		}else{
 			errors[1]="enter first name";
 			
 			result = false;
 		}
 		if (lName.length()>0){
-			/*
-			 * tuk se setwa kym bina na hibernate
-			 */
+			newUser.setLastName(lName);
 		}else{
 			errors[2]="enter last name";
 			result = false;
@@ -58,9 +57,7 @@ import javax.servlet.http.HttpServletResponse;
 		if (uName.length()>0){
 	
 			if (!false){
-				/*
-				 * tuk se setwa kym bina na hibernate
-				 */
+				newUser.setUsername(uName);
 			}else{
 				errors[3]="user name already exist";
 				result = false;
@@ -69,9 +66,7 @@ import javax.servlet.http.HttpServletResponse;
 			result = false;
 		}
 		if (pass.length()>0){
-			/*
-			 * tuk se setwa kym bina na hibernate
-			 */
+			newUser.setPassword(pass);
 		}else{
 			errors[4]="enter password";
 			result = false;
@@ -97,6 +92,7 @@ import javax.servlet.http.HttpServletResponse;
 		if (result){
 			errors[0]="successful registration";
 		}
+		request.setAttribute("newUser", newUser);
 		request.setAttribute("errorsRegistration", errors);
 		return result;
 	}   	  	    
