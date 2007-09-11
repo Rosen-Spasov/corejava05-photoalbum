@@ -17,7 +17,7 @@ public class Photo implements Serializable, Comparable<Photo> {
 	private Category category;
 
 	private Set<Comment> comments = new HashSet<Comment>();
-
+	
 	public Category getCategory() {
 		return category;
 	}

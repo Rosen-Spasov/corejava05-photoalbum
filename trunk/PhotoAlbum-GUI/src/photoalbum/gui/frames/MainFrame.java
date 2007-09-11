@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Arrays;
 
 import javax.swing.Icon;
@@ -30,12 +29,11 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import photoalbum.CreateUserException;
-import photoalbum.PhotoAlbumManipulator;
 import photoalbum.entities.Category;
 import photoalbum.entities.Photo;
 import photoalbum.entities.User;
 import photoalbum.entities.interfaces.ICategoryContainer;
-import photoalbum.entities.interfaces.IPhotoContainer;
+import photoalbum.filesystem.FileSystemManager;
 import photoalbum.gui.CustomCellRenderer;
 import photoalbum.gui.ICustomIconsSupplier;
 import photoalbum.gui.ImageFileFilter;
@@ -97,15 +95,6 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	private JFileChooser fileChooser = null;
 	
 	private NetworkConnection networkConnection = null;
-	
-	private PhotoAlbumManipulator photoAlbumManipulator = null;
-	
-	private PhotoAlbumManipulator getPhotoAlbumManipulator() {
-		if (this.photoAlbumManipulator == null) {
-			this.photoAlbumManipulator = new PhotoAlbumManipulator();
-		}
-		return photoAlbumManipulator;
-	}
 
 	private JFileChooser getFileChooser() {
 		if (this.fileChooser == null) {
@@ -451,13 +440,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 			} else {
 				JOptionPane.showMessageDialog(this, "Invalid password. Connection refused.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
 			}
-		} catch (MalformedURLException e) {
-			JOptionPane.showMessageDialog(this, "Could not connect to server. Check your connection settings and contact your system administrator.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
-			Logger.getDefaultInstance().log(e);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(this, "Could not connect to server. Check your connection settings and contact your system administrator.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
-			Logger.getDefaultInstance().log(e);
-		} catch (ClassNotFoundException e) {
+		} catch (Throwable e) {
 			JOptionPane.showMessageDialog(this, "Could not connect to server. Check your connection settings and contact your system administrator.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
 			Logger.getDefaultInstance().log(e);
 		} finally {
@@ -492,8 +475,8 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 				Arrays.sort(categories);
 				loadChildren(childNode, categories);
 			}
-			if (child instanceof IPhotoContainer) {
-				IPhotoContainer photoContainer = (IPhotoContainer) child;
+			if (child instanceof Category) {
+				Category photoContainer = (Category) child;
 				Photo[] photos = new Photo[photoContainer.getPhotos().size()];
 				photoContainer.getPhotos().toArray(photos);
 				Arrays.sort(photos);
@@ -503,7 +486,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		}
 	}
 	
-	private void addObject() {
+	private void add() {
 		if (!this.getTreeData().isSelectionEmpty()) {
 			DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) getTreeData().getLastSelectedPathComponent();
 			Object selectedObject = selectedNode.getUserObject();
@@ -533,15 +516,67 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		}
 	}
 	
-	private void addFileStructure(Object parentObject) {
+	private void addFileStructure(Object parent) {
 		if (this.getFileChooser().showDialog(this, "Add") == JFileChooser.APPROVE_OPTION) {
 			File[] selectedFiles = this.getFileChooser().getSelectedFiles();
-			getPhotoAlbumManipulator().addFileStructure(parentObject, selectedFiles);
+			
+			try {
+				for (File selectedFile : selectedFiles) {
+					if (selectedFile.isDirectory() && parent instanceof ICategoryContainer) {
+						Category category = addCategory((ICategoryContainer) parent, selectedFile);
+						((ICategoryContainer) parent).add(category);
+					} else if (selectedFile.isFile() && parent instanceof Category) {
+						Photo photo = addPhoto((Category) parent, selectedFile);
+						((Category) parent).add(photo);
+					}
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			this.refreshTree();
 		}
 	}
 	
-	private void editSelectedObject() {
+	public Category addCategory(ICategoryContainer parent, File directory) throws IOException, ClassNotFoundException {
+		if (directory == null && !directory.isDirectory()) {
+			return null;
+		}
+		
+		String catName = directory.getName();
+		Category category = this.networkConnection.addCategory(parent, catName);
+		if (category != null) {
+			File[] children = directory.listFiles();
+			for (File child : children) {
+				if (child.isDirectory()) {
+					addCategory(category, child);
+				} else if (child.isFile() && FileSystemManager.isValidImage(child)) {
+					addPhoto(category, child);
+				}
+			}
+			
+			parent.add(category);
+		}
+		
+		return category;
+	}
+	
+	public Photo addPhoto(Category parent, File imageFile) throws IOException, ClassNotFoundException {
+		if (imageFile == null && !imageFile.isFile()) {
+			return null;
+		}
+		
+		Photo photo = this.networkConnection.addPhoto(parent, imageFile);
+		parent.add(photo);
+		
+		return photo;
+	}
+	
+	private void edit() {
 		if (!this.getTreeData().isSelectionEmpty()) {
 			DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getTreeData().getLastSelectedPathComponent();
 			if (selectedNode != null && selectedNode != getRootNode()) {
@@ -578,19 +613,18 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		}
 	}
 	
-	private void deleteSelectedObject() {
+	private void delete() {
 		if (!this.getTreeData().isSelectionEmpty()) {
 			DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getTreeData().getLastSelectedPathComponent();
 			if (selectedNode != null && selectedNode != getRootNode()) {
 				try {
-//					getPhotoAlbumManager().deleteObject(selectedNode.getUserObject());
-					this.networkConnection.deleteObject(selectedNode.getUserObject());
+					this.networkConnection.delete(selectedNode.getUserObject());
 					DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
 					parentNode.remove(selectedNode);
+					reloadTree();
 				} catch (Throwable e) {
 					JOptionPane.showMessageDialog(this, "Cannot delete selected object.", "Delete Object Failed", JOptionPane.ERROR_MESSAGE);
 				}
-				this.reloadTree();
 			}
 		}
 	}
@@ -635,11 +669,11 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == this.getBtnAdd()) {
-			addObject();
+			add();
 		} else if (e.getSource() == this.getBtnEdit()) {
-			editSelectedObject();
+			edit();
 		} else if (e.getSource() == this.getBtnDelete()) {
-			deleteSelectedObject();
+			delete();
 		} else if (e.getSource() == this.getBtnRefresh()) {
 			refreshTree();
 		} else if (e.getSource() == this.getBtnExit() || e.getSource() == this.getMItemExit()) {

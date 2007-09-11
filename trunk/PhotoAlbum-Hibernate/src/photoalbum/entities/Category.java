@@ -5,9 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import photoalbum.entities.interfaces.ICategoryContainer;
-import photoalbum.entities.interfaces.IPhotoContainer;
 
-public class Category implements Serializable, Comparable<Category>, ICategoryContainer, IPhotoContainer {
+public class Category implements Serializable, Comparable<Category>, ICategoryContainer {
 
 	private static final long serialVersionUID = 591870800372000848L;
 
@@ -85,18 +84,13 @@ public class Category implements Serializable, Comparable<Category>, ICategoryCo
 	}
 	
 	public Category(String catName, String path) {
-		this(catName, path, null, null);
+		this(catName, path, null);
 	}
 	
-	public Category(String catName, String path, User user) {
-		this(catName, path, user, null);
-	}
-	
-	public Category(String catName, String path, User user, Category parentCategory) {
+	public Category(String catName, String path, ICategoryContainer parent) {
 		this.setCatName(catName);
 		this.setPath(path);
-		this.setUser(user);
-		this.setParentCategory(parentCategory);
+		this.setParent(parent);
 	}
 	
 	public String toString() {
@@ -115,9 +109,21 @@ public class Category implements Serializable, Comparable<Category>, ICategoryCo
 	public int compareTo(Category category) {
 		return this.getPath().compareToIgnoreCase(category.getPath());
 	}
+	
+	public void add(Object obj) {
+		if (obj instanceof Category) {
+			getCategories().add((Category) obj);
+		} else if (obj instanceof Photo) {
+			getPhotos().add((Photo) obj);
+		}
+	}
 
-	public void remove(Category category) {
-		getCategories().remove(category);
+	public void remove(Object obj) {
+		if (obj instanceof Category) {
+			getCategories().remove(obj);
+		} else if (obj instanceof Photo) {
+			getPhotos().remove(obj);
+		}
 	}
 	
 	public ICategoryContainer getParent() {
@@ -128,9 +134,13 @@ public class Category implements Serializable, Comparable<Category>, ICategoryCo
 		}
 		return null;
 	}
-
-	public void remove(Photo photo) {
-		getPhotos().remove(photo);
+	
+	public void setParent(ICategoryContainer parent) {
+		if (parent instanceof User) {
+			setUser((User) parent);
+		} else if (parent instanceof Category) {
+			setParentCategory((Category) parent);
+		}
 	}
 
 }

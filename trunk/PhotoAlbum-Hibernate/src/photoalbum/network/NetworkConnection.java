@@ -1,5 +1,6 @@
 package photoalbum.network;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -9,7 +10,10 @@ import java.net.URL;
 
 import photoalbum.CreateUserException;
 import photoalbum.entities.Category;
+import photoalbum.entities.Photo;
 import photoalbum.entities.User;
+import photoalbum.entities.interfaces.ICategoryContainer;
+import photoalbum.filesystem.FileSystemManager;
 
 public class NetworkConnection {
 	
@@ -21,9 +25,11 @@ public class NetworkConnection {
 	
 	public static final String CMD_ADD_CATEGORY = "addCategory";
 	
+	public static final String CMD_ADD_PHOTO = "addPhoto";
+	
 	public static final String CMD_UPDATE_USER = "editUser";
 	
-	public static final String CMD_DELETE_OBJECT = "deleteObject";
+	public static final String CMD_DELETE = "deleteObject";
 	
 	public static final String CMD_ADMIN_ACCESS_GRANTED = "adminAccessGranted";
 	
@@ -127,9 +133,9 @@ public class NetworkConnection {
 	}
 	
 	public void addUser(User user) throws CreateUserException {
+		String cmd = CMD_ADD_USER;
+		Object[] outputData = new Object[] { cmd, user };
 		try {
-			String cmd = CMD_ADD_USER;
-			Object[] outputData = new Object[] { cmd, user };
 			Object inputData = exchangeData(outputData);
 			if (inputData instanceof CreateUserException) {
 				throw (CreateUserException) inputData;
@@ -141,20 +147,55 @@ public class NetworkConnection {
 		}
 	}
 	
-	public void addCategory(Category category) throws IOException {
-		writeObject(category);
-	}
-	
 	public void updateUser(User user) throws IOException, ClassNotFoundException {
 		String cmd = CMD_UPDATE_USER;
 		Object[] outputData = new Object[] { cmd, user };
 		exchangeData(outputData);
 	}
 	
-	public void deleteObject(Object obj) throws IOException, ClassNotFoundException {
-		String cmd = CMD_DELETE_OBJECT;
+	public void delete(Object obj) throws IOException, ClassNotFoundException {
+		String cmd = CMD_DELETE;
 		Object[] outputData = new Object[] { cmd, obj };
 		exchangeData(outputData);
+	}
+	
+	public Category addCategory(ICategoryContainer parent, String catName) throws IOException, ClassNotFoundException {
+		Category category = null;
+		
+		String cmd = NetworkConnection.CMD_ADD_CATEGORY;
+		Object[] outputData = new Object[] { cmd, parent, catName };
+		Object inputData = exchangeData(outputData);
+		
+		if (inputData instanceof Category) {
+			category = (Category) inputData;
+		}
+		
+		return category;
+	}
+	
+	public Photo addPhoto(Category parent, File imageFile) throws IOException, ClassNotFoundException {
+		if (imageFile == null) {
+			return null;
+		}
+		
+		String phName = imageFile.getName();
+		byte[] image = FileSystemManager.getImage(imageFile);
+		
+		return 	addPhoto(parent, phName, image);
+	}
+	
+	public Photo addPhoto(Category parent, String phName, byte[] image) throws IOException, ClassNotFoundException {
+		Photo photo = null;
+		
+		String cmd = NetworkConnection.CMD_ADD_PHOTO;
+		Object[] outputData = new Object[] { cmd, parent, phName, image };
+		Object inputData = exchangeData(outputData);
+		
+		if (inputData instanceof Photo) {
+			photo = (Photo) inputData;
+		}
+		
+		return photo;
 	}
 
 }

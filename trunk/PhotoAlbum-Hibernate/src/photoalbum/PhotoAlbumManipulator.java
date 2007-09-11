@@ -2,7 +2,6 @@ package photoalbum;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import photoalbum.entities.Category;
 import photoalbum.entities.Photo;
 import photoalbum.entities.User;
 import photoalbum.entities.interfaces.ICategoryContainer;
-import photoalbum.filesystem.FileSystemException;
 import photoalbum.filesystem.FileSystemManager;
 import photoalbum.hibernate.HibernateConnection;
 import photoalbum.hibernate.HibernateConnectionManager;
@@ -19,6 +17,17 @@ import photoalbum.logging.Logger;
 public class PhotoAlbumManipulator {
 	
 	public static final String ROOT_DIR = "../PhotoAlbum";
+	
+	public static final String LOG_FILENAME = "PhotoAlbumManipulator.log";
+	
+	private static Logger logger = null;
+	
+	private static Logger getLogger() {
+		if (logger == null) {
+			logger = Logger.getLogger(LOG_FILENAME);
+		}
+		return logger;
+	}
 	
 	public static boolean adminAccessGranted(String password) {
 		return HibernateConnectionManager.adminAccessGranted(password);
@@ -69,12 +78,12 @@ public class PhotoAlbumManipulator {
 		if (getHbConnection().getUserByUserName(user.getUsername()) == null) {
 			getHbConnection().beginTransaction();
 			try {
-				FileSystemManager.addUser(user.getUsername());
+				FileSystemManager.addUser(user);
 				getHbConnection().save(user);
 				getHbConnection().commit();
 			} catch (Throwable e) {
 				getHbConnection().rollback();
-				Logger.getDefaultInstance().log(e);
+				getLogger().log(e);
 				throw new CreateUserException("Cannot create user [" + user.getUsername() + "].", e);
 			}
 		} else {
@@ -82,55 +91,25 @@ public class PhotoAlbumManipulator {
 		}
 	}
 	
-	public void addFileStructure(Object parentObject, File[] selectedFiles) {
-		for (File selectedFile : selectedFiles) {
-			if (selectedFile.isDirectory()) {
-				addCategory(parentObject, selectedFile);
-			} else if (isValidImage(selectedFile) && parentObject instanceof Category) {
-				addPhoto((Category) parentObject, selectedFile);
-			}
-		}
-		getHbConnection().update(parentObject);
-	}
-	
-	private Category addCategory(Object parentObject, File category) {
-		if (parentObject instanceof ICategoryContainer) {
-			return addCategory((ICategoryContainer) parentObject, category);
-		}
-		return null;
-	}
-	
-	private Category addCategory(ICategoryContainer parentObject, File directory) {		
-		boolean parentIsUser = true;
-		
-		String catName = directory.getName();
-		String path = "";
-		if (parentObject instanceof User) {
-			path = FileSystemManager.ROOT_DIR + FileSystemManager.SEPARATOR + ((User) parentObject).getUsername() + "/" + catName;
-		} else if (parentObject instanceof Category) {
-			path = ((Category) parentObject).getPath() + "/" + catName;
-			parentIsUser = false;
-		}
-		
-		Category category = getHbConnection().getCategoryByPath(path);
+	public Category addCategory(ICategoryContainer parent, String catName) throws CreateCategoryException {
+
+		String path = FileSystemManager.getPathForChild(parent, catName);
+		Category category = getCategoryByPath(path);
 		if (category == null) {
-			category = new Category();
-			category.setCatName(catName);
-			category.setPath(path);
-			if (parentIsUser) {
-				category.setUser((User) parentObject);
-			}
-			FileSystemManager.addCategory(path);
-			parentObject.getCategories().add(category);
-		}
-		File[] children = directory.listFiles();
-		for (File child : children) {
-			if (child.isDirectory()) {
-				addCategory(category, child);
-			} else if (isValidImage(child)) {
-				addPhoto(category, child);
+			category = new Category(catName, path, parent);
+			getHbConnection().beginTransaction();
+			try {
+				FileSystemManager.addCategory(category);
+				getHbConnection().save(category);
+				parent.add(category);
+				getHbConnection().commit();
+			} catch (Throwable e) {
+				getHbConnection().rollback();
+				getLogger().log(e);
+				throw new CreateCategoryException("Cannot create category [" + category.getPath() + "].", e);
 			}
 		}
+		
 		return category;
 	}
 	
@@ -138,24 +117,57 @@ public class PhotoAlbumManipulator {
 		return getHbConnection().getCategoryById(categoryId);
 	}
 	
-	private Photo addPhoto(Category parent, File imageFile) {
+	public Category getCategoryByPath(String path) {
+		return getHbConnection().getCategoryByPath(path);
+	}
+	
+	public Photo getPhotoByPath(String path) {
+		return getHbConnection().getPhotoByPath(path);
+	}
+	
+	public Photo addPhoto(Category category, File imageFile) throws CreatePhotoException {
+		if (category == null || imageFile == null) {
+			return null;
+		}
 		
 		String phName = imageFile.getName();
-		String path = parent.getPath() + "/" + phName;
-		Photo photo = getHbConnection().getPhotoByPath(path);
+		String path = FileSystemManager.getPathForChild(category, phName);
+		Photo photo = getPhotoByPath(path);
 		if (photo == null) {
-			photo = new Photo();
-			photo.setPhName(phName);
-			photo.setPath(path);
-			photo.setCategory(parent);
+			photo = new Photo(phName, path, category);
+			getHbConnection().beginTransaction();
 			try {
 				InputStream iStream = new FileInputStream(imageFile);
-				FileSystemManager.addPhoto(path, iStream);
-				parent.getPhotos().add(photo);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (FileSystemException e) {
-				e.printStackTrace();
+				FileSystemManager.addPhoto(photo, iStream);
+				getHbConnection().save(photo);
+				category.add(photo);
+				getHbConnection().commit();
+			} catch (Throwable e) {
+				getHbConnection().rollback();
+				getLogger().log(e);
+				throw new CreatePhotoException("Cannot create photo [" + photo.getPath() + "].", e);
+			}
+		}
+		
+		return photo;
+	}
+	
+	public Photo addPhoto(Category category, String phName, byte[] image) throws CreatePhotoException {
+
+		String path = FileSystemManager.getPathForChild(category, phName);
+		Photo photo = getPhotoByPath(path);
+		if (photo == null) {
+			photo = new Photo(phName, path, category);
+			getHbConnection().beginTransaction();
+			try {
+				FileSystemManager.addPhoto(photo, image);
+				getHbConnection().save(photo);
+				category.add(photo);
+				getHbConnection().commit();
+			} catch (Throwable e) {
+				getHbConnection().rollback();
+				getLogger().log(e);
+				throw new CreatePhotoException("Cannot create photo [" + photo.getPath() + "].", e);
 			}
 		}
 		
@@ -179,7 +191,7 @@ public class PhotoAlbumManipulator {
 				getHbConnection().commit();
 			} catch (Throwable e) {
 				getHbConnection().rollback();
-				Logger.getDefaultInstance().log(e);
+				getLogger().log(e);
 			}
 		}
 	}
@@ -222,16 +234,8 @@ public class PhotoAlbumManipulator {
 			getHbConnection().commit();
 		} catch (Throwable e) {
 			getHbConnection().rollback();
-			Logger.getDefaultInstance().log(e);
+			getLogger().log(e);
 		}
-	}
-	
-	public boolean isValidImage(File image) {
-		return 	image.isFile() && (
-				image.getName().endsWith(".jpg") ||
-				image.getName().endsWith(".gif") ||
-				image.getName().endsWith(".png")
-				);
 	}
 
 }
