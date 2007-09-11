@@ -146,6 +146,10 @@ public class HibernateConnection {
 	}
 	
 	public Category getCategoryByPath(String path) {
+		if (path == null) {
+			return null;
+		}
+		
 		Category result = null;
 		
 		String hql = "from Category c where c.Path=:path";
@@ -166,6 +170,10 @@ public class HibernateConnection {
 	}
 	
 	public Photo getPhotoByPath(String path) {
+		if (path == null) {
+			return null;
+		}
+		
 		Photo result = null;
 		
 		String hql = "from Photo p where p.Path=:path";
