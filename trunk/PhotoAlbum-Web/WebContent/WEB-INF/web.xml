@@ -22,6 +22,15 @@
 			<description>
 			</description>
 			<display-name>
+			RegisterServlet</display-name>
+			<servlet-name>RegisterServlet</servlet-name>
+			<servlet-class>
+			photoalbum.servlet.web.RegisterServlet</servlet-class>
+		</servlet>
+		<servlet>
+			<description>
+			</description>
+			<display-name>
 			ShowAllPictuers</display-name>
 			<servlet-name>ShowAllPictuers</servlet-name>
 			<servlet-class>
@@ -42,6 +51,33 @@
 		<servlet-class>
 		photoalbum.servlet.web.SearchServlet</servlet-class>
 	</servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>
+  	ExitServlet</display-name>
+  	<servlet-name>ExitServlet</servlet-name>
+  	<servlet-class>
+  	photoalbum.servlet.web.ExitServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>
+  	CommentServlet</display-name>
+  	<servlet-name>CommentServlet</servlet-name>
+  	<servlet-class>
+  	photoalbum.servlet.web.CommentServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>
+  	PageServlet</display-name>
+  	<servlet-name>PageServlet</servlet-name>
+  	<servlet-class>
+  	photoalbum.servlet.web.PageServlet</servlet-class>
+  </servlet>
 		<servlet-mapping>
 			<servlet-name>GetAllUserServlet</servlet-name>
 			<url-pattern>/GetAllUserServlet</url-pattern>
@@ -55,6 +91,10 @@
 			<url-pattern>/SearchServlet</url-pattern>
 		</servlet-mapping>
 		<servlet-mapping>
+			<servlet-name>RegisterServlet</servlet-name>
+			<url-pattern>/RegisterServlet</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
 			<servlet-name>ShowAllPictuers</servlet-name>
 			<url-pattern>/ShowAllPictuers</url-pattern>
 		</servlet-mapping>
@@ -64,6 +104,22 @@
   <servlet-name>LoginServlet</servlet-name> 
   <url-pattern>/LoginServlet</url-pattern> 
   </servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>ExitServlet</servlet-name>
+			<url-pattern>/ExitServlet</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>ExitServlet</servlet-name>
+			<url-pattern>/exit</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>CommentServlet</servlet-name>
+			<url-pattern>/CommentServlet</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>PageServlet</servlet-name>
+			<url-pattern>/PageServlet</url-pattern>
+		</servlet-mapping>
 
 		
 	</web-app>

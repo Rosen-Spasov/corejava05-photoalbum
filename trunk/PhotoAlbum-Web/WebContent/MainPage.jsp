@@ -3,6 +3,10 @@
 	pageEncoding="UTF-8"%>
 <%@page import="photoalbum.entities.User"%>
 <%@page import="photoalbum.PhotoAlbumManipulator"%>
+<%@page import="java.util.Set"%>
+<%@page import="photoalbum.entities.Category"%>
+<%@page import="photoalbum.entities.Photo"%>
+<%@page import="bean.WebBean"%>
 <html>
 <head>
 	<title>Фото албум - Намери снимките, които търсиш!</title>
@@ -10,7 +14,7 @@
 	<script type="text/javascript"></script>
 </head>	
 <body onload="">
-	<% User userLogin = (User)session.getAttribute("login");%>
+	<%User userLogin = (User)session.getAttribute("login");%>
 	<table class="mainTable" cellpadding="0" cellspacing="0" align="center">
 		<tr><td colspan="3" class="mainTop"></td></tr>
 		<td class="vseparator">&nbsp;</td>
@@ -22,6 +26,7 @@
 				<% }else {  %>
 				<a href="ShowUser.jsp"><%= "Добре дошъл " +userLogin.getFirstName()+" " +userLogin.getLastName() %></a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
 				<% session.setAttribute("user",userLogin); %>
+				<a href="ExitServlet">Изход</a><span class="separator"><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
 				<% } %>
 				<a href="SearchServlet">Търсене</a><span class="separator"><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
 				<a href="Help.jsp">Помощ</a>
@@ -58,7 +63,7 @@
 							for (String err: errors){
 							if (err != null){
 						%>
-							<a href="register.jsp" class="loginRegister"><%= err %></a>
+							<a href="register.jsp" class="loginRegister"><%= err %></a></td></tr>
 							<% }}} %>
 						</td>
 					</tr>
@@ -204,22 +209,12 @@
 								</table>
 							</form>
 						</div>
+						
 						<div class="fRight top10 right10">
 							<div class="stats">
 								<div class="bold">Регистрации: </div>
-								<div>Общо: <span class="bold">666</span></div>
-								<div>
-									Днес:
-									<a href="" class="link bold">6</a>
-								</div>
-								<div>
-									Вчера:
-									<a href="" class="link bold">33</a>
-								</div>
-								<div>
-									Онлайн:
-									<a href="" class="link bold">333</a>
-								</div>
+								<div>Общо: <span class="bold"><%= allUser.length %></span></div>
+								
 							</div>
 							<div class="center" style="line-height:17px;">
 								<a href="register.jsp" class="link bold">Регистрирай се</a>
@@ -234,139 +229,63 @@
 					<td class="bottomMid">&nbsp;</td>
 				</tr>
 			</table>
-			
-			
-<table class="tabsMiddle top10" cellpadding="0" cellspacing="0">
-	<tr>
-		<td class="tabs">
+					<tr><td class="tabs">
 			<div class="rightTabStub">&nbsp;</div>
 		
-			<div class="tab tabSelected" >най нови снимки</div>
+			<div class="tab tabSelected" ></div>
 			<div class="leftTabStubMiddle">&nbsp;</div>
 		</td>
 	</tr>
+	<table class="tabsMiddle top10" cellpadding="0" cellspacing="0">
 	<tr>
+	<%	String ref = (String)session.getAttribute("ref");
+	if (ref == null){
+	response.sendRedirect("PageServlet");
+	}	
+		String pages = (String)session.getAttribute("pag");
+		String[] photoId = ((String[])session.getAttribute("photoId"));
+		String[] photoComment=((String[])session.getAttribute("photoComment"));
+		String[] pathAll=(String[])session.getAttribute("pathAll");
+		String[] photoName=(String[])session.getAttribute("photoName");
+		ref = null;
+		int count = 0;%>
+			
+<% for (int k = 0; k<photoId.length;k++){
+if (count == 3){ count = 0;%>
+	</tr><tr>
+<%}else{
+	count++;
+} %>
 		<td class="tabsTableMiddle">
 			<div class="loadingPictures" id="PicturesLoading" style="display:none;">&nbsp;</div>
 			<div id="women">
 									
 <div class="smallestProfile">
 	<div class="smallProfilePicOnline">
-		<a href="http:"><img src="http://img.elmaz.com/uploads/smallimg/890905-5-rm.jpg" alt="NISHTO NETARSESHTA" title="NISHTO NETARSESHTA" /></a>
+		<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>"><img src="<%= pathAll[k] %>" height="100" alt="" title="<%= photoName[k] %>" /></a>
 	</div>
 			<div class="vipPic">&nbsp;</div>
 		<div class="lh17">
-		<a href="http://www.elmaz.com/index.php?page=profile&amp;aid=890905" class="link bold">NISHTO</a>
-		, 36 г
+		<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>" class="link bold">Виж на цял екран</a>
+		<%= photoName[k]  %>
 	</div>
-	<div class="lh17">София</div>
-	<div class="lh17">Koментари <span class="bold">2851</span></div>
 	
-</div>									
-<div class="smallestProfile">
-	<div class="smallProfilePicOnline">
-		<a href="http://www"><img src="http://img.elmaz.com/uploads/smallimg/939269-1-rm.jpg" alt="n m" title="n m" /></a>
-	</div>
-			<div class="vipPic">&nbsp;</div>
-		<div class="lh17">
-		<a href="http://www.elmaz.com/index.php?page=profile&amp;aid=939269" class="link bold">n</a>
-		, 25 г
-	</div>
-	<div class="lh17">Варна</div>
-	<div class="lh17">Коментари <span class="bold">16</span></div>
+	<div class="lh17">Коментари <span class="bold"><%= photoComment[k] %></span></div>
 	
-</div>									
-<div class="smallestProfile">
-	<div class="smallProfilePicOffline">
-		<a href="http://www.elmaz.com/index.php?page=profile&amp;aid=615211"><img src="http://img.elmaz.com/uploads/smallimg/615211-1-rm.jpg" alt="No-Woman No-Cry" title="No-Woman No-Cry" /></a>
-	</div>
-			<div class="vipPic">&nbsp;</div>
-		<div class="lh17">
-		<a href="http://www.elmaz.com/index.php?page=profile&amp;aid=615211" class="link bold">No-Woman</a>
-		, 50 г
-	</div>
-	<div class="lh17">София</div>
-	<div class="lh17">Коментари <span class="bold">3167</span></div>
-	</div>							
-	</div>
-		</td>
-	</tr>
-	
-</table>
-
-<table class="tabsMiddle top10" cellpadding="0" cellspacing="0">
-	<tr>
-		<td class="tabs">
-			
-		</td>
-	</tr>
-	<tr>
-		<td class="tabsTableMiddle">
-			<div class="loadingMiddle" id="menLoading" style="display:none;">&nbsp;</div>
-			<div id="men">
-									
-<div class="smallestProfile">
-	<div class="smallProfilePicOnline">
-		<a href="http://www.elmaz.com/index.php?page=profile&amp;aid=656573"><img src="http://img.elmaz.com/uploads/smallimg/656573-5-rm.jpg" alt="Имам Давам" title="Имам Давам" /></a>
-	</div>
-			<div class="vipPic">&nbsp;</div>
-		<div class="lh17">
-		<a href="http://www.elmaz.com/index.php?page=profile&amp;aid=656573" class="link bold">Имам</a>
-		, 29 г
-	</div>
-	<div class="lh17">София</div>
-	<div class="lh17">Кoментари <span class="bold">5611</span></div>
-</div>									
-<div class="smallestProfile">
-	<div class="smallProfilePicOffline">
-		<a href="http://www.elmaz.com/index.php?page=profile&amp;aid=892104"><img src="http://img.elmaz.com/uploads/smallimg/892104-24-rm.jpg" alt="ISAAC ISAAC" title="ISAAC ISAAC" /></a>
-	</div>
-			<div class="vipPic">&nbsp;</div>
-		<div class="lh17">
-		<a href="http://www.elmaz.com/index.php?page=profile&amp;aid=892104" class="link bold">ISAAC</a>
-		, 19 г
-	</div>
-	<div class="lh17">Варна</div>
-	<div class="lh17">Кoментари <span class="bold">1144</span></div>
-
-</div>									
-<div class="smallestProfile">
-	<div class="smallProfilePicOffline">
-		<a href="http://www.elmaz.com/index.php?page=profile&amp;aid=542407"><img src="http://img.elmaz.com/uploads/smallimg/542407-1-rm.jpg" alt="РАДОСЛАВ ПРОЙНОВ" title="РАДОСЛАВ ПРОЙНОВ" /></a>
-	</div>
-			<div class="vipPic">&nbsp;</div>
-		<div class="lh17">
-		<a href="http://www.elmaz.com/index.php?page=profile&amp;aid=542407" class="link bold">РАДОСЛАВ</a>
-		, 32 г
-	</div>
-	<div class="lh17">Пловдив</div>
-	<div class="lh17">Кoментари <span class="bold">2225</span></div>
-	
-</div>							</div>
-		</td>
-	</tr>
+</div>
+<%} %>							
 	<tr>
 		<td class="tabsBottomMid">
 			<div class="fLeft left10">
 				<a href="#" onclick="return toPage('prev','men');"><img src="img/btnLeft.gif" align="absmiddle" /></a>
 				<a href="#" onclick="return toPage('next','men');"><img src="img/btnRight.gif" align="absmiddle" /></a>
-				<span id="menPage">1</span> от <span id="menTotalPages">666</span>
+				<span id="menPage">1</span> от <span id="menTotalPages"><%= pages %></span>
 			</div>
 			<div class="fRight right10">
 				<div style="line-height:17px;">
 					<a href="GetPicturesFromDatabase" class="link">Виж всички снимки &raquo;</a>
 				</div>
 			</div>
-			<input type="hidden" name="menTabName" id="menTabName" value="tab" />
-			<input type="hidden" name="menTabNameSelected" id="menTabNameSelected" value="tabSelected" />
-			
-			<input type="hidden" name="menPage1" id="menPage1" value="1" />
-			<input type="hidden" name="menPage2" id="menPage2" value="1" />
-			<input type="hidden" name="menPage1" id="menPageCnt1" value="714" />
-			<input type="hidden" name="menPage2" id="menPageCnt2" value="19049" />
-			<input type="hidden" name="menTabs" id="menTabs" value="2" />
-			<input type="hidden" name="womenCurrentTab" id="menCurrentTab" value="1" />
-			<input type="hidden" name="menScript" id="menScript" value="ajax/main.php" />
 		</td>
 	</tr>
 </table>			
@@ -404,12 +323,7 @@
 		</td>
 	</tr>
 </table>
-
-
-
-
-						
-											</td>
+		</td>
 							</tr>
 						<tr>
 				<td colspan="3" style="line-height: 0px; height: 10px;">&nbsp;</td>
@@ -429,9 +343,7 @@
 	<span class="separator"></span>
 
 	<span class="separator"></span>
-	
 
-	
 	</div></div>
 	</div>
 	<div class="fRight vtop right10 top10">
