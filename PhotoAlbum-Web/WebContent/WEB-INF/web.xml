@@ -78,6 +78,15 @@
   	<servlet-class>
   	photoalbum.servlet.web.PageServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>
+  	ConnectionServlet</display-name>
+  	<servlet-name>ConnectionServlet</servlet-name>
+  	<servlet-class>
+  	photoalbum.web.servlets.ConnectionServlet</servlet-class>
+  </servlet>
 		<servlet-mapping>
 			<servlet-name>GetAllUserServlet</servlet-name>
 			<url-pattern>/GetAllUserServlet</url-pattern>
@@ -119,6 +128,10 @@
 		<servlet-mapping>
 			<servlet-name>PageServlet</servlet-name>
 			<url-pattern>/PageServlet</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>ConnectionServlet</servlet-name>
+			<url-pattern>/connection</url-pattern>
 		</servlet-mapping>
 
 		
