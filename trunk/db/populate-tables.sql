@@ -31,7 +31,19 @@ VALUES(4, null, 4, 'CSKA', '../PhotoAlbum/marin/CSKA')
 /
 
 INSERT INTO CATEGORIES
-VALUES(5, 1, null, 'CSKA', '../PhotoAlbum/CSKA/CSKA1')
+VALUES(5, 1, null, 'CSKA', '../PhotoAlbum/volen/CSKA/CSKA1')
+/
+
+INSERT INTO PHOTOS
+VALUES(1, 'zahary_na_plaja.jpg', '../PhotoAlbum/zahary/CSKA/zahary_na_plaja.jpg', 3)
+/
+
+INSERT INTO PHOTOS
+VALUES(2, 'zahary_pravi_web.jpg', '../PhotoAlbum/zahary/CSKA/zahary_pravi_web.jpg', 3)
+/
+
+INSERT INTO PHOTOS
+VALUES(3, 'test.jpg', '../PhotoAlbum/zahary/CSKA/test.jpg', 3)
 /
 
 COMMIT
