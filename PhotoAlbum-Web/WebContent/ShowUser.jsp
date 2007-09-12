@@ -94,7 +94,7 @@
 				<% int t=1;%>
 				<div class="<%= type[0] %>">
 					<img src="img/tl.gif" class="tl" alt="tl" />
-					<span class="mainTab1"><a href="ShowAllPictuers?allPictures=allPictures" title="allPictures">Виж всички снимки</a></span>
+					<span class="mainTab1"><a href="ShowAllPictuers?param=<%= "allPictures" %>" title="allPictures">Виж всички снимки</a></span>
 					<img src="img/tr.gif" class="tr" alt="tr" />
 				</div>
 				<%for (Category categ : category){
@@ -123,92 +123,69 @@
 	</tr>
 	
 	
-		<tr><div class="smallestProfile" >
-					<%String firstPath = WebBean.firstPath;
-					int row = 0;
-					int pages = 1;
-					String allPictures = (String) session.getAttribute("allPictures");
-					String path = null;
-					if (allPictures != null){
-					Set<Category> category = user.getCategories();
-					for (Category categ: category){
-					Set<Photo> photos = categ.getPhotos();
-						for (Photo photo : photos){
-							path = firstPath+ photo.getPath()+photo.getPhName();
-					%>			
-	<% if (row == 4){
+		<tr>
+		<%String pages = (String)session.getAttribute("pag");
+			
+			if (session.getAttribute("nextPage") != null){
+			Integer nextPage = Integer.valueOf((Integer)session.getAttribute("nextPage"));
+			int nowPage = nextPage/6;
+			String[] photoId = ((String[])session.getAttribute("photoId"));
+			String[] photoComment=((String[])session.getAttribute("photoComment"));
+			String[] pathAll=(String[])session.getAttribute("pathAll");
+			String[] photoName=(String[])session.getAttribute("photoName");
+			if (photoName.length>0){
+			int count = 0;
+			for (int k = 0; k < photoId.length;k++){
+				
+			if (photoName[k] != null){
+		
+			 if (count == 3){
 	%></tr><tr>
-	<%row = 0;}else{
-	row++;
+	<%count = 0;}else{
+	count++;
 	} %>
+	
+	<div class="smallestProfile" >
 	<td class="tabsTableMiddle" ><div class="smallProfilePicOnline">
-		<a href="fullScreen.jsp?pic=<%= photo.getPhotoId() %>"><img src="<%=path %>" alt="<%= photo.getPhName() %>" title="<%= photo.getPhName() %>" height="150px"/></a>
-	</div>
+		<a href="fullScreen.jsp?pic=<%= photoId[k] %>"><img src="<%=pathAll[k] %>" alt="<%= photoName[k] %>" title="<%= photoName[k] %>" 
+		height="150px"/></a>
+		</div>
 		<div class="vipPic">&nbsp;</div>
-		<div class="lh17">
-		<a href="fullScreen.jsp?pic=<%= photo.getPhotoId() %>" class="link bold">Виж в цял размер</a>
-		<%= photo.getPhName()  %>
+		<div class="lh17"><%= pathAll[k] %>
+		<a href="fullScreen.jsp?pic=<%= photoId[k] %>" class="link bold">Виж на цял екран</a>
+		<%= photoName[k]  %>
 	</div>
-	
-	<div class="lh17">Коментари <span class="bold"><%= photo.getComments().size() %></span></div>
+	<div class="lh17">Коментари<span class="bold"><%= photoComment[k].toString() %></span></div>
 	<br><br>
+	
 	<% if (userLogin != null){ %>
 	<div style="color: blue;">
-	<a href="comment.JSP?picPath=<%= photo.getPhotoId() %>" class="link bold" >Добави коментар</a>
+	<a href="comment.jsp?picPath=<%=photoId[k] %>" class="link bold" >Добави коментар</a>
 	</div><% } %>
-	<%if (user.equals(userLogin)){%>
-	<div style="color: red;">
-	<a href="DeletePictureServlet?pic=<%= photo.getPhotoId() %>" class="link bold" >Изтрии</a>
-	</div>
-	<div style="color: green;">
-	<a href="renamePicture.jsp?pic=<%= photo.getPhotoId() %>" class="link bold" >Преименувай</a>
-	</div></td>
 	
-	<%}}}}else{
-		Category categ = (Category)session.getAttribute("path");
-		if (categ != null){
-		Set<Photo> photos = categ.getPhotos();
-		for (Photo photo : photos){
-		path = firstPath+ photo.getPath()+photo.getPhName();
-		pages = 1+photos.size()/8;
-		%>
-		<% if (row == 4){
-	%></tr><tr>
-	<%row = 0;}else{
-	row++;
-	} %>
-			<td class="tabsTableMiddle" ><div class="smallProfilePicOnline">
-		<a href="fullScreen.jsp?pic=<%= photo.getPhotoId() %>"><img src="<%=path %>" alt="<%= photo.getPhName() %>" title="<%= photo.getPhName() %>" height="150px"/></a>
-	</div>
-		<div class="vipPic">&nbsp;</div>
-		<div class="lh17">
-		<a href="fullScreen.jsp?pic=<%= photo.getPhotoId() %>" class="link bold">Виж в цял размер</a>
-		<%= photo.getPhName()  %>
-	</div>
 	
-	<div class="lh17">Коментари <span class="bold"><%= photo.getComments().size() %></span></div>
-	<br><br>
-	<% if (userLogin != null){ %>
-	<div style="color: blue;">
-	<a href="comment.JSP?picPath=<%= photo.getPhotoId() %>" class="link bold" >Добави коментар</a>
-	</div><% } %>
 	<%if (user.equals(userLogin)){%>
 	
 	<div style="color: red;">
-	<a href="DeletePictureServlet?pic=<%= photo.getPhotoId() %>" class="link bold" >Изтрии</a>
+	<a href="DeletePictureServlet?pic=<%=photoId[k] %>" class="link bold" >Изтрии снимката</a>
 	</div>
 	<div style="color: green;">
-	<a href="renamePicture.jsp?pic=<%= photo.getPhotoId() %>" class="link bold" >Преименувай</a>
+	<a href="renamePicture.jsp?pic=<%= photoId[k] %>" class="link bold" >Преименувай</a>
 	</div></td>
-	<% }}}}%>
-</div>			
-</td>
-	<tr><td>
-	<div class="fLeft left10">
-				<a href="ShowUser.jsp?page=1" onclick="MainPage.jsp; return false; "><img src="img/btnLeft.gif" align="absmiddle" /></a>
-				<a href="ShowUser.jsp?page=3" onclick="return toPage('next','men');"><img src="img/btnRight.gif" align="absmiddle" /></a>
-				<span id="menPage">1</span> от <span id="menTotalPages"><%= pages %></span>
-			</div></tr></td>
+	
+
+<%}} }%>							
+	<tr>
+		<td class="tabsBottomMid">
+			<div class="fLeft left10">
+				<a href="ShowPageServlet?page=prev" ><img src="img/btnLeft.gif" align="absmiddle" /></a>
+				<a href="ShowPageServlet?page=next" ><img src="img/btnRight.gif" align="absmiddle" /></a>
+				<span id="menPage"><%= nowPage %></span> от <span id="menTotalPages"><%= pages %></span>
+			</div>
+						
+	<%}} %>							
+	
+
 			
 
 </div></td></tr>

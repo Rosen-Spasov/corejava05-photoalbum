@@ -59,6 +59,7 @@
 						<td class="right">&nbsp;</td>
 						<td class="left pBottom10">
 						<% String[] errors = (String[])request.getAttribute("errors"); 
+						
 							if (errors != null){
 							for (String err: errors){
 							if (err != null){
@@ -89,14 +90,25 @@
 	<td class="pRight10 pTop10">
 	
 		<ol type="disc">
-		<% User[] allUser = (User[])session.getAttribute("allUser"); 
-				if (allUser == null){
-				PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
-				allUser = edit.getAllUsers();
-				session.setAttribute("allUser",allUser);
-				}
-		%>
+		<%	String ref = (String)session.getAttribute("ref");
+	if (ref == null){
+	response.sendRedirect("PageServlet");
+
+	}	else{
+		session.setAttribute("ref",null);
+		String pages = (String)session.getAttribute("pag");
+		if (session.getAttribute("nextPage")!=null){
+		Integer nextPage = Integer.valueOf((Integer)session.getAttribute("nextPage"));
 		
+		int nowPage = nextPage/6;
+		
+		String[] photoId = ((String[])session.getAttribute("photoId"));
+		String[] photoComment=((String[])session.getAttribute("photoComment"));
+		String[] pathAll=(String[])session.getAttribute("pathAll");
+		String[] photoName=(String[])session.getAttribute("photoName");
+		User[] allUser = (User[])session.getAttribute("allUser");
+		ref = null;
+		int count = 0;%>
 			<% for (User user: allUser){ %>
 		
 		<tr><td><li><a href="SearchServlet?searchName=<%= user.getUsername() %>"><%= user.getUsername() %></a></li></td></tr>
@@ -139,10 +151,10 @@
 	<table cellpadding="0" cellspacing="0" class="top10">
 		<tr>
 			<td>
-				<a href="http://www.amam.bg/?ad=004;00;03" target="_blank" title="кликни &amp; хапни"><img src="http://img.elmaz.com/style/img/kare/kare_amam.jpg" alt="кликни &amp; хапни" align="left" /></a>
+				<a href="http://www.amam.bg/" target="_blank" title="кликни &amp; хапни"><img src="img/kare_amam.jpg" alt="кликни &amp; хапни" align="left" /></a>
 			</td>
 			<td class="pLeft10">
-				<div><a href="http://www.amam.bg/?ad=004;00;03" class="bold purple2" target="_blank" title="кликни &amp; хапни">Amam.bg</a></div>
+				<div><a href="http://www.amam.bg/" class="bold purple2" target="_blank" title="кликни &amp; хапни">Amam.bg</a></div>
 				<div class="size10"><a href="http://www.amam.bg/?ad=004;00;03" class="black" target="_blank" title="кликни &amp; хапни">кликни &amp; хапни</a></div>
 			</td>
 		</tr>
@@ -150,11 +162,11 @@
 	<table cellpadding="0" cellspacing="0" class="top10">
 		<tr>
 			<td>
-				<a href="http://www.elmaz.com/ads/adclick.php?bannerid=1316&amp;source=&amp;dest=http://www.nani.bg" target="_blank" title="Nani.bg - внесете уют"><img src="http://img.elmaz.com/style/img/kare/nani_1_40x40.jpg" alt="Nani.bg" align="left" /></a>
+				<a href="http://www.amam.bg/" target="_blank" title="Nani.bg - внесете уют"><img src="img/nani_1_40x40.jpg" alt="Nani.bg" align="left" /></a>
 			</td>
 			<td class="pLeft10">
-				<div><a href="http://www.elmaz.com/ads/adclick.php?bannerid=1316&amp;source=&amp;dest=http://www.nani.bg" class="bold purple2" target="_blank" title="Nani.bg - внесете уют">Nani.bg</a></div>
-				<div class="size10"><a href="http://www.elmaz.com/ads/adclick.php?bannerid=1316&amp;source=&amp;dest=http://www.nani.bg" class="black" target="_blank" title="Nani.bg - внесете уют">внесете уют</a></div>
+				<div><a href="http://www.nani.bg" class="bold purple2" target="_blank" title="Nani.bg - внесете уют">Nani.bg</a></div>
+				<div class="size10"><a href="http://www.nani.bg" class="black" target="_blank" title="Nani.bg - внесете уют">внесете уют</a></div>
 			</td>
 		</tr>
 	</table>
@@ -238,20 +250,11 @@
 	</tr>
 	<table class="tabsMiddle top10" cellpadding="0" cellspacing="0">
 	<tr>
-	<%	String ref = (String)session.getAttribute("ref");
-	if (ref == null){
-	response.sendRedirect("PageServlet");
-	}	
-		String pages = (String)session.getAttribute("pag");
-		String[] photoId = ((String[])session.getAttribute("photoId"));
-		String[] photoComment=((String[])session.getAttribute("photoComment"));
-		String[] pathAll=(String[])session.getAttribute("pathAll");
-		String[] photoName=(String[])session.getAttribute("photoName");
-		ref = null;
-		int count = 0;%>
+	
 			
-<% for (int k = 0; k<photoId.length;k++){
-if (count == 3){ count = 0;%>
+<% for (int k = 0; k < photoId.length;k++){
+	if (photoName[k] != null){
+if (count == 3){ count = 1;%>
 	</tr><tr>
 <%}else{
 	count++;
@@ -273,22 +276,23 @@ if (count == 3){ count = 0;%>
 	<div class="lh17">Коментари <span class="bold"><%= photoComment[k] %></span></div>
 	
 </div>
-<%} %>							
+<%}} %>							
 	<tr>
 		<td class="tabsBottomMid">
 			<div class="fLeft left10">
-				<a href="#" onclick="return toPage('prev','men');"><img src="img/btnLeft.gif" align="absmiddle" /></a>
-				<a href="#" onclick="return toPage('next','men');"><img src="img/btnRight.gif" align="absmiddle" /></a>
-				<span id="menPage">1</span> от <span id="menTotalPages"><%= pages %></span>
+				<a href="PageServlet?page=prev" ><img src="img/btnLeft.gif" align="absmiddle" /></a>
+				<a href="PageServlet?page=next" ><img src="img/btnRight.gif" align="absmiddle" /></a>
+				<span id="menPage"><%= nowPage %></span> от <span id="menTotalPages"><%= pages %></span>
 			</div>
 			<div class="fRight right10">
 				<div style="line-height:17px;">
-					<a href="GetPicturesFromDatabase" class="link">Виж всички снимки &raquo;</a>
+					
 				</div>
 			</div>
 		</td>
 	</tr>
-</table>			
+</table>
+<%} }%>			
 		</td>
 		<td class="vtop pLeft20">
 							<div class="right right10 advertisement"><img src="http://img.elmaz.com/style/img/advArrow.png" /> реклама</div>
