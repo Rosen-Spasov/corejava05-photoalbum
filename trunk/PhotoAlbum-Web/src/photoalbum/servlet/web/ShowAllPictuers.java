@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import photoalbum.PhotoAlbumManipulator;
 import photoalbum.entities.Category;
+import photoalbum.entities.Photo;
 import photoalbum.entities.User;
 
 /**
@@ -31,24 +33,79 @@ import photoalbum.entities.User;
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String cat = request.getParameter("param");
-		String allPictures = request.getParameter("allPictures");
-		System.out.println(allPictures);
-		if (allPictures != null){
-			session.setAttribute("allPictures", "allPictures");
-			request.getRequestDispatcher("ShowUser.jsp").forward(request, response);
-		}
-		User user = (User)session.getAttribute("user");
-		System.out.println(cat);
-		Set<Category> category = user.getCategories();
-		
-		for (Category c: category){
-			System.out.println(c.getCatName());
-			if (c.getCatName().equalsIgnoreCase(cat)){
-				String path = c.getPath();
-				session.setAttribute("allPictures", null);
-				session.setAttribute("path", c);
-				request.getRequestDispatcher("ShowUser.jsp").forward(request, response);
+		int allPhotoCounter = 0;
+			PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
+			User user = (User)session.getAttribute("user");
+			System.out.println(user.getUsername());
+			Set<Category> allCategory = user.getCategories();
+			String path;
+			int count = 0;
+			if (cat.equalsIgnoreCase("allPictures")){
+				for (Category allCat : allCategory) {
+					Set<Photo> allPhoto = allCat.getPhotos();
+					for (Photo allPh : allPhoto) {
+						allPhotoCounter++;
+					}
+				}
+				String[] pathAll = new String[allPhotoCounter];
+				String[] photoId = new String[allPhotoCounter];
+				String[] photoName = new String[allPhotoCounter];
+				String[] photoComment = new String[allPhotoCounter];
+				int pa = 1 + allPhotoCounter / 7;
+				String pages = "" + pa;
+				for (Category allCat : allCategory) {
+					Set<Photo> allPhoto = allCat.getPhotos();
+					for (Photo allPh : allPhoto) {
+						photoName[count] = allPh.getPhName();
+						photoId[count] =""+ allPh.getPhotoId();
+						pathAll[count] = allPh.getPath();
+						photoComment[count] =""+ allPh.getComments().size();
+						count++;
+					}
 			}
+			session.setAttribute("pathAll", pathAll);
+			session.setAttribute("photoId", photoId);
+			session.setAttribute("photoName", photoName);
+			session.setAttribute("photoComment", photoComment);
+			System.out.println("ob6to snimki ->"+ allPhotoCounter);
+			System.out.println("tova e "+cat);
+		}else{
+			allPhotoCounter=0;
+			for (Category allCat : allCategory) {
+				if (cat.equalsIgnoreCase(allCat.getCatName())){
+					Set<Photo> photo = allCat.getPhotos();
+					for (Photo allPh : photo) {
+						allPhotoCounter++;
+						
+					}
+				}
+			}
+			String[] pathAll = new String[allPhotoCounter];
+			String[] photoId = new String[allPhotoCounter];
+			String[] photoName = new String[allPhotoCounter];
+			String[] photoComment = new String[allPhotoCounter];
+			for (Category allCat : allCategory) {
+				if (cat.equalsIgnoreCase(allCat.getCatName())){
+					Set<Photo> photo = allCat.getPhotos();
+					for (Photo allPh : photo) {
+						photoName[count] = allPh.getPhName();
+						photoId[count] =""+ allPh.getPhotoId();
+						pathAll[count] = allPh.getPath();
+						photoComment[count] =""+ allPh.getComments().size();
+						count++;
+					}
+				}
+			}
+			session.setAttribute("pathAll", pathAll);
+			session.setAttribute("photoId", photoId);
+			session.setAttribute("photoName", photoName);
+			session.setAttribute("photoComment", photoComment);
+			System.out.println("ob6to snimki ->"+ allPhotoCounter);
+			System.out.println("tova e "+cat);
 		}
+			
+			
+		request.getRequestDispatcher("ShowPageServlet").forward(request, response);
+		
 	}   	  	    
 }
