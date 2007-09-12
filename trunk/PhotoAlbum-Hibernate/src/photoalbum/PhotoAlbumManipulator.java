@@ -210,17 +210,26 @@ public class PhotoAlbumManipulator {
 	}
 	
 	public void deleteUser(User user) {
+		if (user == null) {
+			return;
+		}
 		User userInDB = getHbConnection().getUserById(user.getUserId());		
 		deleteObject(userInDB);
 	}
 	
 	public void deleteCategory(Category category) {
+		if (category == null) {
+			return;
+		}
 		Category categoryInDB = getHbConnection().getCategoryById(category.getCategoryId());
 		categoryInDB.getParent().remove(categoryInDB);
 		deleteObject(categoryInDB);
 	}
 	
 	public void deletePhoto(Photo photo) {
+		if (photo == null) {
+			return;
+		}
 		Photo photoInDB = getHbConnection().getPhotoById(photo.getPhotoId());
 		photoInDB.getCategory().remove(photoInDB);
 		deleteObject(photoInDB);
@@ -236,6 +245,21 @@ public class PhotoAlbumManipulator {
 			getHbConnection().rollback();
 			getLogger().log(e);
 		}
+	}
+	
+	public void refresh(Object obj) {
+		getHbConnection().refresh(obj);
+	}
+	
+	public void refreshAll(Object[] objects) {
+		for (Object obj : objects) {
+			refresh(obj);
+		}
+	}
+	
+	public String getAbsolutePath(Object obj) {
+		String absolutePath = FileSystemManager.getAbsolutePath(obj);
+		return absolutePath;
 	}
 
 }

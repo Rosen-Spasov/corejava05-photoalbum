@@ -193,4 +193,8 @@ public class HibernateConnection {
 		return result;
 	}
 	
+	public void refresh(Object obj) {
+		this.getSession().refresh(obj);
+	}
+	
 }

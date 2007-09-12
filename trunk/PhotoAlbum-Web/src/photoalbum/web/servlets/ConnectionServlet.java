@@ -67,6 +67,8 @@ import photoalbum.network.NetworkConnection;
 						outputData = addCategory(inputData[1], inputData[2]);
 					} else if (NetworkConnection.CMD_ADD_PHOTO.equals(cmd) && inputData.length == 4) {
 						outputData = addPhoto(inputData[1], inputData[2], inputData[3]);
+					} else if (NetworkConnection.CMD_REFRESH.equals(cmd) && inputData.length ==2) {
+						outputData = refresh(inputData[1]);
 					}
 				}
 				writeData(response, outputData);
@@ -145,5 +147,10 @@ import photoalbum.network.NetworkConnection;
 	
 	private void delete(Object obj) {
 		getPhotoAlbumManipulator().delete(obj);
+	}
+	
+	private Object refresh(Object obj) {
+		getPhotoAlbumManipulator().refresh(obj);
+		return obj;
 	}
 }
