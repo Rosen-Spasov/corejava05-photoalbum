@@ -30,12 +30,14 @@ public class SearchServlet extends javax.servlet.http.HttpServlet implements
 		if (searchName.length()>0) {
 			User user = edit.getUserByUsername(searchName);
 			session.setAttribute("user", user);
+			
 				if (category != null) {
 					boolean cat = user.getCategories().contains(category);
 					session.setAttribute("category", cat);
 					request.getRequestDispatcher("ShowUser.jsp").forward(
 							request, response);
 				} else {
+					
 					session.setAttribute("category", null);
 					request.getRequestDispatcher("ShowUser.jsp").forward(
 							request, response);
@@ -45,6 +47,5 @@ public class SearchServlet extends javax.servlet.http.HttpServlet implements
 			request.getRequestDispatcher("MainPage.jsp").forward(request,
 					response);
 		}
-
 	}
 }
