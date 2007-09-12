@@ -16,8 +16,6 @@ import photoalbum.logging.Logger;
 
 public class PhotoAlbumManipulator {
 	
-	public static final String ROOT_DIR = "../PhotoAlbum";
-	
 	public static final String LOG_FILENAME = "PhotoAlbumManipulator.log";
 	
 	private static Logger logger = null;
@@ -92,6 +90,21 @@ public class PhotoAlbumManipulator {
 	}
 	
 	public Category addCategory(ICategoryContainer parent, String catName) throws CreateCategoryException {
+		if (parent == null) {
+			return null;
+		}
+		
+		ICategoryContainer parentInDB = null;
+		if (parent instanceof User) {
+			int userId = ((User) parent).getUserId();
+			parentInDB = getHbConnection().getUserById(userId);
+		} else if (parent instanceof Category) {
+			int categoryId = ((Category) parent).getCategoryId();
+			parentInDB = getHbConnection().getCategoryById(categoryId);
+		}
+		if (parentInDB != null) {
+			parent = parentInDB;
+		}
 
 		String path = FileSystemManager.getPathForChild(parent, catName);
 		Category category = getCategoryByPath(path);
@@ -129,6 +142,11 @@ public class PhotoAlbumManipulator {
 		if (category == null || imageFile == null) {
 			return null;
 		}
+		int categoryId = ((Category) category).getCategoryId();
+		Category categoryInDB = getHbConnection().getCategoryById(categoryId);
+		if (categoryInDB != null) {
+			category = categoryInDB;
+		}
 		
 		String phName = imageFile.getName();
 		String path = FileSystemManager.getPathForChild(category, phName);
@@ -153,6 +171,15 @@ public class PhotoAlbumManipulator {
 	}
 	
 	public Photo addPhoto(Category category, String phName, byte[] image) throws CreatePhotoException {
+		if (category == null) {
+			return null;
+		}
+		
+		int categoryId = ((Category) category).getCategoryId();
+		Category categoryInDB = getHbConnection().getCategoryById(categoryId);
+		if (categoryInDB != null) {
+			category = categoryInDB;
+		}
 
 		String path = FileSystemManager.getPathForChild(category, phName);
 		Photo photo = getPhotoByPath(path);

@@ -7,8 +7,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -389,7 +387,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	private JScrollPane getScrollPaneData() {
 		if (scrollPaneData == null) {
 			scrollPaneData = new JScrollPane();
-			scrollPaneData.setBounds(new Rectangle(15, 15, 421, 241));
+			scrollPaneData.setBounds(new Rectangle(15, 15, 436, 241));
 			scrollPaneData.setViewportView(getTreeData());
 		}
 		return scrollPaneData;
@@ -533,11 +531,9 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 					}
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Logger.getDefaultInstance().log(e);
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Logger.getDefaultInstance().log(e);
 			}
 			
 			this.refreshTree();
@@ -651,35 +647,6 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		}
 	}
 	
-	private void refresh() {
-		int childCount = getRootNode().getChildCount();
-		Set<Object> objectsList = new HashSet<Object>();
-		for (int index = 0; index < childCount; index++) {
-			DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) getRootNode().getChildAt(index);
-			Object obj = childNode.getUserObject();
-			objectsList.add(obj);
-		}
-		Object[] objects = new Object[objectsList.size()];
-		objectsList.toArray(objects);
-		try {
-			objects = this.networkConnection.refreshAll(objects);
-			getRootNode().removeAllChildren();
-			User[] users = new User[objects.length];
-			for (int index = 0; index < objects.length; index++) {
-				users[index] = (User) objects[index];
-			}
-			getRootNode().removeAllChildren();
-			loadChildren(this.getRootNode(), users);
-			reloadTree();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	private void refreshTree() {
 		getRootNode().removeAllChildren();
 		loadTree();
@@ -707,8 +674,8 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		} else if (e.getSource() == this.getBtnDelete()) {
 			delete();
 		} else if (e.getSource() == this.getBtnRefresh()) {
-			refresh();
-//			refreshTree();
+//			refresh();
+			refreshTree();
 		} else if (e.getSource() == this.getBtnExit() || e.getSource() == this.getMItemExit()) {
 			exit();
 		} else if (e.getSource() == this.getMItemNewSession()) {
