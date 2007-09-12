@@ -12,12 +12,12 @@
 			</generator>
 		</id>
 		
-		<set name="Categories" table="CATEGORIES" cascade="all" order-by="CAT_NAME" lazy="false" outer-join="true">
+		<set name="Categories" table="CATEGORIES" cascade="all-delete-orphan" order-by="CAT_NAME" lazy="false" outer-join="true">
         	<key column="USER_ID" />
         	<one-to-many class="Category" />
         </set>
 		
-		<set name="Comments" table="COMMENTS" cascade="all" lazy="false" outer-join="true">
+		<set name="Comments" table="COMMENTS" cascade="all-delete-orphan" lazy="false" outer-join="true">
         	<key column="USER_ID" />
         	<one-to-many class="Comment" />
         </set>
