@@ -255,6 +255,10 @@ public class PhotoAlbumManipulator {
 		for (Object obj : objects) {
 			refresh(obj);
 		}
+		User[] users = getAllUsers();
+		for (User user : users) {
+			refresh(user);
+		}
 	}
 	
 	public String getAbsolutePath(Object obj) {
