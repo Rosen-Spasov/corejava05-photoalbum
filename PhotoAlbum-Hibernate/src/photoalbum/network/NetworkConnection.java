@@ -29,9 +29,11 @@ public class NetworkConnection {
 	
 	public static final String CMD_UPDATE_USER = "editUser";
 	
-	public static final String CMD_DELETE = "deleteObject";
+	public static final String CMD_DELETE = "delete";
 	
 	public static final String CMD_ADMIN_ACCESS_GRANTED = "adminAccessGranted";
+	
+	public static final String CMD_REFRESH = "refresh";
 	
 	public static final String PROTOCOL = "http://";
 	
@@ -196,6 +198,27 @@ public class NetworkConnection {
 		}
 		
 		return photo;
+	}
+	
+	public Object refresh(Object obj) throws IOException, ClassNotFoundException {
+		Object result = null;
+
+		String cmd = NetworkConnection.CMD_REFRESH;
+		Object[] outputData = new Object[] { cmd, obj };
+		Object inputData = exchangeData(outputData);
+		
+		if (inputData.getClass().equals(obj.getClass())) {
+			result = inputData;
+		}
+		
+		return result;
+	}
+	
+	public Object[] refreshAll(Object[] objects) throws IOException, ClassNotFoundException {
+		for (Object obj : objects) {
+			obj = refresh(obj);
+		}
+		return objects;
 	}
 
 }

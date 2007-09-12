@@ -623,6 +623,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 					parentNode.remove(selectedNode);
 					reloadTree();
 				} catch (Throwable e) {
+					Logger.getDefaultInstance().log(e);
 					JOptionPane.showMessageDialog(this, "Cannot delete selected object.", "Delete Object Failed", JOptionPane.ERROR_MESSAGE);
 				}
 			}

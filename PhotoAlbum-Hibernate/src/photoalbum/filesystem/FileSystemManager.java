@@ -30,7 +30,7 @@ public abstract class FileSystemManager {
 		String path = null;
 		
 		if (parent instanceof User) {
-			path = ROOT_DIR + SEPARATOR + ((User) parent).getUsername() + SEPARATOR + childName;
+			path = getPathForUser((User) parent) + SEPARATOR + childName;
 		} else if (parent instanceof Category) {
 			path = ((Category) parent).getPath() + SEPARATOR + childName;
 		}
@@ -60,12 +60,12 @@ public abstract class FileSystemManager {
 				byteArray = new ByteArrayOutputStream();
 				
 				byte[] buffer = new byte[BUFF_SIZE];
-				int bytesRead = -1;
+				int bytesRead = buffStream.read(buffer);
 				
-				do {
-					bytesRead = buffStream.read(buffer);
+				while (bytesRead != -1) {
 					byteArray.write(buffer, 0, bytesRead);
-				} while (bytesRead != -1);
+					bytesRead = buffStream.read(buffer);
+				}
 				
 				result = byteArray.toByteArray();
 				
@@ -130,7 +130,7 @@ public abstract class FileSystemManager {
 		
 		boolean result = true;
 		
-		File userDirectory = new File(ROOT_DIR + SEPARATOR + user.getUsername());
+		File userDirectory = new File(getPathForUser(user));
 		if (!userDirectory.exists()) {
 			result = result && userDirectory.mkdirs();
 		}
@@ -233,13 +233,7 @@ public abstract class FileSystemManager {
 		if (user == null) {
 			return false;
 		}
-		
-		boolean result = deleteUser(user.getUsername());
-		return result;
-	}
-	
-	public static boolean deleteUser(String username) {
-		File userDirectory = new File(ROOT_DIR + SEPARATOR + username);
+		File userDirectory = new File(getPathForUser(user));
 		return deleteFile(userDirectory);
 	}
 	
@@ -261,6 +255,28 @@ public abstract class FileSystemManager {
 			fileExtension = file.getName().substring(index + 1);
 		}		
 		return fileExtension;
+	}
+	
+	public static String getPathForUser(User user) {
+		String path = ROOT_DIR + SEPARATOR + user.getUsername();
+		return path;
+	}
+	
+	public static String getAbsolutePath(Object obj) {
+		if (obj == null) {
+			return null;
+		}
+		String relativePath = "";
+		if (obj instanceof User) {
+			relativePath = getPathForUser((User) obj);
+		} else if (obj instanceof Category) {
+			relativePath = ((Category) obj).getPath();
+		} else if (obj instanceof Photo) {
+			relativePath = ((Photo) obj).getPath();
+		}
+		
+		File file = new File(relativePath);
+		return file.getAbsolutePath();
 	}
 
 }
