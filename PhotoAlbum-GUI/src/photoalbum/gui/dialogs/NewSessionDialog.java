@@ -70,6 +70,7 @@ public class NewSessionDialog extends JDialog {
 		this.setResizable(false);
 		this.setTitle("New Session Dialog");
 		this.setContentPane(getJContentPane());
+		this.getRootPane().setDefaultButton(this.getBtnConnect());
 	}
 
 	/**

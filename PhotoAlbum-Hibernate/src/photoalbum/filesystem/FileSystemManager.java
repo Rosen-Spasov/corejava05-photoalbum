@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Set;
 
-import photoalbum.PhotoAlbumManipulator;
 import photoalbum.entities.Category;
 import photoalbum.entities.Photo;
 import photoalbum.entities.User;
@@ -20,21 +19,23 @@ import photoalbum.logging.Logger;
 
 public abstract class FileSystemManager {
 	
-	public static final String ROOT_DIR = PhotoAlbumManipulator.ROOT_DIR;
+	public static final String ROOT_DIR = "./PhotoAlbum";
 	
 	public static final int BUFF_SIZE = 1 * 1024 * 1024;
 	
 	public static final String SEPARATOR = "/";
 	
 	public static String getPathForChild(Object parent, String childName) {
-		String path = null;
+		if (parent == null) {
+			return null;
+		}
 		
+		String path = null;		
 		if (parent instanceof User) {
 			path = getPathForUser((User) parent) + SEPARATOR + childName;
 		} else if (parent instanceof Category) {
 			path = ((Category) parent).getPath() + SEPARATOR + childName;
 		}
-
 		return path;
 	}
 	
@@ -258,6 +259,9 @@ public abstract class FileSystemManager {
 	}
 	
 	public static String getPathForUser(User user) {
+		if (user == null) {
+			return null;
+		}
 		String path = ROOT_DIR + SEPARATOR + user.getUsername();
 		return path;
 	}
