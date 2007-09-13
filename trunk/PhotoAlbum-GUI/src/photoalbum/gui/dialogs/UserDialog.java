@@ -1,7 +1,9 @@
 package photoalbum.gui.dialogs;
 
 import java.awt.Frame;
-import java.awt.Rectangle;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -76,10 +78,10 @@ public class UserDialog extends JDialog implements ActionListener {
 	 * @return void
 	 */
 	private void initialize() {
-		this.setSize(300, 170);
+		this.setSize(292, 167);
 		this.setModal(true);
 		this.setResizable(false);
-		this.setTitle("User Dialog");
+		this.setTitle("Потребителски Диалог");
 		this.setContentPane(getJContentPane());
 	}
 
@@ -90,30 +92,90 @@ public class UserDialog extends JDialog implements ActionListener {
 	 */
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
+			GridBagConstraints gridBagConstraints9 = new GridBagConstraints();
+			gridBagConstraints9.insets = new Insets(7, 22, 14, 30);
+			gridBagConstraints9.gridy = 2;
+			gridBagConstraints9.ipadx = 24;
+			gridBagConstraints9.ipady = -10;
+			gridBagConstraints9.gridx = 1;
+			GridBagConstraints gridBagConstraints8 = new GridBagConstraints();
+			gridBagConstraints8.insets = new Insets(7, 30, 14, 22);
+			gridBagConstraints8.gridy = 2;
+			gridBagConstraints8.ipadx = 41;
+			gridBagConstraints8.ipady = -10;
+			gridBagConstraints8.gridx = 0;
+			GridBagConstraints gridBagConstraints7 = new GridBagConstraints();
+			gridBagConstraints7.fill = GridBagConstraints.VERTICAL;
+			gridBagConstraints7.gridx = 1;
+			gridBagConstraints7.gridy = 1;
+			gridBagConstraints7.ipadx = 117;
+			gridBagConstraints7.ipady = -4;
+			gridBagConstraints7.weightx = 1.0;
+			gridBagConstraints7.insets = new Insets(22, 7, 7, 15);
+			GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
+			gridBagConstraints6.insets = new Insets(7, 7, 22, 45);
+			gridBagConstraints6.gridy = 1;
+			gridBagConstraints6.ipadx = 33;
+			gridBagConstraints6.gridx = 1;
+			GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
+			gridBagConstraints5.fill = GridBagConstraints.VERTICAL;
+			gridBagConstraints5.gridx = 0;
+			gridBagConstraints5.gridy = 1;
+			gridBagConstraints5.ipadx = 117;
+			gridBagConstraints5.ipady = -4;
+			gridBagConstraints5.weightx = 1.0;
+			gridBagConstraints5.insets = new Insets(22, 15, 7, 7);
+			GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
+			gridBagConstraints4.insets = new Insets(7, 15, 22, 37);
+			gridBagConstraints4.gridy = 1;
+			gridBagConstraints4.ipadx = 65;
+			gridBagConstraints4.gridx = 0;
+			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+			gridBagConstraints3.fill = GridBagConstraints.VERTICAL;
+			gridBagConstraints3.gridx = 1;
+			gridBagConstraints3.gridy = 0;
+			gridBagConstraints3.ipadx = 117;
+			gridBagConstraints3.ipady = -4;
+			gridBagConstraints3.weightx = 1.0;
+			gridBagConstraints3.insets = new Insets(30, 7, 7, 15);
+			GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+			gridBagConstraints2.insets = new Insets(15, 7, 22, 45);
+			gridBagConstraints2.gridy = 0;
+			gridBagConstraints2.ipadx = 43;
+			gridBagConstraints2.gridx = 1;
+			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
+			gridBagConstraints1.fill = GridBagConstraints.VERTICAL;
+			gridBagConstraints1.gridx = 0;
+			gridBagConstraints1.gridy = 0;
+			gridBagConstraints1.ipadx = 117;
+			gridBagConstraints1.ipady = -4;
+			gridBagConstraints1.weightx = 1.0;
+			gridBagConstraints1.insets = new Insets(30, 15, 7, 7);
+			GridBagConstraints gridBagConstraints = new GridBagConstraints();
+			gridBagConstraints.insets = new Insets(15, 15, 22, 37);
+			gridBagConstraints.gridy = 0;
+			gridBagConstraints.ipadx = 19;
+			gridBagConstraints.gridx = 0;
 			lbLastName = new JLabel();
-			lbLastName.setBounds(new Rectangle(165, 60, 91, 16));
-			lbLastName.setText("Last name:");
+			lbLastName.setText("Фамилия:");
 			lbFirstName = new JLabel();
-			lbFirstName.setBounds(new Rectangle(15, 60, 91, 16));
-			lbFirstName.setText("First name:");
+			lbFirstName.setText("Име:");
 			lbPassword = new JLabel();
-			lbPassword.setBounds(new Rectangle(165, 15, 91, 16));
-			lbPassword.setText("Password:");
+			lbPassword.setText("Парола:");
 			lbUsername = new JLabel();
-			lbUsername.setBounds(new Rectangle(15, 15, 91, 16));
-			lbUsername.setText("Username:");
+			lbUsername.setText("Потребител:");
 			jContentPane = new JPanel();
-			jContentPane.setLayout(null);
-			jContentPane.add(lbUsername, null);
-			jContentPane.add(getTxtUsername(), null);
-			jContentPane.add(lbPassword, null);
-			jContentPane.add(getPwdPassword(), null);
-			jContentPane.add(lbFirstName, null);
-			jContentPane.add(getTxtFirstName(), null);
-			jContentPane.add(lbLastName, null);
-			jContentPane.add(getTxtLastName(), null);
-			jContentPane.add(getBtnOK(), null);
-			jContentPane.add(getBtnCancel(), null);
+			jContentPane.setLayout(new GridBagLayout());
+			jContentPane.add(lbUsername, gridBagConstraints);
+			jContentPane.add(getTxtUsername(), gridBagConstraints1);
+			jContentPane.add(lbPassword, gridBagConstraints2);
+			jContentPane.add(getPwdPassword(), gridBagConstraints3);
+			jContentPane.add(lbFirstName, gridBagConstraints4);
+			jContentPane.add(getTxtFirstName(), gridBagConstraints5);
+			jContentPane.add(lbLastName, gridBagConstraints6);
+			jContentPane.add(getTxtLastName(), gridBagConstraints7);
+			jContentPane.add(getBtnOK(), gridBagConstraints8);
+			jContentPane.add(getBtnCancel(), gridBagConstraints9);
 		}
 		return jContentPane;
 	}
@@ -126,7 +188,6 @@ public class UserDialog extends JDialog implements ActionListener {
 	private JTextField getTxtUsername() {
 		if (txtUsername == null) {
 			txtUsername = new JTextField();
-			txtUsername.setBounds(new Rectangle(15, 30, 121, 16));
 		}
 		return txtUsername;
 	}
@@ -139,7 +200,6 @@ public class UserDialog extends JDialog implements ActionListener {
 	private JPasswordField getPwdPassword() {
 		if (pwdPassword == null) {
 			pwdPassword = new JPasswordField();
-			pwdPassword.setBounds(new Rectangle(150, 30, 121, 16));
 		}
 		return pwdPassword;
 	}
@@ -152,7 +212,6 @@ public class UserDialog extends JDialog implements ActionListener {
 	private JTextField getTxtFirstName() {
 		if (txtFirstName == null) {
 			txtFirstName = new JTextField();
-			txtFirstName.setBounds(new Rectangle(15, 75, 121, 16));
 		}
 		return txtFirstName;
 	}
@@ -165,7 +224,6 @@ public class UserDialog extends JDialog implements ActionListener {
 	private JTextField getTxtLastName() {
 		if (txtLastName == null) {
 			txtLastName = new JTextField();
-			txtLastName.setBounds(new Rectangle(150, 75, 121, 16));
 		}
 		return txtLastName;
 	}
@@ -178,8 +236,7 @@ public class UserDialog extends JDialog implements ActionListener {
 	private JButton getBtnOK() {
 		if (btnOK == null) {
 			btnOK = new JButton();
-			btnOK.setBounds(new Rectangle(30, 105, 91, 16));
-			btnOK.setText("OK");
+			btnOK.setText("ОК");
 			btnOK.addActionListener(this);
 		}
 		return btnOK;
@@ -193,8 +250,7 @@ public class UserDialog extends JDialog implements ActionListener {
 	private JButton getBtnCancel() {
 		if (btnCancel == null) {
 			btnCancel = new JButton();
-			btnCancel.setBounds(new Rectangle(165, 105, 91, 16));
-			btnCancel.setText("Cancel");
+			btnCancel.setText("Отказ");
 			btnCancel.addActionListener(this);
 		}
 		return btnCancel;

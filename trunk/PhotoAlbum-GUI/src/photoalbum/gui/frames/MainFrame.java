@@ -172,7 +172,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		if (btnRefresh == null) {
 			btnRefresh = new JButton();
 			btnRefresh.setBounds(new Rectangle(15, 105, 91, 16));
-			btnRefresh.setText("Refresh");
+			btnRefresh.setText("Опресни");
 			btnRefresh.addActionListener(this);
 		}
 		return btnRefresh;
@@ -211,7 +211,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		this.getTreeData().setEnabled(false);
 		this.updateButtons(false);
 		this.getBtnRefresh().setEnabled(false);
-		this.setTitle("Manage Photo Album");
+		this.setTitle("Фото Албум Мениджър");
 	}
 
 	/**
@@ -252,7 +252,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	private JMenu getMenuFile() {
 		if (menuFile == null) {
 			menuFile = new JMenu();
-			menuFile.setText("File");
+			menuFile.setText("Файл");
 			menuFile.add(getMItemExit());
 		}
 		return menuFile;
@@ -266,7 +266,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	private JMenu getMenuSession() {
 		if (menuSession == null) {
 			menuSession = new JMenu();
-			menuSession.setText("Session");
+			menuSession.setText("Сесия");
 			menuSession.add(getMItemNewSession());
 		}
 		return menuSession;
@@ -280,7 +280,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	private JMenuItem getMItemNewSession() {
 		if (mItemNewSession == null) {
 			mItemNewSession = new JMenuItem();
-			mItemNewSession.setText("New Session");
+			mItemNewSession.setText("Нова Сесия");
 			mItemNewSession.addActionListener(this);
 		}
 		return mItemNewSession;
@@ -313,7 +313,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	private JButton getBtnExit() {
 		if (btnExit == null) {
 			btnExit = new JButton();
-			btnExit.setText("Exit");
+			btnExit.setText("Изход");
 			btnExit.setBounds(new Rectangle(465, 240, 91, 16));
 			btnExit.addActionListener(this);
 		}
@@ -329,7 +329,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		if (btnAdd == null) {
 			btnAdd = new JButton();
 			btnAdd.setBounds(new Rectangle(15, 15, 91, 16));
-			btnAdd.setText("Add");
+			btnAdd.setText("Добави");
 			btnAdd.addActionListener(this);
 		}
 		return btnAdd;
@@ -344,7 +344,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		if (btnEdit == null) {
 			btnEdit = new JButton();
 			btnEdit.setBounds(new Rectangle(15, 45, 91, 16));
-			btnEdit.setText("Edit");
+			btnEdit.setText("Добави");
 			btnEdit.addActionListener(this);
 		}
 		return btnEdit;
@@ -359,7 +359,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		if (btnDelete == null) {
 			btnDelete = new JButton();
 			btnDelete.setBounds(new Rectangle(15, 75, 91, 16));
-			btnDelete.setText("Delete");
+			btnDelete.setText("Изтрий");
 			btnDelete.addActionListener(this);
 		}
 		return btnDelete;
@@ -373,7 +373,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	private JMenuItem getMItemExit() {
 		if (mItemExit == null) {
 			mItemExit = new JMenuItem();
-			mItemExit.setText("Exit");
+			mItemExit.setText("Изход");
 			mItemExit.addActionListener(this);
 		}
 		return mItemExit;

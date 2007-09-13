@@ -68,7 +68,7 @@ public class NewSessionDialog extends JDialog {
 		this.setMinimumSize(new Dimension(7, 33));
 		this.setModal(true);
 		this.setResizable(false);
-		this.setTitle("New Session Dialog");
+		this.setTitle("Диалог за Нова Сесия");
 		this.setContentPane(getJContentPane());
 		this.getRootPane().setDefaultButton(this.getBtnConnect());
 	}
@@ -82,13 +82,13 @@ public class NewSessionDialog extends JDialog {
 		if (jContentPane == null) {
 			lbPort = new JLabel();
 			lbPort.setBounds(new Rectangle(165, 15, 61, 16));
-			lbPort.setText("Port:");
+			lbPort.setText("Порт:");
 			lbHost = new JLabel();
 			lbHost.setBounds(new Rectangle(15, 15, 61, 16));
-			lbHost.setText("Host:");
+			lbHost.setText("Хост:");
 			lbPassword = new JLabel();
 			lbPassword.setBounds(new Rectangle(15, 60, 61, 16));
-			lbPassword.setText("Password:");
+			lbPassword.setText("Парола:");
 			jContentPane = new JPanel();
 			jContentPane.setLayout(null);
 			jContentPane.add(getBtnConnect(), null);
@@ -113,7 +113,7 @@ public class NewSessionDialog extends JDialog {
 		if (btnConnect == null) {
 			btnConnect = new JButton();
 			btnConnect.setBounds(new Rectangle(15, 90, 91, 16));
-			btnConnect.setText("Connect");
+			btnConnect.setText("ОК");
 			btnConnect.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					if (validateForm()) {
@@ -135,7 +135,7 @@ public class NewSessionDialog extends JDialog {
 		if (btnCancel == null) {
 			btnCancel = new JButton();
 			btnCancel.setBounds(new Rectangle(135, 90, 91, 16));
-			btnCancel.setText("Cancel");
+			btnCancel.setText("Отказ");
 			btnCancel.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					setDialogResult(DialogResult.CANCEL);
