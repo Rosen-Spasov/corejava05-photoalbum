@@ -41,46 +41,57 @@ import photoalbum.entities.User;
 		String userName = request.getParameter("username");
 		String pass = request.getParameter("pass");
 		String[] errors = new String[5];
-		if (isValid(userName,pass,request)){
-		System.out.println(userName+" "+ pass);
+		if (isValid(userName,pass,request,errors)){
+//		System.out.println(userName+" "+ pass);
 		User user = edit.getUserByUsername(userName);
 			if (user != null){
+//				System.out.println(user.getUsername());
 				if (user.getPassword().equalsIgnoreCase(pass)){
 				session.setAttribute("login", user);
 				request.getRequestDispatcher("MainPage.jsp").forward(request, response);
 				}else{
 					errors[0] = "wrong user name or password";
-					request.setAttribute("errors", errors);
+	//				System.out.println("wrong user name or password");
+					
 					request.getRequestDispatcher("MainPage.jsp").forward(request, response);
 				}
 			}else{
+			
 				session.setAttribute("login", null);
 				errors[0] = "you are not registered";
-				request.setAttribute("errors", errors);
+//				System.out.println(errors[0]);
+				
 				request.getRequestDispatcher("MainPage.jsp").forward(request, response);
 			
 		}}else {
+//			System.out.println("no logs");
+			
+//			System.out.println(errors[0]);
+			
 			session.setAttribute("login", null);
 			request.getRequestDispatcher("MainPage.jsp").forward(request, response);
 		}
+		for (int k=0;k<errors.length;k++){
+//		System.out.println("loops->"+errors[k]);
+		}
+		session.setAttribute("errors", errors);
 	}
 
-	private boolean isValid(String userName, String pass, HttpServletRequest request) {
+	private boolean isValid(String userName, String pass, HttpServletRequest request, String[] errors) {
 	
 		boolean result=true;
-		String[] errors = new String[5];
-		int errorsCount = 0;
+		
 		if (!(userName.length()>0)){
-			errors[errorsCount]="enter a valid name";
-			errorsCount++;
+			errors[1]="enter a valid name";
+			
 			result = false;
 		}
 		if (!(pass.length()>0)){
-			errors[errorsCount]="enter password";
-			errorsCount++;
+			errors[2]="enter password";
+			
 			result = false;
 		}
-		request.setAttribute("errors", errors);
+		
 		return result;
 	}   	  	    
 }

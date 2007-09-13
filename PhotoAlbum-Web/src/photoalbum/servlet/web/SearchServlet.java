@@ -28,6 +28,7 @@ public class SearchServlet extends javax.servlet.http.HttpServlet implements
 		String category = (String)request.getParameter("category");
 		System.out.println(searchName + category);
 		if (searchName.length()>0) {
+			
 			User user = edit.getUserByUsername(searchName);
 			session.setAttribute("user", user);
 			

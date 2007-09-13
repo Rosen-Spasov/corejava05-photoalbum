@@ -4,7 +4,10 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import photoalbum.CreateUserException;
+import photoalbum.PhotoAlbumManipulator;
 import photoalbum.entities.User;
 
 
@@ -22,27 +25,34 @@ import photoalbum.entities.User;
 	 * @see javax.servlet.http.HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (isValid(request)){
+		HttpSession session = request.getSession();
+		String[] errors = new String[7];
+		User newUser = new User();
+		if (isValid(request,newUser,errors)){
+			
 			request.getRequestDispatcher("MainPage.jsp").forward(request, response);
 			
 		}else{
+			session.setAttribute("newUser", newUser);
+			session.setAttribute("errorsRegistration", errors);
 			request.getRequestDispatcher("register.jsp").forward(request, response);
 	}
 	}
 
-	private boolean isValid(HttpServletRequest request) {
-		User newUser = new User();
+	private boolean isValid(HttpServletRequest request, User newUser, String[] errors) {
+		PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
+		
 		String fName = (String)request.getParameter("fName");
 		String lName = (String)request.getParameter("lName");
 		String uName = (String)request.getParameter("uName");
 		String pass = (String)request.getParameter("pass");
 		String confPass = (String)request.getParameter("confPass");
 		
-		String[] errors = new String[7];
+		
 		boolean result = true;
-		System.out.println(fName);
 		if (fName.length()>0){
 			newUser.setFirstName(fName);
+		
 		}else{
 			errors[1]="enter first name";
 			
@@ -52,6 +62,7 @@ import photoalbum.entities.User;
 			newUser.setLastName(lName);
 		}else{
 			errors[2]="enter last name";
+			
 			result = false;
 		}
 		if (uName.length()>0){
@@ -60,6 +71,7 @@ import photoalbum.entities.User;
 				newUser.setUsername(uName);
 			}else{
 				errors[3]="user name already exist";
+				
 				result = false;
 			}}else{
 			errors[3]="enter user name";
@@ -91,9 +103,15 @@ import photoalbum.entities.User;
 		
 		if (result){
 			errors[0]="successful registration";
+			try {
+				edit.addUser(newUser);
+			} catch (CreateUserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		request.setAttribute("newUser", newUser);
-		request.setAttribute("errorsRegistration", errors);
+		
+		
 		return result;
 	}   	  	    
 }

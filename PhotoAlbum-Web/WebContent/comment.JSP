@@ -6,23 +6,23 @@
 <%@page import="photoalbum.entities.Category"%>
 <%@page import="photoalbum.entities.User"%>
 <%@page import="java.util.Set"%>
-<%@page import="bean.WebBean"%>
+<%@page import="photoalbum.PhotoAlbumManipulator"%>
 <html>
 <head>
 </head>
 <body>
-<% int photoId = Integer.parseInt((String)request.getParameter("pic"));
-	out.println(photoId);
+<% if (request.getParameter("pic")!=null){
+	int photoId = Integer.parseInt((String)request.getParameter("pic"));
 		String path = null;
 		User user = (User)session.getAttribute("user"); 
+		PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
 		Set<Category> category = user.getCategories();
 		for (Category categ: category){
 			Set<Photo> photos = categ.getPhotos();
 				for (Photo ph: photos){
 					if(ph.getPhotoId()==photoId){
 						session.setAttribute("pic",ph);
-						path = WebBean.firstPath+ ph.getPath()+ph.getPhName();
-						out.println(path);%>
+						path = edit.getAbsolutePath(ph);%>
 	<table border="0" width="100%" cellspacing="0" cellpadding="0" style="padding:0px 0px 0px 0px; border:1px solid White;">
 	<tr style="background-image:url(Themes/headBG.png)" >
 		<td width="124" style="border-right:0px solid White;"><img src="Themes/top-left.gif"></td>
@@ -46,7 +46,7 @@
      </textarea></td></tr>
 	<tr><td><input type="submit" name="button"	value="Submit" /></td> </tr>
 	</form></table>
-<% }}} %>
+<% }}} }%>
 
 </body>
 </html>

@@ -2,6 +2,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="photoalbum.entities.User"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <title>register</title>
@@ -9,13 +10,18 @@
 <meta name="GENERATOR" content="Rational Application Developer">
 </head>
 <body>
-<% String[] errorsRegistration = (String[])request.getAttribute("errorsRegistration"); 
+<% String[] errorsRegistration = (String[])session.getAttribute("errorsRegistration"); 
+	User newUser = (User)session.getAttribute("newUser");
 	if (errorsRegistration == null){
-	out.println("null");
 	errorsRegistration = new String[6];
 	for (int k=0;k<errorsRegistration.length;k++){
 	errorsRegistration[k]="";
 	}
+	}else{
+	for (int k=0;k<errorsRegistration.length;k++){
+	if (errorsRegistration[k]==null){
+	errorsRegistration[k]="";
+	}}
 	}
 %><table border="0" width="100%" cellspacing="0" cellpadding="0" style="padding:0px 0px 0px 0px; border:1px solid White;">
 	<tr style="background-image:url(Themes/headBG.png)" >
@@ -30,13 +36,13 @@
 <form method="POST" action="RegisterServlet">
 	<table cellspacing="0" cellpadding="5" border="1" bgcolor="#FFcf66" align="left" bordercolor="ff0000">
 		
-			<tr><td>Въведи име</td><td><input type="text" name="fName" value="${User.firstName}"></td><td>${errorsRegistration[1]}</td></tr>
-			<tr><td>Въведи фамилия</td><td><input type="text" name="lName" value=""></td><td>${errorsRegistration[2]}</td></tr>
-			<tr><td>enter user name</td><td><input type="text" name="uName" value=""></td><td>${errorsRegistration[3]}</td></tr>
-			<tr><td>enter password</td><td><input type="password" name="pass"></td><td>${errorsRegistration[4]}</td></tr>
-			<tr><td>confirm password</td><td><input type="password" name="confPass"></td><td>${errorsRegistration[5]}</td></tr>
+			<tr><td>Въведи име</td><td><input type="text" name="fName" value=""></td><td><%= errorsRegistration[1] %></td></tr>
+			<tr><td>Въведи фамилия</td><td><input type="text" name="lName" value=""></td><td><%= errorsRegistration[2]%></td></tr>
+			<tr><td>enter user name</td><td><input type="text" name="uName" value=""></td><td><%= errorsRegistration[3]%></td></tr>
+			<tr><td>enter password</td><td><input type="password" name="pass"></td><td><%= errorsRegistration[4] %></td></tr>
+			<tr><td>confirm password</td><td><input type="password" name="confPass"></td><td><%= errorsRegistration[5] %></td></tr>
 		
-			<tr><td width="150"><input type="submit" value="register"></td><td>${errorsRegistration[6]}</td></tr>
+			<tr><td width="150"><input type="submit" value="register"></td><td><%= errorsRegistration[6] %></td></tr>
 		
 	</table></form>
 	</table>

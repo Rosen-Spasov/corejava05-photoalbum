@@ -41,6 +41,11 @@
 		<managed-bean-class>pagecode.Asd</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>pc_DeletePicture</managed-bean-name>
+		<managed-bean-class>pagecode.DeletePicture</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	<lifecycle>
 		<phase-listener>
 		com.ibm.faces.webapp.ValueResourcePhaseListener</phase-listener>

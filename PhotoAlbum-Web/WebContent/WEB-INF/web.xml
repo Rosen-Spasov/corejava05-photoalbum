@@ -13,11 +13,21 @@
 			<description>
 			</description>
 			<display-name>
-			aaa</display-name>
-			<servlet-name>aaa</servlet-name>
+			DeletePictureServlet</display-name>
+			<servlet-name>DeletePictureServlet</servlet-name>
 			<servlet-class>
-			photoalbum.servlet.web.aaa</servlet-class>
+			photoalbum.servlet.web.DeletePictureServlet</servlet-class>
 		</servlet>
+		<servlet>
+			<description>
+			</description>
+			<display-name>
+			RenamePictureServlet</display-name>
+			<servlet-name>RenamePictureServlet</servlet-name>
+			<servlet-class>
+			photoalbum.servlet.web.RenamePictureServlet</servlet-class>
+		</servlet>
+		
 		<servlet>
 			<description>
 			</description>
@@ -116,8 +126,14 @@
 			<servlet-name>ShowAllPictuers</servlet-name>
 			<url-pattern>/ShowAllPictuers</url-pattern>
 		</servlet-mapping>
-		
-		ShowAllPictuers
+		<servlet-mapping>
+			<servlet-name>DeletePictureServlet</servlet-name>
+			<url-pattern>/DeletePictureServlet</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>RenamePictureServlet</servlet-name>
+			<url-pattern>/RenamePictureServlet</url-pattern>
+		</servlet-mapping>
 		<servlet-mapping>
   <servlet-name>LoginServlet</servlet-name> 
   <url-pattern>/LoginServlet</url-pattern> 
