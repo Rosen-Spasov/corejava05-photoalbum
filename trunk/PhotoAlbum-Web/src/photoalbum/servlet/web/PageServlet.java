@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bean.WebBean;
 
 import photoalbum.PhotoAlbumManipulator;
 import photoalbum.entities.Category;
@@ -77,11 +76,12 @@ public class PageServlet extends javax.servlet.http.HttpServlet implements
 			for (Category allCat : allCategory) {
 				Set<Photo> allPhoto = allCat.getPhotos();
 				for (Photo allPh : allPhoto) {
-					pathAllFirst[count] = WebBean.firstPath + allPh.getPath()
-							+ allPh.getPhName();
+					pathAllFirst[count] = edit.getAbsolutePath(allPh);
 					photoIdFirst[count] = "" + allPh.getPhotoId();
 					photoNameFirst[count] = allPh.getPhName();
 					photoCommentFirst[count] = "" + allPh.getComments().size();
+					path = edit.getAbsolutePath(allPh);
+				
 					count++;
 				}
 			}
@@ -92,7 +92,6 @@ public class PageServlet extends javax.servlet.http.HttpServlet implements
 		}else{
 			nextPage = 0;
 		}
-		System.out.println("sled ->"+nextPage);
 		int nPage;
 		
 			nPage= nextPage;
@@ -116,9 +115,9 @@ public class PageServlet extends javax.servlet.http.HttpServlet implements
 			}else if(prev > allPhotoCounter){
 				prev=0;
 			}
-			System.out.println("-->sega" +nPage +" prev->"+prev+ " next->" + next);
+	//		System.out.println("-->sega" +nPage +" prev->"+prev+ " next->" + next);
 		if (pageAction.equalsIgnoreCase("next")) {
-			System.out.println("next");
+			
 			now=0;
 			for (int begin = nPage; begin < next; begin++) {
 				
@@ -133,7 +132,7 @@ public class PageServlet extends javax.servlet.http.HttpServlet implements
 			nPage = next;
 		}
 		if (pageAction.equalsIgnoreCase("prev")) {
-			System.out.println("prev");
+			
 			now = 0;
 			for (int begin = prev; begin < prev +6; begin++) {
 				if (begin < allPhotoCounter) {
@@ -146,18 +145,18 @@ public class PageServlet extends javax.servlet.http.HttpServlet implements
 			nPage = prev+6;
 			}
 		}else{
-			System.out.println("null");
+			
 			nPage=6;
 			for (int k=0;k<6;k++){
 				pathAll[k] = pathAllFirst[k];
 				photoId[k] = photoIdFirst[k];
 				photoName[k] = photoNameFirst[k];
 				photoComment[k] = photoCommentFirst[k];
-				System.out.println("---"+k);
+	//			System.out.println("---"+k);
 			}
 		}
 		
-		System.out.println("sega sme na ->"+nPage);
+	//	System.out.println("sega sme na ->"+nPage);
 		session.setAttribute("nextPage", nPage);
 		session.setAttribute("ref", "aaa");
 		session.setAttribute("allUser", allUser);

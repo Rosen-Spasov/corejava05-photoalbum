@@ -32,11 +32,16 @@ import photoalbum.entities.User;
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		int photoAtRow = 4;
+		int photoColumn = 4;
+		int photoAtPage = photoAtRow * photoColumn;
+		session.setAttribute("photoAtRow", photoAtRow);
+		session.setAttribute("photoAtPage", photoAtPage);
 		String cat = request.getParameter("param");
 		int allPhotoCounter = 0;
 			PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
 			User user = (User)session.getAttribute("user");
-			System.out.println(user.getUsername());
+	//		System.out.println(user.getUsername());
 			Set<Category> allCategory = user.getCategories();
 			String path;
 			int count = 0;
@@ -51,24 +56,28 @@ import photoalbum.entities.User;
 				String[] photoId = new String[allPhotoCounter];
 				String[] photoName = new String[allPhotoCounter];
 				String[] photoComment = new String[allPhotoCounter];
-				int pa = 1 + allPhotoCounter / 7;
+				int pa = 1 + allPhotoCounter / (photoAtPage);
 				String pages = "" + pa;
+	//			System.out.println(allPhotoCounter+" - "+ allPhotoCounter/photoAtPage);
+				
 				for (Category allCat : allCategory) {
 					Set<Photo> allPhoto = allCat.getPhotos();
 					for (Photo allPh : allPhoto) {
 						photoName[count] = allPh.getPhName();
 						photoId[count] =""+ allPh.getPhotoId();
-						pathAll[count] = allPh.getPath();
+						pathAll[count] = edit.getAbsolutePath(allPh);
 						photoComment[count] =""+ allPh.getComments().size();
 						count++;
 					}
 			}
-			session.setAttribute("pathAll", pathAll);
-			session.setAttribute("photoId", photoId);
-			session.setAttribute("photoName", photoName);
-			session.setAttribute("photoComment", photoComment);
-			System.out.println("ob6to snimki ->"+ allPhotoCounter);
-			System.out.println("tova e "+cat);
+			session.setAttribute("allPhotoCounter", allPhotoCounter);
+			session.setAttribute("pages", pages);
+			session.setAttribute("pathAllCurrent", pathAll);
+			session.setAttribute("photoIdCurrent", photoId);
+			session.setAttribute("photoNameCurrent", photoName);
+			session.setAttribute("photoCommentCurrent", photoComment);
+//			System.out.println("ob6to snimki ->"+ allPhotoCounter);
+//			System.out.println("tova e "+cat);
 		}else{
 			allPhotoCounter=0;
 			for (Category allCat : allCategory) {
@@ -80,6 +89,9 @@ import photoalbum.entities.User;
 					}
 				}
 			}
+			int pa = 1 + allPhotoCounter / (photoAtPage-1);
+			String pages = "" + pa;
+			
 			String[] pathAll = new String[allPhotoCounter];
 			String[] photoId = new String[allPhotoCounter];
 			String[] photoName = new String[allPhotoCounter];
@@ -90,18 +102,25 @@ import photoalbum.entities.User;
 					for (Photo allPh : photo) {
 						photoName[count] = allPh.getPhName();
 						photoId[count] =""+ allPh.getPhotoId();
-						pathAll[count] = allPh.getPath();
+						pathAll[count] = edit.getAbsolutePath(allPh);
+						System.out.println(edit.getAbsolutePath(allPh));
 						photoComment[count] =""+ allPh.getComments().size();
 						count++;
 					}
 				}
 			}
-			session.setAttribute("pathAll", pathAll);
-			session.setAttribute("photoId", photoId);
-			session.setAttribute("photoName", photoName);
-			session.setAttribute("photoComment", photoComment);
-			System.out.println("ob6to snimki ->"+ allPhotoCounter);
-			System.out.println("tova e "+cat);
+//			System.out.println(allPhotoCounter+" - "+ allPhotoCounter/photoAtPage);
+			
+			session.setAttribute("allPhotoCounter", allPhotoCounter);
+			session.setAttribute("pages", pages);
+			
+			session.setAttribute("pathAllCurrent", pathAll);
+			session.setAttribute("photoIdCurrent", photoId);
+			session.setAttribute("photoNameCurrent", photoName);
+			session.setAttribute("photoCommentCurrent", photoComment);
+			
+	//		System.out.println("ob6to snimki ->"+ allPhotoCounter);
+	//		System.out.println("tova e "+cat);
 		}
 			
 			

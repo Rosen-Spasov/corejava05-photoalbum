@@ -7,8 +7,9 @@
 <%@page import="photoalbum.entities.User"%>
 <%@page import="photoalbum.entities.Category"%>
 <%@page import="java.util.Set"%>
-<%@page import="bean.WebBean"%>
+
 <%@page import="photoalbum.entities.Comment"%>
+<%@page import="photoalbum.PhotoAlbumManipulator"%>
 <html>
 <head>
 
@@ -21,6 +22,7 @@
 	<% 	boolean isComment = false;
 		User userLogin = (User)session.getAttribute("login"); 
 		User user = (User)session.getAttribute("user"); 
+		PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
 		if (user != null){
 		String allPictures = (String) session.getAttribute("allPictures");
 		int photoId = Integer.parseInt((String)request.getParameter("pic"));
@@ -30,7 +32,7 @@
 					Set<Photo> photos = categ.getPhotos();
 					for (Photo ph: photos){
 						if(ph.getPhotoId()==photoId){
-						path = WebBean.firstPath+ ph.getPath()+ph.getPhName();%>
+						path = edit.getAbsolutePath(ph);%>
 					
 	<table border="0" width="100%" cellspacing="0" cellpadding="0" style="padding:0px 0px 0px 0px; border:1px solid White;">
 	<tr style="background-image:url(Themes/headBG.png)" >

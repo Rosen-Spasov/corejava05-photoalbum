@@ -8,7 +8,6 @@
 <%@page import="photoalbum.entities.Category"%>
 <%@page import="photoalbum.entities.Photo"%>
 <%@page import="photoalbum.entities.Comment"%>
-<%@page import="bean.WebBean"%>
 <html>
 <link rel="stylesheet" type="text/css" href="Themes/showUser.css" />
 
@@ -124,11 +123,14 @@
 	
 	
 		<tr>
-		<%String pages = (String)session.getAttribute("pag");
-			
+		<% String pages = (String)session.getAttribute("pages");
+			if (session.getAttribute("photoAtPage") != null){
 			if (session.getAttribute("nextPage") != null){
+			if (session.getAttribute("photoAtRow") != null){
 			Integer nextPage = Integer.valueOf((Integer)session.getAttribute("nextPage"));
-			int nowPage = nextPage/6;
+			int photoAtPage = Integer.valueOf((Integer)session.getAttribute("photoAtPage"));
+			int photoAtRow = Integer.valueOf((Integer)session.getAttribute("photoAtRow"));
+			int nowPage = nextPage/photoAtPage;
 			String[] photoId = ((String[])session.getAttribute("photoId"));
 			String[] photoComment=((String[])session.getAttribute("photoComment"));
 			String[] pathAll=(String[])session.getAttribute("pathAll");
@@ -136,12 +138,10 @@
 			if (photoName.length>0){
 			int count = 0;
 			for (int k = 0; k < photoId.length;k++){
-				
 			if (photoName[k] != null){
-		
-			 if (count == 3){
+			if (count == photoAtRow){
 	%></tr><tr>
-	<%count = 0;}else{
+	<%count = 1;}else{
 	count++;
 	} %>
 	
@@ -150,9 +150,10 @@
 		<a href="fullScreen.jsp?pic=<%= photoId[k] %>"><img src="<%=pathAll[k] %>" alt="<%= photoName[k] %>" title="<%= photoName[k] %>" 
 		height="150px"/></a>
 		</div>
-		<div class="vipPic">&nbsp;</div>
-		<div class="lh17"><%= pathAll[k] %>
+		
+		<div class="lh17"><%= photoId[k] %>
 		<a href="fullScreen.jsp?pic=<%= photoId[k] %>" class="link bold">Виж на цял екран</a>
+		<br>
 		<%= photoName[k]  %>
 	</div>
 	<div class="lh17">Коментари<span class="bold"><%= photoComment[k].toString() %></span></div>
@@ -160,21 +161,22 @@
 	
 	<% if (userLogin != null){ %>
 	<div style="color: blue;">
-	<a href="comment.jsp?picPath=<%=photoId[k] %>" class="link bold" >Добави коментар</a>
+	<a href="comment.jsp?pic=<%=photoId[k] %>" class="link bold" >Добави коментар</a>
 	</div><% } %>
 	
 	
 	<%if (user.equals(userLogin)){%>
 	
 	<div style="color: red;">
-	<a href="DeletePictureServlet?pic=<%=photoId[k] %>" class="link bold" >Изтрии снимката</a>
+	<div><a href="deletePicture.jsp?pic=<%=photoId[k] %>" class="bold purple2" target="_blank" title="Изтрии снимката">Изтрии снимката</a></div>
+	
 	</div>
 	<div style="color: green;">
 	<a href="renamePicture.jsp?pic=<%= photoId[k] %>" class="link bold" >Преименувай</a>
 	</div></td>
 	
 
-<%}} }%>							
+<%}} } }%>							
 	<tr>
 		<td class="tabsBottomMid">
 			<div class="fLeft left10">
@@ -183,14 +185,10 @@
 				<span id="menPage"><%= nowPage %></span> от <span id="menTotalPages"><%= pages %></span>
 			</div>
 						
-	<%}} %>							
+	<%}} }%>							
 	
 
-			
-
 </div></td></tr>
-
-
 
 </table>
 </body>

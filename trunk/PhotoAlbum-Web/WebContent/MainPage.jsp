@@ -6,7 +6,6 @@
 <%@page import="java.util.Set"%>
 <%@page import="photoalbum.entities.Category"%>
 <%@page import="photoalbum.entities.Photo"%>
-<%@page import="bean.WebBean"%>
 <html>
 <head>
 	<title>Фото албум - Намери снимките, които търсиш!</title>
@@ -57,14 +56,13 @@
 					</tr>
 					<tr>
 						<td class="right">&nbsp;</td>
-						<td class="left pBottom10">
-						<% String[] errors = (String[])request.getAttribute("errors"); 
-						
+						<td class="left pBottom10" >
+						<% String[] errors = (String[])session.getAttribute("errors"); 
 							if (errors != null){
 							for (String err: errors){
 							if (err != null){
 						%>
-							<a href="register.jsp" class="loginRegister"><%= err %></a></td></tr>
+							<a href="register.jsp" class="loginRegister" style="color: red;"><%= err %></a>
 							<% }}} %>
 						</td>
 					</tr>
