@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Set;
 
 import photoalbum.entities.Category;
 import photoalbum.entities.Photo;
@@ -76,8 +77,8 @@ public class PhotoAlbumManipulator {
 		if (getHbConnection().getUserByUserName(user.getUsername()) == null) {
 			getHbConnection().beginTransaction();
 			try {
-				FileSystemManager.addUser(user);
 				getHbConnection().save(user);
+				FileSystemManager.addUser(user);				
 				getHbConnection().commit();
 			} catch (Throwable e) {
 				getHbConnection().rollback();
@@ -112,8 +113,8 @@ public class PhotoAlbumManipulator {
 			category = new Category(catName, path, parent);
 			getHbConnection().beginTransaction();
 			try {
-				FileSystemManager.addCategory(category);
 				getHbConnection().save(category);
+				FileSystemManager.addCategory(category);
 				parent.add(category);
 				getHbConnection().commit();
 			} catch (Throwable e) {
@@ -156,8 +157,8 @@ public class PhotoAlbumManipulator {
 			getHbConnection().beginTransaction();
 			try {
 				InputStream iStream = new FileInputStream(imageFile);
-				FileSystemManager.addPhoto(photo, iStream);
 				getHbConnection().save(photo);
+				FileSystemManager.addPhoto(photo, iStream);
 				category.add(photo);
 				getHbConnection().commit();
 			} catch (Throwable e) {
@@ -187,8 +188,8 @@ public class PhotoAlbumManipulator {
 			photo = new Photo(phName, path, category);
 			getHbConnection().beginTransaction();
 			try {
-				FileSystemManager.addPhoto(photo, image);
 				getHbConnection().save(photo);
+				FileSystemManager.addPhoto(photo, image);
 				category.add(photo);
 				getHbConnection().commit();
 			} catch (Throwable e) {
@@ -291,6 +292,97 @@ public class PhotoAlbumManipulator {
 	public String getAbsolutePath(Object obj) {
 		String absolutePath = FileSystemManager.getAbsolutePath(obj);
 		return absolutePath;
+	}
+	
+	public Category renameCategory(Category category, String catName) {
+		if (category == null) {
+			return null;
+		}
+		Category categoryInDB = getHbConnection().getCategoryById(category.getCategoryId());
+		if (categoryInDB != null) {
+			updateCategoryName(category, catName);
+		}
+		
+		return categoryInDB;
+	}
+	
+	private void updateCategoryName(Category category, String catName) {
+		if (category == null) {
+			return;
+		}
+		
+		String path = category.getPath();
+		int lastSlashIndex = path.lastIndexOf(FileSystemManager.SEPARATOR);
+		if (lastSlashIndex != -1) {
+			path = path.substring(0, lastSlashIndex + 1) + catName;
+		}
+		FileSystemManager.renameFile(category.getPath(), path);
+		category.setCatName(catName);
+		category.setPath(path);
+		
+		Set<Category> children = category.getCategories();
+		for (Category child : children) {
+			updateParentPath(child, path);
+		}
+		Set<Photo> photos = category.getPhotos();
+		for (Photo photo : photos) {
+			updateParentPath(photo, path);
+		}
+		updateInDB(category);
+	}
+	
+	public Photo renamePhoto(Photo photo, String phName) {
+		if (photo == null) {
+			return null;
+		}
+		
+		Photo photoInDB = getHbConnection().getPhotoById(photo.getPhotoId());
+		if (photoInDB != null) {
+			updatePhotoName(photo, phName);
+		}
+		
+		return photoInDB;
+	}
+	
+	private void updatePhotoName(Photo photo, String phName) {
+		if (photo == null) {
+			return;
+		}
+		
+		String path = photo.getPath();
+		int lastSlashIndex = path.lastIndexOf(FileSystemManager.SEPARATOR);
+		if (lastSlashIndex != -1) {
+			path = path.substring(0, lastSlashIndex + 1) + phName;
+		}
+		FileSystemManager.renameFile(photo.getPath(), path);
+		updateInDB(photo);
+	}
+	
+	private void updateParentPath(Object obj, String parentPath) {
+		if (obj == null || parentPath == null) {
+			return;
+		}
+		
+		if (obj instanceof Category) {
+			String path = parentPath + FileSystemManager.SEPARATOR + ((Category) obj).getCatName();
+			FileSystemManager.renameFile( ((Category) obj).getPath(), path);
+			((Category) obj).setPath(path);
+		} else if (obj instanceof Photo) {
+			String path = parentPath + FileSystemManager.SEPARATOR + ((Photo) obj).getPhName();
+			FileSystemManager.renameFile( ((Photo) obj).getPath(), path);
+			((Photo) obj).setPath(path);
+		}
+	}
+	
+	private void updateInDB(Object obj) {
+		getHbConnection().beginTransaction();
+		try {
+			getHbConnection().update(obj);
+			getHbConnection().commit();
+		} catch (Throwable e) {
+			getHbConnection().rollback();
+			getLogger().log(e);
+		}
 	}
 
 }

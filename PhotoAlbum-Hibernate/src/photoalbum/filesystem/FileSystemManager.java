@@ -103,6 +103,9 @@ public abstract class FileSystemManager {
 	}
 	
 	public static boolean renameFile(File file, File newFile) {
+		if (file == null || newFile == null) {
+			return false;
+		}
 		boolean result = file.renameTo(newFile);
 		return result;
 	}

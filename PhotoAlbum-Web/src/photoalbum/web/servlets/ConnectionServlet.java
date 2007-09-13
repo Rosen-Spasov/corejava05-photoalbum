@@ -19,7 +19,7 @@ import photoalbum.entities.interfaces.ICategoryContainer;
 import photoalbum.logging.Logger;
 import photoalbum.network.NetworkConnection;
 
- public class ConnectionServlet extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet {
+public class ConnectionServlet extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet {
 
 	private static final long serialVersionUID = -6318374395824273211L;
 	
