@@ -37,7 +37,10 @@ import photoalbum.entities.User;
 		int photoAtPage = photoAtRow * photoColumn;
 		session.setAttribute("photoAtRow", photoAtRow);
 		session.setAttribute("photoAtPage", photoAtPage);
+		session.setAttribute("owner", null);
 		String cat = request.getParameter("param");
+		session.setAttribute("currentCategory", cat);
+		System.out.println(cat);
 		int allPhotoCounter = 0;
 			PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
 			User user = (User)session.getAttribute("user");
@@ -103,7 +106,7 @@ import photoalbum.entities.User;
 						photoName[count] = allPh.getPhName();
 						photoId[count] =""+ allPh.getPhotoId();
 						pathAll[count] = edit.getAbsolutePath(allPh);
-						System.out.println(edit.getAbsolutePath(allPh));
+		//				System.out.println(edit.getAbsolutePath(allPh));
 						photoComment[count] =""+ allPh.getComments().size();
 						count++;
 					}
@@ -113,6 +116,7 @@ import photoalbum.entities.User;
 			
 			session.setAttribute("allPhotoCounter", allPhotoCounter);
 			session.setAttribute("pages", pages);
+			session.setAttribute("curentCateg", cat);
 			
 			session.setAttribute("pathAllCurrent", pathAll);
 			session.setAttribute("photoIdCurrent", photoId);

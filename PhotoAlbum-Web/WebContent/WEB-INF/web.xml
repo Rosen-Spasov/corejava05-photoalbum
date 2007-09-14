@@ -106,6 +106,42 @@
   	<servlet-class>
   	photoalbum.web.servlets.ConnectionServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>
+  	SearchPhotoServlet</display-name>
+  	<servlet-name>SearchPhotoServlet</servlet-name>
+  	<servlet-class>
+  	photoalbum.servlet.web.SearchPhotoServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>
+  	DeleteCategoryServlet</display-name>
+  	<servlet-name>DeleteCategoryServlet</servlet-name>
+  	<servlet-class>
+  	photoalbum.servlet.web.DeleteCategoryServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>
+  	RenameCategoryServlet</display-name>
+  	<servlet-name>RenameCategoryServlet</servlet-name>
+  	<servlet-class>
+  	photoalbum.servlet.web.RenameCategoryServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>
+  	AddNewCategoryServlet</display-name>
+  	<servlet-name>AddNewCategoryServlet</servlet-name>
+  	<servlet-class>
+  	photoalbum.servlet.web.AddNewCategoryServlet</servlet-class>
+  </servlet>
 		<servlet-mapping>
 			<servlet-name>GetAllUserServlet</servlet-name>
 			<url-pattern>/GetAllUserServlet</url-pattern>
@@ -161,6 +197,22 @@
 		<servlet-mapping>
 			<servlet-name>ConnectionServlet</servlet-name>
 			<url-pattern>/connection</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>SearchPhotoServlet</servlet-name>
+			<url-pattern>/SearchPhotoServlet</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>DeleteCategoryServlet</servlet-name>
+			<url-pattern>/DeleteCategoryServlet</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>RenameCategoryServlet</servlet-name>
+			<url-pattern>/RenameCategoryServlet</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>AddNewCategoryServlet</servlet-name>
+			<url-pattern>/AddNewCategoryServlet</url-pattern>
 		</servlet-mapping>
 
 		

@@ -42,35 +42,44 @@
 						<table class="mainTabsTable" cellpadding="0" cellspacing="0" align="center">
 	<tr>
 		<td class="mainMenu">
-				<div class="mainTab startTab selectedStart">
-					<img src="http://www.sibir.bg/style/img/tl.gif" class="tl" alt="tl" />
-					<span class="mainTab1"><a href="ShowAllPictuers?param=vs" title="Всички снимки">Всички снимки</a></span>
-					<img src="http://www.sibir.bg/style/img/tr.gif" class="tr" alt="tr" />
-				</div>
-				<div class="mainTab photoTab">
+		<% 
+				Set<Category> category = user.getCategories();
+				String[] type = {"mainTab searchTab","mainTab profileTab","mainTab messagesTab","mainTab invTab",
+				"mainTab startTab selectedStart","mainTab videoTab","mainTab photoTab","mainTab groupsTab"};
+				
+				 %>
+				
+				<div class="<%= type[0] %>">
 					<img src="img/tl.gif" class="tl" alt="tl" />
 					<span class="mainTab1"><a href="Search.jsp" title="Търсене">Търсене</a></span>
 					<img src="img/tr.gif" class="tr" alt="tr" />
 				</div>
-				<%if (user.equals(userLogin)){
-			%>
-				<div class="mainTab blogsTab">
-					<img src="img/tl.gif" class="tl" alt="tl" />
-					<span class="mainTab1"><a href="ShowAllPictuers" title="Категория">Добави категория</a></span>
-					<img src="img/tr.gif" class="tr" alt="tr" />
-				</div>
 				
-				<div class="mainTab searchTab">
-					<img src="img/tl.gif" class="tl" alt="tl" />
-					<span class="mainTab1"><a href="DeleteCategory.jsp" title="Категория">Изтрии категория</a></span>
+				<%if (user.equals(userLogin)){ %>
+				<div class="<%= type[1] %>">
+						<img src="img/tl.gif" class="tl" alt="tl" />
+						<span class="mainTab1"><a href="addCategory.jsp" title="Добави категория">Добави категория</a></span>
+						<img src="img/tr.gif" class="tr" alt="tr" />
+					</div>
+				<% if(session.getAttribute("currentCategory")!=null){
+					String cat = (String)session.getAttribute("currentCategory");
+					if (!cat.equalsIgnoreCase("allPictures")){%>
+					<div class="<%= type[2] %>">
+						<img src="img/tl.gif" class="tl" alt="tl" />
+						<span class="mainTab1"><a href="renameCategory.jsp" title="Категория">Преименувай категория</a></span>
+						<img src="img/tr.gif" class="tr" alt="tr" />
+					</div>
+					<div class="<%= type[3] %>">
+						<img src="img/tl.gif" class="tl" alt="tl" />
+						<span class="mainTab1"><a href="ShowAllPictuers" title="Добави снимка">Добави снимка</a></span>
+						<img src="img/tr.gif" class="tr" alt="tr" />
+					</div>
+					<div class="<%= type[5] %>">
+						<img src="img/tl.gif" class="tl" alt="tl" />
+						<span class="mainTab1"><a href="DeleteCategory.jsp" target="_blank" title="Категория">Изтрии категория</a></span>
 					<img src="img/tr.gif" class="tr" alt="tr" />
 				</div>
-				<div class="mainTab profileTab">
-					<img src="img/tl.gif" class="tl" alt="tl" />
-					<span class="mainTab1"><a href="ShowAllPictuers" title="Категория">Преименувай категория</a></span>
-					<img src="img/tr.gif" class="tr" alt="tr" />
-				</div>
-				
+		<%} } %>
 				<%} %>
 			<%if (userLogin == null){
 			%>
@@ -82,12 +91,7 @@
 			<% } %>
 			<div class="sideMenuLinks"><a class="grey" href="MainPage.jsp" title="Вход в photo album">Начална страница</a><span class="separator grey">|</span></div>	
 				</td></tr>
-				<% 
-				Set<Category> category = user.getCategories();
-				String[] type = {"mainTab searchTab","mainTab profileTab","mainTab messagesTab","mainTab invTab",
-				"mainTab startTab selectedStart","mainTab videoTab","mainTab photoTab","mainTab groupsTab"};
 				
-				 %>
 				<tr>
 		<td class="mainMenu">	
 				<% int t=1;%>
@@ -105,9 +109,9 @@
 					<img src="img/tr.gif" class="tr" alt="tr" />
 				</div>
 			<%t++;} %>
+			</td></tr>
 			
-		</td>
-	</tr>
+	
 </table>				</td>
 			</tr>
 	<% }%>
@@ -120,9 +124,11 @@
 			<div class="leftTabStubMiddle">&nbsp;</div>
 		</td>
 	</tr>
-	
-	
-		<tr>
+	<tr>
+	<% String[] owner =null;
+		if (session.getAttribute("owner")!=null){
+			owner = (String[])session.getAttribute("owner");
+		} %>
 		<% String pages = (String)session.getAttribute("pages");
 			if (session.getAttribute("photoAtPage") != null){
 			if (session.getAttribute("nextPage") != null){
@@ -147,12 +153,19 @@
 	
 	<div class="smallestProfile" >
 	<td class="tabsTableMiddle" ><div class="smallProfilePicOnline">
+	
 		<a href="fullScreen.jsp?pic=<%= photoId[k] %>"><img src="<%=pathAll[k] %>" alt="<%= photoName[k] %>" title="<%= photoName[k] %>" 
 		height="150px"/></a>
 		</div>
+		<% if (owner!=null) {%>
 		
-		<div class="lh17"><%= photoId[k] %>
+		Собственик на тази снимка<%= owner[k] %><br>
+		<%} %>
+		<div class="lh17">
 		<a href="fullScreen.jsp?pic=<%= photoId[k] %>" class="link bold">Виж на цял екран</a>
+		
+		
+		
 		<br>
 		<%= photoName[k]  %>
 	</div>

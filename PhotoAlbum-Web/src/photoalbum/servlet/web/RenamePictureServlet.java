@@ -86,7 +86,7 @@ import photoalbum.entities.Photo;
 			result = false;
 		}
 		if (newName.contains("[/.,!?]")){
-			errors[2] += "ne moje da sydyrja /.,!?";
+			errors[2] = "ne moje da sydyrja /.,!?";
 			result = false;
 		}
 	

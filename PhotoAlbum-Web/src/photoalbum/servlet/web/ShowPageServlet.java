@@ -33,6 +33,10 @@ import org.hibernate.classic.Session;
 		String[] photoIdCurrent = (String[])session.getAttribute("photoIdCurrent");
 		String[] photoNameCurrent = (String[])session.getAttribute("photoNameCurrent");
 		String[] photoCommentCurrent = (String[])session.getAttribute("photoCommentCurrent");
+		String[] owner = null;
+		if (session.getAttribute("owner")!=null){
+		owner = (String[])session.getAttribute("owner");
+		}
 //		System.out.println("snimki->"+pathCurrent.length);
 		int allPhotoCounter = pathCurrent.length;
 		String pages = (String)session.getAttribute("pages");
@@ -101,7 +105,9 @@ import org.hibernate.classic.Session;
 				photoId[k] = photoIdCurrent[k];
 				photoName[k] = photoNameCurrent[k];
 				photoComment[k] = photoCommentCurrent[k];
-			
+				if (owner!=null){
+				//	owner[k] = owner[k];
+				}
 				}
 			}
 		}
