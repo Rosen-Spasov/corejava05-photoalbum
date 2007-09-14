@@ -11,127 +11,94 @@
 	<title>Фото албум - Намери снимките, които търсиш!</title>
 	<link rel="stylesheet" type="text/css" href="Themes/main.css" />
 	<script type="text/javascript"></script>
-</head>	
+</head>
 <body onload="">
-	<%User userLogin = (User)session.getAttribute("login");%>
+	<% User userLogin = (User)session.getAttribute("login"); %>
 	<table class="mainTable" cellpadding="0" cellspacing="0" align="center">
 		<tr><td colspan="3" class="mainTop"></td></tr>
-		<td class="vseparator">&nbsp;</td>
 		<tr><td colspan="3" class="mainTopMenu">
 			<table cellspacing="0" class="flex">
 				<tr><td class="left pLeft10">Най-големият сайт за снимки в България! </td><td class="right">
-				<% if (userLogin == null){ %>
-				<a href="register.jsp">Регистрация</a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
-				<% }else {  %>
-				<a href="ShowUser.jsp"><%= "Добре дошъл " +userLogin.getFirstName()+" " +userLogin.getLastName() %></a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
-				<% session.setAttribute("user",userLogin); %>
-				<a href="ExitServlet">Изход</a><span class="separator"><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
-				<% } %>
-				<a href="SearchServlet">Търсене</a><span class="separator"><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
-				<a href="Help.jsp">Помощ</a>
+						<% if (userLogin == null) { %>
+						<a href="register.jsp">Регистрация</a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+						<% }else {  %>
+						<a href="ShowUser.jsp"><%= "Добре дошъл " + userLogin.getFirstName() + " " + userLogin.getLastName() %></a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+						<% session.setAttribute("user",userLogin); %>
+						<a href="ExitServlet">Изход</a><span class="separator"><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+						<% } %>
+						<a href="SearchServlet">Търсене</a><span class="separator"><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+						<a href="Help.jsp">Помощ</a>
 					</td>
 				</tr>
-			</table></td>
+			</table>
+			</td>
 		</tr>
 		<tr><td class="mainLeft vtop">
 					<!--loginform -->
 			<form action="LoginServlet" method="post">
 				<table cellpadding="0" cellspacing="0">
-				
 					<tr><td class="leftLoginTop">&nbsp;</td></tr>
 					<tr><td><table cellpadding="0" cellspacing="0" class="leftLoginForm">
-					
-					
-				<% if (userLogin == null){
-				 %>
-					<tr><td class="left pTop10 pLeft10"><label for="userName">Име: </label></td>
-						<td class="left pTop10 pRight10"><input type="text" class="textInput" name="username" id="username" /></td>
-					</tr>
-					<tr><td class="left pLeft10"><label for="pass">Парола: </label></td>
-						<td class="left pRight10"><input type="password" class="textInput" name="pass" id="pass" /></td>
-					</tr><tr><td class="right">&nbsp;</td>
-						<td class="left">
-						<input type="submit" class="button" style="width: 90px;" name="login" id="login" value="Вход" />
+							<% if (userLogin == null) { %>
+								<tr><td class="left pTop10 pLeft10"><label for="userName">Име: </label></td>
+									<td class="left pTop10 pRight10"><input type="text" class="textInput" name="username" id="username" /></td>
+								</tr>
+								<tr><td class="left pLeft10"><label for="pass">Парола: </label></td>
+									<td class="left pRight10"><input type="password" class="textInput" name="pass" id="pass" /></td>
+								</tr><tr><td class="right">&nbsp;</td>
+									<td class="left">
+									<input type="submit" class="button" style="width: 90px;" name="login" id="login" value="Вход" />
+									</td>
+								</tr>
+							<% } %>
+							</table>
 						</td>
 					</tr>
-					<tr>
-						<td class="right">&nbsp;</td>
-						<td class="left pBottom10" >
-						<% String[] errors = (String[])session.getAttribute("errors"); 
-							if (errors != null){
-							for (String err: errors){
-							if (err != null){
-						%>
-							<a href="register.jsp" class="loginRegister" style="color: red;"><%= err %></a>
-							<% }}} %>
-						</td>
-					</tr>
+					<tr><td class="leftLoginBottom">&nbsp;</td></tr>
 				</table>
-			</td>
-		</tr>
-			<tr>
-				<td class="leftLoginBottom">&nbsp;</td>
-			</tr><%} %>
-	</table>
-				</form>
+			</form>
 								<!--left menu -->
-	<div style="width:170px ; height:300px; overflow: scroll">				
-<table cellpadding="0" cellspacing="0" class="leftMenu top10" >
-
-	<tr>
-		<td colspan="2" class="headerMin" style="border-bottom: 3px solid #fabc01;">
-			<div>Потребители</div>
-		</td>
+	<table class="headerMin top10" style="border-bottom: 3px solid #fabc01;" cellpadding="0" cellspacing="0">
+		<tr><td><div>Потребители</div></td></tr>
+	</table>
+	<div style="width:170px; height: 300px; overflow: scroll">				
+<table cellpadding="0" cellspacing="0" class="leftMenu" >
+	<tr><td class="left pLeft10 "></td>
+	<td class="pRight10 "></td>
 	</tr>
-	
-	<tr><td class="left pLeft10 pTop10"></td>
-	<td class="pRight10 pTop10">
-	
 		<ol type="disc">
 		<%	String ref = (String)session.getAttribute("ref");
-	if (ref == null){
-	response.sendRedirect("PageServlet");
-
-	}	else{
-		session.setAttribute("ref",null);
-		String pages = (String)session.getAttribute("pag");
-		if (session.getAttribute("nextPage")!=null){
-		Integer nextPage = Integer.valueOf((Integer)session.getAttribute("nextPage"));
+			if (ref == null){
+			response.sendRedirect("PageServlet");
 		
-		int nowPage = nextPage/6;
-		
-		String[] photoId = ((String[])session.getAttribute("photoId"));
-		String[] photoComment=((String[])session.getAttribute("photoComment"));
-		String[] pathAll=(String[])session.getAttribute("pathAll");
-		String[] photoName=(String[])session.getAttribute("photoName");
-		User[] allUser = (User[])session.getAttribute("allUser");
-		ref = null;
-		int count = 0;%>
-			<% for (User user: allUser){ %>
-		
+			} else {
+				session.setAttribute("ref", null);
+				String pages = (String)session.getAttribute("pag");
+				if (session.getAttribute("nextPage")!=null){
+				Integer nextPage = Integer.valueOf((Integer)session.getAttribute("nextPage"));
+				
+				int nowPage = nextPage/6;
+				
+				String[] photoId = ((String[])session.getAttribute("photoId"));
+				String[] photoComment=((String[])session.getAttribute("photoComment"));
+				String[] pathAll=(String[])session.getAttribute("pathAll");
+				String[] photoName=(String[])session.getAttribute("photoName");
+				User[] allUser = (User[])session.getAttribute("allUser");
+				ref = null;
+				int count = 0;
+		%>
+		<% for (User user: allUser){ %>
 		<tr><td><li><a href="SearchServlet?searchName=<%= user.getUsername() %>"><%= user.getUsername() %></a></li></td></tr>
 			<%} %>	
 		</ol>
-			</td>
-		</tr>
+			
+		
 	</table></div>
 
 <div class="kare top10">
 	<table cellpadding="0" cellspacing="0" class="top10">
 		<tr><td class="headerBorder headerMin">
 				<div style="width: 150px;">Mясто за реклама</div>
-			</td>
-		</tr>
-	</table>
-	<table cellpadding="0" cellspacing="0" class="top10">
-		<tr>
-			<td>
-				<a href="http://academy.devbg.org/" target="_blank" title="Н А Р С"><img src="img/logo.gif" alt="Национална академия за разработка на софтуер" align="left" /></a>
-			</td></tr>
-			<tr>
-			<td class="pLeft10">
-				<div><a href="http://academy.devbg.org/" class="bold purple2" target="_blank" title="Национална академия за разработка на софтуер">НАРС</a></div>
-				<div class="size10"><a href="http://academy.devbg.org/" class="black" target="_blank" title="Обучение">Обучение и професионална реализация</a></div>
 			</td>
 		</tr>
 	</table>
@@ -358,4 +325,3 @@ if (count == 3){ count = 1;%>
 		</table>
 			</body>
 </html>
-
