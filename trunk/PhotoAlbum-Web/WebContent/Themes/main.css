@@ -415,7 +415,7 @@
 
 /* main table */
 	.mainTable {
-		width: 960px;
+		width: 100%;
 		height: 100%;
 		margin: 0px;
 		padding: 0px;
@@ -424,8 +424,8 @@
 		margin-right: auto;
 	}
 	.mainTop {
-		width: 960px;
-		height: 68px;
+		width: 100%;
+		height: 10px;
 		text-align: center;
 	}
 	.mainTopLogo {
@@ -479,7 +479,6 @@
 	}
 	.leftMenu a {
 		color: #5a3c8b;
-		
 		text-decoration: none;
 		background: #f2f0f9 url('../img/dottedbordermenu.gif') repeat-x 100% 100%;
 		padding-bottom: 2px;
@@ -549,11 +548,13 @@
 	}
 	.leftLoginTop {
 		background: url('../img/loginTop.png');
+		width: 170px;
 		height: 5px;
 		line-height: 5px;
 	}
 	.leftLoginBottom {
 		background: url('../img/loginBottom.png');
+		width: 170px;
 		height: 5px;
 		line-height: 5px;
 	}
