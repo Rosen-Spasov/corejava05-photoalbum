@@ -1156,3 +1156,54 @@
 		background-repeat: no-repeat;
 	}
 /*search end*/
+
+/*custom Rosen*/
+	.header {
+		background-image: url('../img/back_head.png');
+		width: 170px;
+		height: 22px;
+		border-bottom: 3px solid #fabc01;
+	}
+	
+	.header div {
+		margin-left: 10px;
+		margin-bottom: 2px;
+		color: white;
+		font-size: 12px;
+		font: bold;
+	}
+	
+	.fill {
+		background: #f2f0f9;
+		height: 22px;
+		border-bottom: 1px solid #fabc01;
+	}
+	
+	.fill div {
+		margin-bottom: 2px;
+		color:  #5a3c8b;
+	}
+	
+	.fill a {
+		margin-bottom: 2px;
+		color: #5a3c8b;
+		text-decoration: none;
+		background: url('../img/dottedbordermenu.gif') repeat-x 100% 100%;
+	}
+	
+	.fill a:hover {
+		background: url('../img/fullbordermenu.gif') repeat-x 100% 100%;
+	}
+	
+	.bottom {
+		background-image: url('../img/back_bottom.png');
+		width: 170px;
+		height: 11px;
+	}
+	
+	.bullet {
+		margin-left: 20px;
+		margin-bottom: 2px;
+	}
+
+/*custom Rosen end*/
