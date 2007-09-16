@@ -342,7 +342,7 @@ public class PhotoAlbumManipulator {
 		
 		Photo photoInDB = getHbConnection().getPhotoById(photo.getPhotoId());
 		if (photoInDB != null) {
-			updatePhotoName(photo, phName);
+			updatePhotoName(photoInDB, phName);
 		}
 		
 		return photoInDB;
@@ -362,15 +362,8 @@ public class PhotoAlbumManipulator {
 		photo.setPath(path);
 		FileSystemManager.renameFile(photo.getPath(), path);
 		getHbConnection().beginTransaction();
-		try {
-			FileSystemManager.renameFile(photo.getPath(), path);
-			getHbConnection().update(photo);
-			getHbConnection().commit();
-		} catch (Throwable e) {
-			getHbConnection().rollback();
-			getLogger().log(e);
-		}
-//		updateInDB(photo);
+		FileSystemManager.renameFile(photo.getPath(), path);
+		updateInDB(photo);
 	}
 	
 	private void updateParentPath(Object obj, String parentPath) {
