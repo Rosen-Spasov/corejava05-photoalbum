@@ -304,7 +304,7 @@ public class PhotoAlbumManipulator {
 		}
 		Category categoryInDB = getHbConnection().getCategoryById(category.getCategoryId());
 		if (categoryInDB != null) {
-			updateCategoryName(category, catName);
+			updateCategoryName(categoryInDB, catName);
 		}
 		
 		return categoryInDB;
