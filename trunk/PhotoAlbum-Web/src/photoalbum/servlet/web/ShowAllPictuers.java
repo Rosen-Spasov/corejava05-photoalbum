@@ -51,14 +51,13 @@ import photoalbum.entities.User;
 			if (cat.equalsIgnoreCase("allPictures")){
 				for (Category allCat : allCategory) {
 					Set<Photo> allPhoto = allCat.getPhotos();
-					for (Photo allPh : allPhoto) {
-						allPhotoCounter++;
+						allPhotoCounter += allPhoto.size();
 					}
-				}
 				String[] pathAll = new String[allPhotoCounter];
 				String[] photoId = new String[allPhotoCounter];
 				String[] photoName = new String[allPhotoCounter];
 				String[] photoComment = new String[allPhotoCounter];
+				
 				int pa = 1 + allPhotoCounter / (photoAtPage);
 				String pages = "" + pa;
 	//			System.out.println(allPhotoCounter+" - "+ allPhotoCounter/photoAtPage);
@@ -86,10 +85,7 @@ import photoalbum.entities.User;
 			for (Category allCat : allCategory) {
 				if (cat.equalsIgnoreCase(allCat.getCatName())){
 					Set<Photo> photo = allCat.getPhotos();
-					for (Photo allPh : photo) {
-						allPhotoCounter++;
-						
-					}
+					allPhotoCounter += photo.size();
 				}
 			}
 			int pa = 1 + allPhotoCounter / (photoAtPage-1);
@@ -99,6 +95,7 @@ import photoalbum.entities.User;
 			String[] photoId = new String[allPhotoCounter];
 			String[] photoName = new String[allPhotoCounter];
 			String[] photoComment = new String[allPhotoCounter];
+			String[] childCategories = null;
 			for (Category allCat : allCategory) {
 				if (cat.equalsIgnoreCase(allCat.getCatName())){
 					Set<Photo> photo = allCat.getPhotos();
@@ -110,6 +107,15 @@ import photoalbum.entities.User;
 						photoComment[count] =""+ allPh.getComments().size();
 						count++;
 					}
+					if (allCat.getCategories()!=null){
+						int ch = 0;
+						Set<Category> child = allCat.getCategories();
+						childCategories = new String[child.size()];
+						for (Category childCategory: child){
+							childCategories[ch] = childCategory.getCatName();
+							ch++;
+						}
+					}
 				}
 			}
 //			System.out.println(allPhotoCounter+" - "+ allPhotoCounter/photoAtPage);
@@ -117,7 +123,7 @@ import photoalbum.entities.User;
 			session.setAttribute("allPhotoCounter", allPhotoCounter);
 			session.setAttribute("pages", pages);
 			session.setAttribute("curentCateg", cat);
-			
+			session.setAttribute("childCategories", childCategories);
 			session.setAttribute("pathAllCurrent", pathAll);
 			session.setAttribute("photoIdCurrent", photoId);
 			session.setAttribute("photoNameCurrent", photoName);

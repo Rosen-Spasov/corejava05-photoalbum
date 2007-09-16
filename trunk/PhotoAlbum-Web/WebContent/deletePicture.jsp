@@ -24,14 +24,8 @@
 		String allPictures = (String) session.getAttribute("allPictures");
 		int photoId = Integer.parseInt((String)request.getParameter("pic"));
 			
-			String path = null;
-					Set<Category> category = user.getCategories();					
-					for (Category categ: category){
-					Set<Photo> photos = categ.getPhotos();
-					for (Photo ph: photos){
-					
-						if(ph.getPhotoId()==photoId){
-						path = edit.getAbsolutePath(ph);
+			Photo photo = edit.getPhotoById(photoId);
+			String path = edit.getAbsolutePath(photo);
 	%>
 	<table border="0" width="100%" cellspacing="0" cellpadding="0" style="padding:0px 0px 0px 0px; border:1px solid White;">
 	<tr style="background-image:url(Themes/headBG.png)" >
@@ -42,14 +36,14 @@
 		<td width="125"><img src="Themes/top-right.gif"></td>
 	</tr></table>
 	<table align="center">
-	<tr><td><img src="<%= path%>" alt="<%= ph.getPhName() %>" title="<%= ph.getPhName() %>" align="top" width="400"/>
+	<tr><td><img src="<%= path%>" alt="<%= photo.getPhName() %>" title="<%= photo.getPhName() %>" align="top" width="400"/>
 </td></tr>
 
-<tr><td><a href="DeletePictureServlet?pic=<%= ph.getPhotoId() %>" onclick="close"/><b><div style="color: red;"><b><%= "Сигурен ли сте, че искате да изтриете тази снимка" %></div></b></a></td></tr>
+<tr><td><a href="DeletePictureServlet?pic=<%= photo.getPhotoId() %>" onclick="close"/><b><div style="color: red;"><b><%= "Сигурен ли сте, че искате да изтриете тази снимка" %></div></b></a></td></tr>
 <br><br>
 <% } %>
 </table>
-	<%} } }%>
+	<%  %>
 	</body>
 
 </html>

@@ -21,7 +21,7 @@
 	
 		User user = (User)session.getAttribute("user"); 
 		PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
-		String[] errors = (String[])session.getAttribute("errors");
+		String[] errors = (String[])session.getAttribute("errorsPicture");
 		out.println(errors);
 		if (user != null){
 		

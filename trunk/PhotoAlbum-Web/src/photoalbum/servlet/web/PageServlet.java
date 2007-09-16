@@ -57,9 +57,7 @@ public class PageServlet extends javax.servlet.http.HttpServlet implements
 			Set<Category> allCategory = userAll.getCategories();
 			for (Category allCat : allCategory) {
 				Set<Photo> allPhoto = allCat.getPhotos();
-				for (Photo allPh : allPhoto) {
-					allPhotoCounter++;
-				}
+				allPhotoCounter += allPhoto.size();
 			}
 		}
 
