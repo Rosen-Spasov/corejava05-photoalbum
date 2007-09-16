@@ -371,11 +371,11 @@ public class PhotoAlbumManipulator {
 		
 		if (obj instanceof Category) {
 			String path = parentPath + FileSystemManager.SEPARATOR + ((Category) obj).getCatName();
-			FileSystemManager.renameFile( ((Category) obj).getPath(), path);
+//			FileSystemManager.renameFile( ((Category) obj).getPath(), path);
 			((Category) obj).setPath(path);
 		} else if (obj instanceof Photo) {
 			String path = parentPath + FileSystemManager.SEPARATOR + ((Photo) obj).getPhName();
-			FileSystemManager.renameFile( ((Photo) obj).getPath(), path);
+//			FileSystemManager.renameFile( ((Photo) obj).getPath(), path);
 			((Photo) obj).setPath(path);
 		}
 	}
