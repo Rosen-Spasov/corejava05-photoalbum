@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import photoalbum.PhotoAlbumManipulator;
 import photoalbum.entities.Category;
 import photoalbum.entities.User;
 
@@ -23,6 +24,7 @@ import photoalbum.entities.User;
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
 		String category = (String)session.getAttribute("currentCategory");
 		String newCategoryName = (String)request.getParameter("newCategoryName");
 		String[] errorsCat = new String[3];
@@ -33,11 +35,12 @@ import photoalbum.entities.User;
 		
 		for (Category cat : allCategory){
 			if (cat.getCatName().equalsIgnoreCase(category)){
-				cat.setCatName(newCategoryName);
+				
+				edit.renameCategory(cat, newCategoryName);
 				System.out.println("Category ->"+category+"new name ->"+newCategoryName);
 			}
 		}
-		user.setCategories(allCategory);
+		session.setAttribute("photoAtPage",null);
 		request.getRequestDispatcher("ShowUser.jsp").forward(request, response);
 		
 		/*

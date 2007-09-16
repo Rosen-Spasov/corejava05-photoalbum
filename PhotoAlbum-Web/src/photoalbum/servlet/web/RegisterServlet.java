@@ -26,15 +26,15 @@ import photoalbum.entities.User;
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String[] errors = new String[7];
+		String[] errorsRegister = new String[7];
 		User newUser = new User();
-		if (isValid(request,newUser,errors)){
+		if (isValid(request,newUser,errorsRegister)){
 			
 			request.getRequestDispatcher("MainPage.jsp").forward(request, response);
 			
 		}else{
 			session.setAttribute("newUser", newUser);
-			session.setAttribute("errorsRegistration", errors);
+			session.setAttribute("errorsRegistration", errorsRegister);
 			request.getRequestDispatcher("register.jsp").forward(request, response);
 	}
 	}

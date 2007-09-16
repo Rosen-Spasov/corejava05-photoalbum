@@ -42,31 +42,31 @@ import photoalbum.entities.Photo;
 		Category category = (Category)session.getAttribute("category");
 		Photo photo = (Photo)session.getAttribute("photo");
 		String[] raz = photo.getPhName().split("[.]");
-		
 		String newName = (String)request.getParameter("newName");
 		newName = newName+"."+raz[1];
-		System.out.println(photo.getPhName()+ " " + newName + " " + category);
+	//	System.out.println(photo.getPhName()+ " " + newName + " " + category);
 		String[] errors = new String[5];
 		if (validate(newName,request,errors)){
 			Set<Photo> allPhoto =  category.getPhotos();
+			
 			for (Photo all:allPhoto){
-				if (all.getPhName().equalsIgnoreCase(photo.getPhName())){
+				if (all.getPhName().equalsIgnoreCase(newName)){
+					System.out.println("sy6testwuwa "+photo.getPhName());
 					errors[3] = "towa ime sy6testwuwa w tazi kategoria";
 				}else{
-					photo.setPhName(newName);
-					/*
-					 * i sega update na producta
-					 */
-					// edit.update;
+					System.out.println("preimenuwano e:"+photo.getPhName()+" v:"+newName);
+					edit.renamePhoto(photo, newName);
+					
 				}
 			}
-			System.out.println("rename");
+//			System.out.println("rename");
+			session.setAttribute("photoAtPage",null);
 			request.getRequestDispatcher("ShowUser.jsp").forward(request, response);
 		}else{
-			System.out.println(errors.length);
-			System.out.println(photo.getPhotoId());
+	//		System.out.println(errors.length);
+//			System.out.println(photo.getPhotoId());
 			session.setAttribute("pic", photo.getPhotoId());
-			session.setAttribute("errors", errors);
+			session.setAttribute("errorsPicture", errors);
 			request.getRequestDispatcher("renamePicture.jsp?pic="+photo.getPhotoId()).forward(request, response);
 			
 		}

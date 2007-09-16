@@ -54,17 +54,10 @@ public class DeletePictureServlet extends javax.servlet.http.HttpServlet
 		PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
 		if (user != null) {
 			int photoId = Integer.parseInt((String) request.getParameter("pic"));
-			String path = null;
-			Set<Category> category = user.getCategories();
-			for (Category categ : category) {
-				Set<Photo> photos = categ.getPhotos();
-				for (Photo ph : photos) {
-					if (ph.getPhotoId() == photoId) {
-						edit.delete(ph);
+			Photo photo = edit.getPhotoById(photoId);
+						edit.delete(photo);
 					}
-				}
-			}
-		}
+		session.setAttribute("photoAtPage",null);	
 		request.getRequestDispatcher("ShowUser.jsp").forward(request, response);
 	}
 }

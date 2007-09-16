@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.hibernate.classic.Session;
 
+import photoalbum.PhotoAlbumManipulator;
 import photoalbum.entities.Category;
 import photoalbum.entities.User;
 
@@ -26,23 +27,13 @@ import photoalbum.entities.User;
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
 		String category = (String)session.getAttribute("currentCategory");
 		System.out.println(category);
 		User user = (User)session.getAttribute("user");
-		User emptyUser = new User();
 		System.out.println(user);
-		Set<Category> allCategory = user.getCategories();
-		Set<Category> newCategory = emptyUser.getCategories();
-		
-		for (Category cat:allCategory){
-			if (!cat.getCatName().equalsIgnoreCase(category)){
-				newCategory.add(cat);
-				System.out.println("not deleted :"+ cat.getCatName());
-			}
-		}
-		user.setCategories(newCategory);
-		/*
-		 * i tuk update na user kym bazata
-		 */
+		user.getCategories().remove(category);
+		edit.updateUser(user);
+		request.getRequestDispatcher("ShowUser.jsp").forward(request,response);
 	}   	  	    
 }

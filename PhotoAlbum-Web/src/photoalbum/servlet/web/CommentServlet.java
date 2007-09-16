@@ -49,6 +49,7 @@ import photoalbum.hibernate.HibernateConnectionManager;
 		comm.setText(comment);
 		comm.setUser(userLogin);
 		photo.getComments().add(comm);
+	
 /*
  * tuk da dobawq update
  */

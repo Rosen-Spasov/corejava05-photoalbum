@@ -45,7 +45,14 @@
 								</tr>
 								<tr><td class="left pLeft10"><label for="pass">Парола: </label></td>
 									<td class="left pRight10"><input type="password" class="textInput" name="pass" id="pass" /></td>
-								</tr><tr><td class="right">&nbsp;</td>
+								</tr><td class="right">&nbsp;</td>
+								<% if (session.getAttribute("errors")!=null){
+									String[] errors = (String[])session.getAttribute("errors");
+									for (String err: errors){
+										if (err!=null){%>
+								<tr><td colspan="2"><%= err %></td></tr>
+								<%} } }%>
+									<tr><td></td>
 									<td class="left">
 									<input type="submit" class="button" style="width: 90px;" name="login" id="login" value="Вход" />
 									</td>
