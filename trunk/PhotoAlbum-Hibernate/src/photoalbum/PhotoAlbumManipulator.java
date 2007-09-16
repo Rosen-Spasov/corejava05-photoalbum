@@ -135,6 +135,10 @@ public class PhotoAlbumManipulator {
 		return getHbConnection().getCategoryByPath(path);
 	}
 	
+	public Photo getPhotoById(int photoId) {
+		return getHbConnection().getPhotoById(photoId);
+	}
+	
 	public Photo getPhotoByPath(String path) {
 		return getHbConnection().getPhotoByPath(path);
 	}
