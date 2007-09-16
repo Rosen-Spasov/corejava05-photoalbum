@@ -361,7 +361,16 @@ public class PhotoAlbumManipulator {
 		photo.setPhName(phName);
 		photo.setPath(path);
 		FileSystemManager.renameFile(photo.getPath(), path);
-		updateInDB(photo);
+		getHbConnection().beginTransaction();
+		try {
+			FileSystemManager.renameFile(photo.getPath(), path);
+			getHbConnection().update(photo);
+			getHbConnection().commit();
+		} catch (Throwable e) {
+			getHbConnection().rollback();
+			getLogger().log(e);
+		}
+//		updateInDB(photo);
 	}
 	
 	private void updateParentPath(Object obj, String parentPath) {
