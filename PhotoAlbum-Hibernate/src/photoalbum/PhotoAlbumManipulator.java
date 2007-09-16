@@ -361,8 +361,6 @@ public class PhotoAlbumManipulator {
 		photo.setPhName(phName);
 		photo.setPath(path);
 		FileSystemManager.renameFile(photo.getPath(), path);
-		getHbConnection().beginTransaction();
-		FileSystemManager.renameFile(photo.getPath(), path);
 		updateInDB(photo);
 	}
 	
