@@ -358,6 +358,8 @@ public class PhotoAlbumManipulator {
 		if (lastSlashIndex != -1) {
 			path = path.substring(0, lastSlashIndex + 1) + phName;
 		}
+		photo.setPhName(phName);
+		photo.setPath(path);
 		FileSystemManager.renameFile(photo.getPath(), path);
 		updateInDB(photo);
 	}
