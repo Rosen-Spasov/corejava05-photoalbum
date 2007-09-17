@@ -38,8 +38,11 @@
 	<table align="center">
 	<tr><td><img src="<%= path%>" alt="<%= photo.getPhName() %>" title="<%= photo.getPhName() %>" align="top" width="400"/>
 </td></tr>
+<tr><td><div style="color: red;"><b><%= "Сигурен ли сте, че искате да изтриете тази снимка" %></div></td></tr>
+<tr><td><a href="DeletePictureServlet?pic=<%= photo.getPhotoId() %>" onclick="close"/><b>Да</b></a>
+		<a href="ShowUser.jsp" onclick="close"/><b>Не</b></a>
 
-<tr><td><a href="DeletePictureServlet?pic=<%= photo.getPhotoId() %>" onclick="close"/><b><div style="color: red;"><b><%= "Сигурен ли сте, че искате да изтриете тази снимка" %></div></b></a></td></tr>
+</td></tr>
 <br><br>
 <% } %>
 </table>

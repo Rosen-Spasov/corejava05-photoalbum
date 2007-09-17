@@ -41,6 +41,8 @@ import photoalbum.entities.User;
 			}
 		}
 		session.setAttribute("photoAtPage",null);
+		User refr = edit.getUserById(user.getUserId());
+		session.setAttribute("user", refr);
 		request.getRequestDispatcher("ShowUser.jsp").forward(request, response);
 		
 		/*

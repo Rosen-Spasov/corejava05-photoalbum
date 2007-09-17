@@ -20,37 +20,23 @@ import photoalbum.entities.User;
  */
 public class PageServlet extends javax.servlet.http.HttpServlet implements
 		javax.servlet.Servlet {
-	/*
-	 * (non-Java-doc)
-	 * 
-	 * @see javax.servlet.http.HttpServlet#HttpServlet()
-	 */
+
 	public PageServlet() {
 		super();
 	}
 
-	/*
-	 * (non-Java-doc)
-	 * 
-	 * @see javax.servlet.http.HttpServlet#doGet(HttpServletRequest request,
-	 *      HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
 
-	/*
-	 * (non-Java-doc)
-	 * 
-	 * @see javax.servlet.http.HttpServlet#doPost(HttpServletRequest request,
-	 *      HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		int allPhotoCounter = 0;
-		String pageAction = request.getParameter("page");
+		int now = 0;
 		PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
 		User[] allUser = edit.getAllUsers();
 		for (User userAll : allUser) {
@@ -61,7 +47,12 @@ public class PageServlet extends javax.servlet.http.HttpServlet implements
 			}
 		}
 
-		String path;
+		
+		String[] pathAll = new String[6];
+		String[] photoId = new String[6];
+		String[] photoName = new String[6];
+		String[] photoComment = new String[6];
+		
 		String[] pathAllFirst = new String[allPhotoCounter];
 		String[] photoIdFirst = new String[allPhotoCounter];
 		String[] photoNameFirst = new String[allPhotoCounter];
@@ -78,84 +69,52 @@ public class PageServlet extends javax.servlet.http.HttpServlet implements
 					photoIdFirst[count] = "" + allPh.getPhotoId();
 					photoNameFirst[count] = allPh.getPhName();
 					photoCommentFirst[count] = "" + allPh.getComments().size();
-					path = edit.getAbsolutePath(allPh);
-				
+//					System.out.println(allPh.getPhName());
 					count++;
 				}
 			}
 		}
-		int nextPage;
-		if (session.getAttribute("nextPage")!=null){
-		nextPage = Integer.valueOf((Integer)session.getAttribute("nextPage"));
-		}else{
-			nextPage = 0;
+//		System.out.println(request.getParameter("page"));
+//		System.out.println(pa);
+		int pageCurrent = 1;
+		if (request.getParameter("page") != null){
+			pageCurrent = Integer.parseInt(request.getParameter("page"));
+		
+		if (pageCurrent>pa || pageCurrent<1){
+			pageCurrent=1;
 		}
-		int nPage;
-		
-			nPage= nextPage;
-		
-		String[] pathAll = new String[6];
-		String[] photoId = new String[6];
-		String[] photoName = new String[6];
-		String[] photoComment = new String[6];
-		
-		
-		
-		if (pageAction != null){
-			int now = 0;
-			if (nPage > allPhotoCounter){
-				nPage = 0;
-			}
-			int next = nPage + 6;
-			int prev = nPage - 6;
-			if (prev < 0){
-				prev = 0;
-			}else if(prev > allPhotoCounter){
-				prev=0;
-			}
-	//		System.out.println("-->sega" +nPage +" prev->"+prev+ " next->" + next);
-		if (pageAction.equalsIgnoreCase("next")) {
-			
-			now=0;
-			for (int begin = nPage; begin < next; begin++) {
-				
-				if (begin < allPhotoCounter) {
-					pathAll[now] = pathAllFirst[begin];
-					photoId[now] = photoIdFirst[begin];
-					photoName[now] = photoNameFirst[begin];
-					photoComment[now] = photoCommentFirst[begin];
+		now=0;
+		System.out.println("teku6ta stranica :"+pageCurrent+" ob6to snimki "+ allPhotoCounter);
+		int begin = pageCurrent*6 - 6;
+//		System.out.println(begin);
+		for (int k = begin; k < begin+6;k++){
+			if (k < allPhotoCounter) {
+				pathAll[now] = pathAllFirst[k];
+				photoId[now] = photoIdFirst[k];
+				photoName[now] = photoNameFirst[k];
+				photoComment[now] = photoCommentFirst[k];
+				now++;
+			} 
+	//		System.out.println(now);
+		}
+		}else{
+			now = 0;
+			for (int k = 0; k < 6;k++){
+				if (k < allPhotoCounter) {
+					pathAll[now] = pathAllFirst[k];
+					photoId[now] = photoIdFirst[k];
+					photoName[now] = photoNameFirst[k];
+					photoComment[now] = photoCommentFirst[k];
 					now++;
 				} 
 			}
-			nPage = next;
-		}
-		if (pageAction.equalsIgnoreCase("prev")) {
 			
-			now = 0;
-			for (int begin = prev; begin < prev +6; begin++) {
-				if (begin < allPhotoCounter) {
-					pathAll[now] = pathAllFirst[begin];
-					photoId[now] = photoIdFirst[begin];
-					photoName[now] = photoNameFirst[begin];
-					photoComment[now] = photoCommentFirst[begin];
-					now++;
-				}}
-			nPage = prev+6;
-			}
-		}else{
+	
 			
-			nPage=6;
-			for (int k=0;k<6;k++){
-				pathAll[k] = pathAllFirst[k];
-				photoId[k] = photoIdFirst[k];
-				photoName[k] = photoNameFirst[k];
-				photoComment[k] = photoCommentFirst[k];
-	//			System.out.println("---"+k);
-			}
 		}
 		
-	//	System.out.println("sega sme na ->"+nPage);
-		session.setAttribute("nextPage", nPage);
+
+		session.setAttribute("nowPage", pageCurrent);
 		session.setAttribute("ref", "aaa");
 		session.setAttribute("allUser", allUser);
 		session.setAttribute("allPhotoCounter", allPhotoCounter);

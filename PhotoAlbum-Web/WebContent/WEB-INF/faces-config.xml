@@ -56,6 +56,16 @@
 		<managed-bean-class>pagecode.AddCategory</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>pc_Test</managed-bean-name>
+		<managed-bean-class>pagecode.Test</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>pc_OldMainPage</managed-bean-name>
+		<managed-bean-class>pagecode.OldMainPage</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	<lifecycle>
 		<phase-listener>
 		com.ibm.faces.webapp.ValueResourcePhaseListener</phase-listener>

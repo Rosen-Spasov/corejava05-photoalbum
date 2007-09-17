@@ -24,13 +24,20 @@
 </table>
 
 <% String category = (String)session.getAttribute("currentCategory"); 
-	String[] errors = (String[])session.getAttribute("errorsAdd");%>
+	String showCat = null;
+	String[] errors = (String[])session.getAttribute("errorsAdd");
+	if (category.equalsIgnoreCase("allPictures")){
+		showCat = "Новата категория ще бъде добавена в главната категория";
+	}else{
+		showCat = "Новата категория ще бъде добавена в под категория "+ category;
+	}
+	
+	
+	%>
 <table cellspacing="0" cellpadding="5" border="1" bgcolor="#FFcf66"
 	align="center" bordercolor="ff0000">
 	<form method="POST" action="AddNewCategoryServlet">
-	<tr>
-		<td>Новата категория ще бъде добавена в категория: </td>
-		<td align="center"><%= category %></td>
+	<tr><td align="center" colspan="2"><%= showCat %></td>
 	</tr>
 	<tr>
 		<td>Въведете име за новата категория :</td>
