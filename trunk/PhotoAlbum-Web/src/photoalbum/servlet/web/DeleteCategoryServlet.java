@@ -29,11 +29,21 @@ import photoalbum.entities.User;
 		HttpSession session = request.getSession();
 		PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
 		String category = (String)session.getAttribute("currentCategory");
-		System.out.println(category);
+		
 		User user = (User)session.getAttribute("user");
 		System.out.println(user);
-		user.getCategories().remove(category);
-		edit.updateUser(user);
+		Set<Category> allCategory = user.getCategories();
+
+		 
+		for (Category deleteCategory : allCategory){
+			if (deleteCategory.getCatName().equalsIgnoreCase(category)){
+				System.out.println("iztriwam ->"+deleteCategory.getCatName());
+	//			edit.deleteCategory(deleteCategory);
+				edit.delete(deleteCategory);
+			}
+		}
+		
+		session.setAttribute("user", user);
 		request.getRequestDispatcher("ShowUser.jsp").forward(request,response);
 	}   	  	    
 }

@@ -34,32 +34,43 @@ public class AddNewCategoryServlet extends javax.servlet.http.HttpServlet
 		String newName = (String) request.getParameter("newCategoryName");
 		String[] errorsAdd = new String[5];
 		Set<Category> allCategory = user.getCategories();
+		System.out.println(category);
 		if (validate(newName, user, errorsAdd)) {
+			if (category.equalsIgnoreCase("allPictures")){
+				try {
+					System.out.println("Dobawqme q w glawnata:");
+					edit.addCategory(user, newName);
+				} catch (CreateCategoryException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else{
 			for (Category cat : allCategory) {
 				if (cat.getCatName().equalsIgnoreCase(category)) {
-					Set<Category> allCategories = cat.getCategories();
-					for (Category allCat: allCategories){
-						if (!allCat.getCatName().equalsIgnoreCase(cat.getCatName())){
+					System.out.println("vleze");
+					if (categoryNameExist(cat,newName)){
 							System.out.println("v cat:" + category + " e dobawena "+ newName);
 							System.out.println("towa e path-" + cat.getPath());
 							try {
 								System.out.println(cat.getUser());
-								edit.addCategory(cat, newName);
-								
+								edit.addCategory(cat.getParent(), newName);
+								session.setAttribute("user", user);
+								System.out.println("created");
+								request.getRequestDispatcher("ShowUser.jsp").forward(request,response);
 							} catch (CreateCategoryException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
-							}
-						}else{
+							}}
+						else{
 							errorsAdd[0]= "Kategoriq s towa ime sy6testwuwa";
+							session.setAttribute("errors", errorsAdd);
+							request.getRequestDispatcher("addCategory.jsp").forward(request,response);
 						}
 					}
-					
-				}
 			}
-			System.out.println("created");
-			request.getRequestDispatcher("ShowUser.jsp").forward(request,
-					response);
+		}
+			
+			
 		} else {
 			System.out.println(errorsAdd.length);
 			session.setAttribute("errors", errorsAdd);
@@ -69,10 +80,26 @@ public class AddNewCategoryServlet extends javax.servlet.http.HttpServlet
 		}
 	}
 
+	private boolean categoryNameExist(Category cat, String newName) {
+		boolean check = true;
+		
+		Category parent = cat.getParentCategory();
+		Set<Category> allCategories = parent.getCategories();
+		for (Category allCat: allCategories){
+			System.out.println(cat.getCatName());
+			System.out.println("tezi sa categoriite ->"+allCat.getCatName());
+			if (allCat.getCatName().equalsIgnoreCase(newName)){
+				System.out.println("false");
+				check = false;
+			}
+		}
+		return check;
+	}
+
 	private boolean validate(String newName, User user,
 			String[] errors) {
 
-		System.out.println(newName);
+//		System.out.println(newName);
 		boolean result = true;
 		if (!(newName.length() > 2)) {
 		errors[1] = "Enter name";

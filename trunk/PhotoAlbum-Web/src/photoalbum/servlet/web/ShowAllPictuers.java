@@ -18,18 +18,11 @@ import photoalbum.entities.User;
  *
  */
  public class ShowAllPictuers extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet {
-    	
-	
-	/* (non-Java-doc)
-	 * @see javax.servlet.http.HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}  	
-	
-	/* (non-Java-doc)
-	 * @see javax.servlet.http.HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		int photoAtRow = 4;
@@ -38,12 +31,15 @@ import photoalbum.entities.User;
 		session.setAttribute("photoAtRow", photoAtRow);
 		session.setAttribute("photoAtPage", photoAtPage);
 		session.setAttribute("owner", null);
+		
 		String cat = request.getParameter("param");
 		session.setAttribute("currentCategory", cat);
 		System.out.println(cat);
 		int allPhotoCounter = 0;
 			PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
-			User user = (User)session.getAttribute("user");
+		
+			User userRefr = (User)session.getAttribute("user");
+			User user = edit.getUserByUsername(userRefr.getUsername());
 	//		System.out.println(user.getUsername());
 			Set<Category> allCategory = user.getCategories();
 			String path;
@@ -72,6 +68,7 @@ import photoalbum.entities.User;
 						count++;
 					}
 			}
+			session.setAttribute("user", user);	
 			session.setAttribute("allPhotoCounter", allPhotoCounter);
 			session.setAttribute("pages", pages);
 			session.setAttribute("pathAllCurrent", pathAll);
