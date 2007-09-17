@@ -17,28 +17,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="GENERATOR" content="Rational Application Developer">
 
-<SCRIPT language="JavaScript1.2">
-function popuponclick()
-{
- my_window = window.open("",
-    "mywindow","status=1,width=350,height=150");
-  my_window.document.write('<div style="color: red;">сигурен ли сте че искате да изтриете категорията<B> <%= session.getAttribute("currentCategory")%></b></div>');
-my_window.document.write('<input type="button" value="Да" onclick="window.close()">');   
-my_window.document.write('<input type="button" value="Не" onclick="window.close()">'); 
-} 
-function closepopup()
-{
- if(false == my_window.closed) 
- {
+<script type="text/javascript">
+function click(){
+if(confirm("сигурен ли си, че искаш да изтриеш категорияta ")){
+window.alert("изтрита");
+window.location.href="DeleteCategoryServlet";
 
-	  my_window.close (); 
- }
- else
- {
-    alert('Window already closed!');
- }
 }
-</SCRIPT>
+}
+</script>
 </head>
 <body>
 
@@ -111,8 +98,7 @@ User userLogin = (User) session.getAttribute("login");
 				%>
 				<div class="<%= type[1] %>"><img src="img/tl.gif" class="tl"
 					alt="tl" /> <span class="mainTab1"><a
-					href="addCategory.jsp" title="Добави категория">Добави
-				категория</a></span> <img src="img/tr.gif" class="tr" alt="tr" /></div>
+					href="addCategory.jsp" title="Добави категория">Добави категория</a></span> <img src="img/tr.gif" class="tr" alt="tr" /></div>
 				<%
 						if (session.getAttribute("currentCategory") != null) {
 						String cat = (String) session.getAttribute("currentCategory");
@@ -121,13 +107,14 @@ User userLogin = (User) session.getAttribute("login");
 				<div class="<%= type[2] %>"><img src="img/tl.gif" class="tl"
 					alt="tl" /> <span class="mainTab1"><a href="renameCategory.jsp" title="Категория">Преименувай категория</a>
 					</span> <img src="img/tr.gif" class="tr" alt="tr" /></div>
-				<div class="<%= type[3] %>"><img src="img/tl.gif" class="tl"
+				
+				<div class="<%= type[5] %>"><img src="img/tl.gif" class="tl"
+					alt="tl" /> <span class="mainTab1"><a href="javascript: click()" title="Категория">Изтрии категория</a></span>
+					 <img src="img/tr.gif" class="tr" alt="tr" /></div>
+					 <div class="<%= type[3] %>"><img src="img/tl.gif" class="tl"
 					alt="tl" /> <span class="mainTab1"><a
 					href="ShowAllPictuers" title="Добави снимка">Добави снимка</a></span> <img
 					src="img/tr.gif" class="tr" alt="tr" /></div>
-				<div class="<%= type[5] %>"><img src="img/tl.gif" class="tl"
-					alt="tl" /> <span class="mainTab1"><a
-					href="javascript: popuponclick()" title="Категория">Изтрии категория</a></span> <img src="img/tr.gif" class="tr" alt="tr" /></div>
 				<%
 							}
 							}
@@ -135,6 +122,7 @@ User userLogin = (User) session.getAttribute("login");
  }
  %> <%
  if (userLogin == null) {
+
  %>
 
 				<div class="sideMenuLinks"><a class="grey" href="register.jsp"
@@ -181,7 +169,7 @@ User userLogin = (User) session.getAttribute("login");
 			<% if (session.getAttribute("childCategories")!=null){
 				t = 0;
 				String[] childCategories =(String[])session.getAttribute("childCategories"); %>
-				<tr>
+				<tr><td class="mainMenu">
 				<% for (Category childCateg : category) {
 				%>
 				<div class="<%= type[t] %>"><img src="img/tl.gif" class="tl"
@@ -189,7 +177,7 @@ User userLogin = (User) session.getAttribute("login");
 					href="ShowAllPictuers?param=<%= childCateg %>" title="<%= childCateg %>"><%=childCateg%></a></span>
 				<img src="img/tr.gif" class="tr" alt="tr" /></div>
 				<%t++;}%>
-				</tr>
+				</td></tr>
 				<%	}%>
 
 		</table>
@@ -248,9 +236,10 @@ User userLogin = (User) session.getAttribute("login");
 			<div class="smallProfilePicOnline"><a href="fullScreen.jsp?pic=<%= photoId[k] %>"><img src="<%=pathAll[k] %>" alt="<%= photoName[k] %>"
 				title="<%= photoName[k] %>" height="150px" /></a></div>
 			<%
+			 if (userLogin == null) {
 			if (owner != null) {
-			%> Собственик на тази снимка<%=owner[k]%><br>
-			<%}%><%= pathAll[k] %>
+			%> Собственик :<%=owner[k]%><br>
+			<%}}%>
 			<div class="lh17"><a href="fullScreen.jsp?pic=<%= photoId[k] %>" class="link bold">Виж на цял екран</a> <br>
 			<%=photoName[k]%></div>
 			<div class="lh17">Коментари<span class="bold"><%=photoComment[k].toString()%></span></div>
@@ -278,19 +267,20 @@ User userLogin = (User) session.getAttribute("login");
 			<%
 							}
 							}
-						}
-					}
+						
+					}}
 			%>
-		
+		<% if (Integer.parseInt(pages) > 1){ 
+		%>
 		<tr>
 			<td class="tabsBottomMid">
-			<div class="fLeft left10"><a href="ShowPageServlet?page=prev"><img
-				src="img/btnLeft.gif" align="absmiddle" /></a> <a
-				href="ShowPageServlet?page=next"><img src="img/btnRight.gif"
-				align="absmiddle" /></a> <span id="menPage"><%=nowPage%></span> от <span
-				id="menTotalPages"><%=pages%></span></div>
+			<div class="fLeft left10"><a href="ShowPageServlet?page=prev"><img src="img/btnLeft.gif" align="absmiddle" /></a>
+			 <a href="ShowPageServlet?page=next"><img src="img/btnRight.gif" align="absmiddle" /></a> 
+			 <span id="menPage"><%=nowPage%></span> от <span id="menTotalPages"><%=pages%></span></div>
 
-			<%
+			<%}if (photoName[0]==null){%>
+			<tr><td class="tabsBottomMid"><div style="color: red; font-size: 30px;">В тази категория няма снимки</td></tr>
+			<% }
 					}
 					}
 				}
