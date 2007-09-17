@@ -88,11 +88,12 @@
 			} else {
 				session.setAttribute("ref", null);
 				String pages = (String)session.getAttribute("pag");
-				if (session.getAttribute("nextPage")!=null){
-				Integer nextPage = Integer.valueOf((Integer)session.getAttribute("nextPage"));
+	//			out.println(session.getAttribute("nowPage"));
+				
 				int nowPage = 1;
+				
 				if (session.getAttribute("nowPage")!=null){
-			//	out.println(session.getAttribute("nowPage"));
+	//			out.println(session.getAttribute("nowPage"));
 				nowPage = Integer.parseInt(session.getAttribute("nowPage").toString());
 				}
 				String[] photoId = ((String[])session.getAttribute("photoId"));
@@ -225,17 +226,18 @@
 							<td class="tabsTableMiddle">
 								<div class="smallestProfile">
 										<div class="smallProfilePicOnline">
-											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>"><img src="<%= pathAll[k] %>" height="100" alt="" title="<%= photoName[k] %>" /></a>
+											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>"><img src="<%= pathAll[k] %>" width="110" alt="" title="<%= photoName[k] %>" /></a>
 										</div>
 										
 										<div class="lh17">
 											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>" class="link bold">Виж на цял екран</a>
+											</div>
 											<% String[] viewName = photoName[k].split("[.]");
 											if (viewName[0].length()>20){
 												viewName[0] = viewName[0].substring(0,19);}%>
-											<%= viewName[0] %>
+											<div style="color: green;"><%= viewName[0] %></div>
 										
-										</div>
+										
 										<div class="lh17">Коментари <span class="bold"><%= photoComment[k] %></span></div>
 	
 									</div>
@@ -259,7 +261,7 @@
 							</td>
 						</tr>
 					</table>
-			<%} }%>			
+			<%} %>			
 					</td>
 		<td class="vtop pLeft20">
 							<div class="right right10 advertisement"><img src="http://img.elmaz.com/style/img/advArrow.png" /> реклама</div>
