@@ -142,6 +142,15 @@
   	<servlet-class>
   	photoalbum.servlet.web.AddNewCategoryServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>
+  	DeleteCommentServlet</display-name>
+  	<servlet-name>DeleteCommentServlet</servlet-name>
+  	<servlet-class>
+  	photoalbum.servlet.web.DeleteCommentServlet</servlet-class>
+  </servlet>
 		<servlet-mapping>
 			<servlet-name>GetAllUserServlet</servlet-name>
 			<url-pattern>/GetAllUserServlet</url-pattern>
@@ -213,6 +222,10 @@
 		<servlet-mapping>
 			<servlet-name>AddNewCategoryServlet</servlet-name>
 			<url-pattern>/AddNewCategoryServlet</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>DeleteCommentServlet</servlet-name>
+			<url-pattern>/DeleteCommentServlet</url-pattern>
 		</servlet-mapping>
 
 		
