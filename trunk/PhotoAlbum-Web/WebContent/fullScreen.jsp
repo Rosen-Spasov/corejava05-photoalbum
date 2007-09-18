@@ -50,7 +50,12 @@
 	isComment = true; 
 %>
 <tr><td><div style="color: red;"><%= "Този коментар е оставен от " %><b><%=c.getUser().getUsername() %></div></td></tr>
-<tr><td><%= c.getText() %></td></tr><br><br>
+<tr><td><%= c.getText() %>
+<% if (userLogin.getUsername().equalsIgnoreCase(c.getUser().getUsername())){%>
+<%= c.getCommentId() %>
+	<a href="DeleteCommentServlet?comm=<%= c.getCommentId() %>"/>изтрии този коментар</a>
+	</td></tr><br><br>
+<% } %>
 <% } %>
 </table>
 	<%break;
