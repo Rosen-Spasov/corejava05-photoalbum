@@ -150,7 +150,19 @@
   	<servlet-name>DeleteCommentServlet</servlet-name>
   	<servlet-class>
   	photoalbum.servlet.web.DeleteCommentServlet</servlet-class>
-  </servlet>
+  </servlet><servlet>
+			<description>
+			</description>
+			<display-name>
+			TestServlet</display-name>
+			<servlet-name>TestServlet</servlet-name>
+			<servlet-class>
+			photoalbum.web.servlets.TestServlet</servlet-class>
+		</servlet>
+		<servlet-mapping>
+			<servlet-name>TestServlet</servlet-name>
+			<url-pattern>/TestServlet</url-pattern>
+		</servlet-mapping>
 		<servlet-mapping>
 			<servlet-name>GetAllUserServlet</servlet-name>
 			<url-pattern>/GetAllUserServlet</url-pattern>
