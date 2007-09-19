@@ -8,8 +8,8 @@ public interface ICategoryContainer {
 	
 	public Set<Category> getCategories();
 	
-	public void add(Object obj);
+	public boolean add(Object obj);
 	
-	public void remove(Object obj);
+	public boolean remove(Object obj);
 
 }

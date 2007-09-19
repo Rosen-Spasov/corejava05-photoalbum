@@ -110,16 +110,22 @@ public class User implements Serializable, Comparable<User>, ICategoryContainer 
 		return user.getUsername().compareToIgnoreCase(user.getUsername());
 	}
 	
-	public void add(Object obj) {
+	public boolean add(Object obj) {
 		if (obj instanceof Category) {
-			getCategories().add((Category) obj);
+			return getCategories().add((Category) obj);
+		} else if (obj instanceof Comment) {
+			return getComments().add((Comment) obj);
 		}
+		return false;
 	}
 
-	public void remove(Object obj) {
+	public boolean remove(Object obj) {
 		if (obj instanceof Category) {
-			getCategories().remove(obj);
+			return getCategories().remove(obj);
+		} else if (obj instanceof Comment) {
+			return getComments().remove(obj);
 		}
+		return false;
 	}
 
 }

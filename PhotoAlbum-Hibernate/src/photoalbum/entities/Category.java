@@ -110,20 +110,22 @@ public class Category implements Serializable, Comparable<Category>, ICategoryCo
 		return this.getPath().compareToIgnoreCase(category.getPath());
 	}
 	
-	public void add(Object obj) {
+	public boolean add(Object obj) {
 		if (obj instanceof Category) {
-			getCategories().add((Category) obj);
+			return getCategories().add((Category) obj);
 		} else if (obj instanceof Photo) {
-			getPhotos().add((Photo) obj);
+			return getPhotos().add((Photo) obj);
 		}
+		return false;
 	}
 
-	public void remove(Object obj) {
+	public boolean remove(Object obj) {
 		if (obj instanceof Category) {
-			getCategories().remove(obj);
+			return getCategories().remove(obj);
 		} else if (obj instanceof Photo) {
-			getPhotos().remove(obj);
+			return getPhotos().remove(obj);
 		}
+		return false;
 	}
 	
 	public ICategoryContainer getParent() {
