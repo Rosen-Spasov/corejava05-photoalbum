@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import photoalbum.entities.Category;
+import photoalbum.entities.Comment;
 import photoalbum.entities.Photo;
 import photoalbum.entities.User;
 import photoalbum.entities.interfaces.ICategoryContainer;
@@ -143,6 +144,10 @@ public class PhotoAlbumManipulator {
 		return getHbConnection().getPhotoByPath(path);
 	}
 	
+	public Comment getCommentById(int commentId) {
+		return getHbConnection().getCommentById(commentId);
+	}
+	
 	public Photo addPhoto(Category category, File imageFile) throws CreatePhotoException {
 		if (category == null || imageFile == null) {
 			return null;
@@ -245,26 +250,32 @@ public class PhotoAlbumManipulator {
 		if (user == null) {
 			return;
 		}
-		User userInDB = getHbConnection().getUserById(user.getUserId());		
-		deleteObject(userInDB);
+		User userInDB = getUserById(user.getUserId());
+		if (userInDB != null) {
+			deleteObject(userInDB);
+		}
 	}
 	
 	public void deleteCategory(Category category) {
 		if (category == null) {
 			return;
 		}
-		Category categoryInDB = getHbConnection().getCategoryById(category.getCategoryId());
-		categoryInDB.getParent().remove(categoryInDB);
-		deleteObject(categoryInDB);
+		Category categoryInDB = getCategoryById(category.getCategoryId());
+		if (categoryInDB != null) {
+			categoryInDB.getParent().remove(categoryInDB);
+			deleteObject(categoryInDB);
+		}
 	}
 	
 	public void deletePhoto(Photo photo) {
 		if (photo == null) {
 			return;
 		}
-		Photo photoInDB = getHbConnection().getPhotoById(photo.getPhotoId());
-		photoInDB.getCategory().remove(photoInDB);
-		deleteObject(photoInDB);
+		Photo photoInDB = getPhotoById(photo.getPhotoId());
+		if (photoInDB != null) {
+			photoInDB.getCategory().remove(photoInDB);
+			deleteObject(photoInDB);
+		}
 	}
 	
 	private void deleteObject(Object obj) {
@@ -388,6 +399,26 @@ public class PhotoAlbumManipulator {
 		} catch (Throwable e) {
 			getHbConnection().rollback();
 			getLogger().log(e);
+		}
+	}
+	
+	public Comment addComment(User user, Photo photo, String text) {
+		Comment comment = new Comment(user, photo, text);
+		user.add(comment);
+		photo.addComment(comment);
+		updateInDB(comment);
+		return comment;
+	}
+	
+	public void deleteComment(Comment comment) {
+		if (comment == null) {
+			return;
+		}
+		Comment commentInDB = getCommentById(comment.getCommentId());
+		if (commentInDB != null) {
+			commentInDB.getUser().remove(commentInDB);
+			commentInDB.getPhoto().removeComment(commentInDB);
+			deleteObject(commentInDB);
 		}
 	}
 

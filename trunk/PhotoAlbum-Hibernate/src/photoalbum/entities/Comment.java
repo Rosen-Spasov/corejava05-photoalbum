@@ -49,7 +49,7 @@ public class Comment implements Serializable, Comparable<Comment> {
 	public Comment() {
 	}
 	
-	public Comment(String text, Photo photo, User user) {
+	public Comment(User user, Photo photo, String text) {
 		this.setText(text);
 		this.setPhoto(photo);
 		this.setUser(user);

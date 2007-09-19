@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import photoalbum.entities.Category;
+import photoalbum.entities.Comment;
 import photoalbum.entities.Photo;
 import photoalbum.entities.User;
 import photoalbum.logging.Logger;
@@ -123,6 +124,10 @@ public class HibernateConnection {
 	
 	public Photo getPhotoById(int photoId) {
 		return (Photo) this.get(Photo.class, photoId);
+	}
+	
+	public Comment getCommentById(int commentId) {
+		return (Comment) this.get(Comment.class, commentId);
 	}
 	
 	public User getUserByUserName(String username) {
