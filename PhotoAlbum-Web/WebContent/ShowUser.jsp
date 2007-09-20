@@ -112,9 +112,8 @@ User userLogin = (User) session.getAttribute("login");
 					alt="tl" /> <span class="mainTab1"><a href="javascript: click()" title="Категория">Изтрии категория</a></span>
 					 <img src="img/tr.gif" class="tr" alt="tr" /></div>
 					 <div class="<%= type[3] %>"><img src="img/tl.gif" class="tl"
-					alt="tl" /> <span class="mainTab1"><a
-					href="ShowAllPictuers" title="Добави снимка">Добави снимка</a></span> <img
-					src="img/tr.gif" class="tr" alt="tr" /></div>
+					alt="tl" /> <span class="mainTab1"><a href="AddPhotoServlet?cat=<%= cat %>" title="Добави снимка">Добави снимка</a></span>
+					 <img src="img/tr.gif" class="tr" alt="tr" /></div>
 				<%
 							}
 							}
@@ -137,9 +136,8 @@ User userLogin = (User) session.getAttribute("login");
 				<%
 				}
 				%>
-				<div class="sideMenuLinks"><a class="grey" href="MainPage.jsp"
-					title="Вход в photo album">Начална страница</a><span
-					class="separator grey">|</span></div>
+				<div class="sideMenuLinks"><a class="grey" href="MainPage.jsp" title="Вход в photo album">Начална страница</a>
+				<span class="separator grey">|</span></div>
 				</td>
 			</tr>
 
