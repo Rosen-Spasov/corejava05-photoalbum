@@ -2,8 +2,8 @@
 <%@ page errorPage="ExceptionHandler.jsp" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-
-<% String directory = (String)session.getAttribute("path") ; %>
+<% String path = (String) session.getAttribute("path"); %>
+<% String directory = "c:/temp" ; %>
 <% String tmpdirectory = directory+"/tmp"; %>
 <% boolean createsubfolders = true; %>
 <% boolean allowresume = true; %>
@@ -20,6 +20,8 @@
   <jsp:setProperty name="upBean" property="dump" value="true"/>
 </jsp:useBean>
 
+<%@page import="photoalbum.PhotoAlbumManipulator"%>
+<%@page import="photoalbum.entities.Category"%>
 <html>
 <head>
 <title>Качете снимката си във фото албум </title>
@@ -61,6 +63,8 @@
            {
              UploadFile file = (UploadFile) files.get("uploadfile");
              if (file != null) out.println("<li>Вие качихте файл : "+file.getFileName()+" <BR>с големина ("+file.getFileSize()+" bytes)"+"<BR> Тип на файла : "+file.getContentType());
+             PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
+             Category category = (Category)session.getAttribute("categoryPhoto");
              // Folders and subfolders creation support.
              String relative = mrequest.getParameter("relativefilename");
             
@@ -103,9 +107,11 @@
                    int read = -1;
                    while ((read = fin.read(buffer)) > 0) fout.write(buffer,0,read);
                    fin.close();
+                   edit.addPhoto(category,filein);
                    filein.delete();
                  }
                  fout.close();
+                 
                }
              }
              else upBean.store(mrequest, "uploadfile");

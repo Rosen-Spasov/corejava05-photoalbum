@@ -84,6 +84,7 @@ public class AddNewCategoryServlet extends javax.servlet.http.HttpServlet
 		boolean check = true;
 		
 		Category parent = cat.getParentCategory();
+		if (parent!= null){
 		Set<Category> allCategories = parent.getCategories();
 		for (Category allCat: allCategories){
 			System.out.println(cat.getCatName());
@@ -92,6 +93,7 @@ public class AddNewCategoryServlet extends javax.servlet.http.HttpServlet
 				System.out.println("false");
 				check = false;
 			}
+		}
 		}
 		return check;
 	}
