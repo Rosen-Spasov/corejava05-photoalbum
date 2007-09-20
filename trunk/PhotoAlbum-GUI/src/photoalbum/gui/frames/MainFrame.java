@@ -409,7 +409,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	}
 	
 	private void exit() {
-		if (JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Confirmation Dialog", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+		if (JOptionPane.showConfirmDialog(this, "Сигурен ли сте, че искате да затворите приложението?", "Диалог за Изход", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			exit(0);
 		}
 	}
@@ -420,7 +420,16 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	
 	private void newSession() {
 		if (this.getNewSessionDialog().showDialog() == DialogResult.CONNECT) {
-			connect();
+//			SwingUtilities.invokeLater(new Runnable() {
+//				public void run() {
+//					connect();
+//				}
+//			});
+			new Thread() {
+				public void run() {
+					connect();
+				}
+			}.start();
 		}
 	}
 	
@@ -438,10 +447,10 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 				this.getBtnRefresh().setEnabled(true);
 				this.getMItemNewSession().setEnabled(false);				
 			} else {
-				JOptionPane.showMessageDialog(this, "Invalid password. Connection refused.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Невалидна парола. Конекцията отказана.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (Throwable e) {
-			JOptionPane.showMessageDialog(this, "Could not connect to server. Check your connection settings and contact your system administrator.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Връзката към сървъра не може да бъде осъществена. Проверете параметрите на Вашата конекция и се свържете със системния администратор.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
 			Logger.getDefaultInstance().log(e);
 		} finally {
 			this.setCursor(Cursor.getDefaultCursor());
@@ -674,7 +683,6 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		} else if (e.getSource() == this.getBtnDelete()) {
 			delete();
 		} else if (e.getSource() == this.getBtnRefresh()) {
-//			refresh();
 			refreshTree();
 		} else if (e.getSource() == this.getBtnExit() || e.getSource() == this.getMItemExit()) {
 			exit();
