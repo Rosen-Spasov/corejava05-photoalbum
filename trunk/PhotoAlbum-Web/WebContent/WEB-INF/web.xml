@@ -159,6 +159,15 @@
 			<servlet-class>
 			photoalbum.web.servlets.TestServlet</servlet-class>
 		</servlet>
+<servlet>
+	<description>
+	</description>
+	<display-name>
+	AddPhotoServlet</display-name>
+	<servlet-name>AddPhotoServlet</servlet-name>
+	<servlet-class>
+	photoalbum.servlet.web.AddPhotoServlet</servlet-class>
+</servlet>
 		<servlet-mapping>
 			<servlet-name>TestServlet</servlet-name>
 			<url-pattern>/TestServlet</url-pattern>
@@ -238,6 +247,10 @@
 		<servlet-mapping>
 			<servlet-name>DeleteCommentServlet</servlet-name>
 			<url-pattern>/DeleteCommentServlet</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>AddPhotoServlet</servlet-name>
+			<url-pattern>/AddPhotoServlet</url-pattern>
 		</servlet-mapping>
 
 		
