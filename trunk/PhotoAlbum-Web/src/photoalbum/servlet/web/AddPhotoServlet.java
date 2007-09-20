@@ -33,8 +33,9 @@ import photoalbum.entities.User;
 		for (Category cat : allCategory) {
 			if (cat.getCatName().equalsIgnoreCase(categoryName)) {
 				path = edit.getAbsolutePath(cat);
-				System.out.println(path);
+		//		System.out.println(path);
 				session.setAttribute("path", path);
+				session.setAttribute("categoryPhoto", cat);
 			}
 		}
 		
