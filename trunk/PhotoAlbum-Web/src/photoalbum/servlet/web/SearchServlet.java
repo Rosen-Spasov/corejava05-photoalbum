@@ -25,24 +25,14 @@ public class SearchServlet extends javax.servlet.http.HttpServlet implements
 		HttpSession session = request.getSession();
 		PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
 		String searchName = (String)request.getParameter("searchName");
-		String category = (String)request.getParameter("category");
-		System.out.println(searchName + category);
+		
+		System.out.println(searchName);
 		if (searchName.length()>0) {
 			
 			User user = edit.getUserByUsername(searchName);
 			session.setAttribute("user", user);
-			
-				if (category != null) {
-					boolean cat = user.getCategories().contains(category);
-					session.setAttribute("category", cat);
-					request.getRequestDispatcher("ShowUser.jsp").forward(
-							request, response);
-				} else {
-					
-					session.setAttribute("category", null);
-					request.getRequestDispatcher("ShowUser.jsp").forward(
-							request, response);
-				}
+			request.getRequestDispatcher("ShowUser.jsp").forward(request, response);
+
 		} else {
 			request.setAttribute("search", "enter user name");
 			request.getRequestDispatcher("MainPage.jsp").forward(request,

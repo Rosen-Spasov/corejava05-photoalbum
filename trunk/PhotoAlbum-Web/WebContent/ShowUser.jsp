@@ -158,10 +158,11 @@ User userLogin = (User) session.getAttribute("login");
 					alt="tl" /> <span class="mainTab1"><a
 					href="ShowAllPictuers?param=<%= categ %>" title="<%= categ %>"><%=categ%></a></span>
 				<img src="img/tr.gif" class="tr" alt="tr" /></div>
-				<%
-						t++;
-						}
-				%>
+				<% if (t >= 6){
+				t=0;
+				}else{
+				t++;}
+				}%>
 				</td>
 			</tr>
 			<% if (session.getAttribute("childCategories")!=null){
@@ -174,7 +175,9 @@ User userLogin = (User) session.getAttribute("login");
 					alt="tl" /> <span class="mainTab1"><a
 					href="ShowAllPictuers?param=<%= childCateg %>" title="<%= childCateg %>"><%=childCateg%></a></span>
 				<img src="img/tr.gif" class="tr" alt="tr" /></div>
-				<%t++;}%>
+				<% if (t >= 6){
+				t=0;}else{
+				t++;}}%>
 				</td></tr>
 				<%	}%>
 
@@ -279,7 +282,7 @@ User userLogin = (User) session.getAttribute("login");
 			<%}if (photoName[0]==null){%>
 			<tr><td class="tabsBottomMid"><div style="color: red; font-size: 30px;">В тази категория няма снимки</td></tr>
 			<% }
-					}
+					 }
 					}
 				}
 			%>

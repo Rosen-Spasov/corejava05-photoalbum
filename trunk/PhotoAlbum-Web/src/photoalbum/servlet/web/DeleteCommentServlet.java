@@ -44,10 +44,10 @@ import photoalbum.entities.User;
 			System.out.println(comm.getCommentId());
 			if (comm.getCommentId() == deleteComment){
 				System.out.println(comm.getCommentId());
-				userLogin.getComments().remove(comm);
+				edit.deleteComment(comm);
 			}
 		}
-		edit.updateUser(userLogin);
+//		edit.updateUser(userLogin);
 		session.setAttribute("login", userLogin);
 		request.getRequestDispatcher("MainPage.jsp").forward(request, response);
 	}   	  	    

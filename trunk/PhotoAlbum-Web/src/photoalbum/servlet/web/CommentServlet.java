@@ -44,11 +44,9 @@ import photoalbum.hibernate.HibernateConnectionManager;
 		User userLogin = (User)session.getAttribute("login");
 		User user = (User)session.getAttribute("user"); 
 		Photo photo = (Photo)session.getAttribute("pic"); 
-		System.out.println(comment+" " + photo.getPhotoId());
-		Comment comm = new Comment();
-		comm.setText(comment);
-		comm.setUser(userLogin);
-		photo.getComments().add(comm);
+		
+		System.out.println("user "+userLogin.getUsername()+"add comment "+comment+" to photo id " + photo.getPhotoId());
+		edit.addComment(userLogin, photo, comment);
 	
 /*
  * tuk da dobawq update

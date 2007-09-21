@@ -38,12 +38,11 @@ import photoalbum.entities.User;
 		for (Category deleteCategory : allCategory){
 			if (deleteCategory.getCatName().equalsIgnoreCase(category)){
 				System.out.println("iztriwam ->"+deleteCategory.getCatName());
-	//			edit.deleteCategory(deleteCategory);
 				edit.delete(deleteCategory);
 			}
 		}
 		
 		session.setAttribute("user", user);
-		request.getRequestDispatcher("ShowUser.jsp").forward(request,response);
+		request.getRequestDispatcher("ShowAllPictuers?param=allPictures").forward(request,response);
 	}   	  	    
 }
