@@ -56,7 +56,7 @@ public class AddNewCategoryServlet extends javax.servlet.http.HttpServlet
 								edit.addCategory(cat.getParent(), newName);
 								session.setAttribute("user", user);
 								System.out.println("created");
-								request.getRequestDispatcher("ShowUser.jsp").forward(request,response);
+								request.getRequestDispatcher("ShowAllPictuers?param=allPictures").forward(request,response);
 							} catch (CreateCategoryException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();

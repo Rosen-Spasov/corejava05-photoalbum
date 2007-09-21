@@ -57,7 +57,7 @@ public class PageServlet extends javax.servlet.http.HttpServlet implements
 		String[] photoIdFirst = new String[allPhotoCounter];
 		String[] photoNameFirst = new String[allPhotoCounter];
 		String[] photoCommentFirst = new String[allPhotoCounter];
-		int pa = 1 + allPhotoCounter / 7;
+		int pa = 1 + allPhotoCounter / 6;
 		String pages = "" + pa;
 		int count = 0;
 		for (User userAll : allUser) {
@@ -118,7 +118,7 @@ public class PageServlet extends javax.servlet.http.HttpServlet implements
 		session.setAttribute("ref", "aaa");
 		session.setAttribute("allUser", allUser);
 		session.setAttribute("allPhotoCounter", allPhotoCounter);
-	//	session.setAttribute("pag", pages);
+		session.setAttribute("allPages", pages);
 		session.setAttribute("pathAll", pathAll);
 		session.setAttribute("photoId", photoId);
 		session.setAttribute("photoName", photoName);

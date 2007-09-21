@@ -96,6 +96,10 @@
 	//			out.println(session.getAttribute("nowPage"));
 				nowPage = Integer.parseInt(session.getAttribute("nowPage").toString());
 				}
+				pages =""+1;
+				if (session.getAttribute("allPages")!=null){
+					pages = (String)session.getAttribute("allPages");
+				}
 				String[] photoId = ((String[])session.getAttribute("photoId"));
 				String[] photoComment=((String[])session.getAttribute("photoComment"));
 				String[] pathAll=(String[])session.getAttribute("pathAll");
@@ -251,7 +255,7 @@
 									int next = nowPage+1; %>
 									<a href="PageServlet?page=<%= prev%>" ><img src="img/btnLeft.gif" align="absmiddle" /></a>
 									<a href="PageServlet?page=<%= next%>" ><img src="img/btnRight.gif" align="absmiddle" /></a>
-									<span id="menPage"><%= nowPage %></span> от <span id="menTotalPages"><%= pages %></span>
+									<span id="menPage"><%= nowPage %></span> от <span><%= pages %></span>
 								</div>
 								<div class="fRight right10">
 									<div style="line-height:17px;">
