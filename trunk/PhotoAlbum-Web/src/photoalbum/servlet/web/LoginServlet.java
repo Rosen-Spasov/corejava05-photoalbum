@@ -96,12 +96,12 @@ import photoalbum.entities.User;
 		}
                 String target = "(([0-9]+)?([A-Za-z]+)?)(([0-9]+)?([A-Za-z]+)?)*";
                 if (!userName.matches(target))	{
-			errors[3]="enter a valid name"
+			errors[3]="enter a valid name";
                         result = false;
 		}
 
                 if (!pass.matches(target))	{
-			errors[4]="enter a valid password"
+			errors[4]="enter a valid password";
                         result = false;
 		}	  	
                 
