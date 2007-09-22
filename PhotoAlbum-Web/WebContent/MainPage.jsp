@@ -14,7 +14,11 @@
 	<script type="text/javascript"></script>
 </head>
 <body onload="">
-	<% User userLogin = (User)session.getAttribute("login"); %>
+	<% User userLogin = null;
+		if (session.getAttribute("login")!=null){
+		userLogin = (User)session.getAttribute("login");
+	}
+	 %>
 	<table class="mainTable" cellpadding="0" cellspacing="0" align="center">
 		<tr><td colspan="3" class="mainTop"></td></tr>
 		<tr><td colspan="3" class="mainTopMenu">
@@ -260,7 +264,10 @@
 							<div class="weddings top10" style="border: 1px solid white;">
 				<div class="top10 left10">
 					<img src="http://img.elmaz.com/style/img/num1.gif" align="absmiddle" />
-					<a href="SearchServlet" class="link yellow">Намери</a> своята снимка или на твои приятел сред <%=allUsers.length  %> регистрирани потребители
+					<% if (allUsers!=null){ %>
+					<a href="SearchServlet" class="link yellow">Намери</a> своята снимка или на твои приятел сред <%= allUsers.length  %> 
+					регистрирани потребители
+					<% } %>
 				</div>
 				<div class="left10 top10">
 					<img src="http://img.elmaz.com/style/img/num2.gif" align="absmiddle" />
