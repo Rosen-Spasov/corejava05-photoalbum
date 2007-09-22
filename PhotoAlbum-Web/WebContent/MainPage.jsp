@@ -168,7 +168,7 @@
 <!-- search banner -->
 		
 			<td colspan="2" class="mainCenterNone vtop">
-				<table cellpadding="0" cellspacing="0" class="flex" align="center">
+				<table cellpadding="0" cellspacing="0" class="flex" align="center" >
 					<tr><td class="vtop">
 						<table cellpadding="0" cellspacing="0" class="mainSearch top10" align="center">
 							<tr><td class="headerBorder headerMid center">
@@ -178,9 +178,8 @@
 							<tr><td class="mainSearchTd">
 								<div class="fLeft pLeft10 pTop10">
 									<form action="SearchServlet" method="post">
-										<table cellpadding="0" cellspacing="0" class="searchTable">
-											<tr><td colspan="2"></td></tr>
-											<tr><td width="100px">Име на снимка: </td>
+										<table cellpadding="0" cellspacing="0" class="searchTable" align="center">
+											<tr align="center"><td width="100px">Име на снимка: </td>
 												<td width="160px"><input type="text" class="textInput" name="searchName" id="searchName" /></td>
 											<td colspan="2" width="130px">
 												<input type="submit" class="button" style="width:90px;" name="btnSearch" value="Търси" />
@@ -190,7 +189,7 @@
 											if (search != null) {
 										%>	<tr><td><%= search %></td></tr>
 										<%	} %>
-										</div>
+										
 										</tr>
 									</table></form>
 								</div>
@@ -204,7 +203,7 @@
 							</tr>
 						</table>
 				
-					<table class="tabsMiddle top10" cellpadding="0" cellspacing="0" align="center">
+					<table class="tabsMiddle top10" cellpadding="0" cellspacing="0" align="center" >
 						<tr>
 					<%	for (int k = 0; k < photoId.length;k++) {
 							if (photoName[k] != null){
@@ -217,10 +216,10 @@
 									count++;
 								}
 							%>
-							<td class="tabsTableMiddle" align="center" width="200">
+							<td class="tabsTableMiddle" align="center" width="200px">
 								<div class="smallestProfile" align="center"  >
 										
-											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>"><img src="<%= pathAll[k] %>"  height="127" width="170px" alt="" title="<%= photoName[k] %>" /></a>
+											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>"><img src="<%= pathAll[k] %>"  height="127px" width="170px" alt="" title="<%= photoName[k] %>" /></a>
 										
 										<% String[] viewName = photoName[k].split("[.]");
 											if (viewName[0].length()>20){
@@ -234,7 +233,7 @@
 						 }
 					%>							
 						<tr>
-							<td class="tabsBottomMid">
+							<td class="tabsBottomMid" width="600">
 								<div class="fLeft left10">
 								<% int prev = nowPage-1;
 									int next = nowPage+1; %>
