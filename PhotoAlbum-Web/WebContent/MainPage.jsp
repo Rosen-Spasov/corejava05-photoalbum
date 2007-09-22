@@ -23,15 +23,16 @@
 		<tr><td colspan="3" class="mainTop"></td></tr>
 		<tr><td colspan="3" class="mainTopMenu">
 			<table cellspacing="0" class="flex">
-				<tr><td class="left pLeft10">Най-големият сайт за снимки в България! </td><td class="right">
+				<tr><td class="left pLeft10">Най-големият сайт за снимки в България! </td>
+				<td class="right" align="right">
 						<% if (userLogin == null) { %>
 						<a href="register.jsp">Регистрация</a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
 						<% }else {  %>
 						<a href="ShowUser.jsp"><%= "Добре дошъл " + userLogin.getFirstName() + " " + userLogin.getLastName() %></a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
 						<% session.setAttribute("user",userLogin); %>
-						<a href="ExitServlet">Изход</a><span class="separator"><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+						<a href="ExitServlet">Изход</a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
 						<% } %>
-						<a href="SearchServlet">Търсене</a><span class="separator"><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+						<a href="SearchServlet">Търсене</a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
 						<a href="Help.jsp">Помощ</a>
 					</td></tr></table>
 			</td></tr>
