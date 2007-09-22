@@ -36,6 +36,7 @@
 	%>
 <table cellspacing="0" cellpadding="5" border="1" bgcolor="#FFcf66"
 	align="center" bordercolor="ff0000">
+	<div class="sideMenuLinks"><a class="grey" href="MainPage.jsp" title="Вход в photo album">Начална страница</a>
 	<form method="POST" action="AddNewCategoryServlet">
 	<tr><td align="center" colspan="2"><%= showCat %></td>
 	</tr>
