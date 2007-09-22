@@ -217,8 +217,8 @@
 									count++;
 								}
 							%>
-							<td class="tabsTableMiddle" align="center">
-								<div class="smallestProfile" align="center">
+							<td class="tabsTableMiddle" align="center" width="200">
+								<div class="smallestProfile" align="center"  >
 										
 											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>"><img src="<%= pathAll[k] %>"  height="127" width="170px" alt="" title="<%= photoName[k] %>" /></a>
 										
