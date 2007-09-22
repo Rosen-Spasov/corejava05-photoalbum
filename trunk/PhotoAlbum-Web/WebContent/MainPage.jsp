@@ -31,38 +31,37 @@
 						<a href="Help.jsp">Помощ</a>
 					</td></tr></table>
 			</td></tr>
-		 <tr><td class="mainLeft vtop">
-		 	
+		<tr><td class="mainLeft vtop">
+		 			<% if (userLogin == null) { %>
 					<!--loginform -->
 			<form action="LoginServlet" method="post">
 				<table cellpadding="0" cellspacing="0">
 					<tr><td class="leftLoginTop">&nbsp;</td></tr>
 					<tr><td><table cellpadding="0" cellspacing="0" class="leftLoginForm">
-							<% if (userLogin == null) { %>
 								<tr><td class="left pTop10 pLeft10"><label for="userName">Име: </label></td>
 									<td class="left pTop10 pRight10"><input type="text" class="textInput" name="username" id="username" /></td>
 								</tr>
 								<tr><td class="left pLeft10"><label for="pass">Парола: </label></td>
 									<td class="left pRight10"><input type="password" class="textInput" name="pass" id="pass" /></td>
-								</tr><td class="right">&nbsp;</td>
+								</tr>
 								<% if (session.getAttribute("errors")!=null){
 									String[] errors = (String[])session.getAttribute("errors");
 									for (String err: errors){
 										if (err!=null){%>
 								<tr><td colspan="2"><%= err %></td></tr>
 								<%} } }%>
-									<tr><td></td>
+								<tr><td></td>
 									<td class="left">
 									<input type="submit" class="button" style="width: 90px;" name="login" id="login" value="Вход" />
 									</td>
 								</tr>
-							<% } %>
 							</table>
 						</td>
 					</tr>
 					<tr><td class="leftLoginBottom">&nbsp;</td></tr>
 				</table>
 			</form>
+			<% } %>
 <!--left menu -->
 			<table class="leftMenu top10" cellpadding="0" cellspacing="0">
 				<tr><td class="header" colspan="2"><div>Потребители</div></td></tr>
@@ -165,9 +164,9 @@
 <!-- search banner -->
 		
 			<td colspan="2" class="mainCenterNone vtop">
-				<table cellpadding="0" cellspacing="0" class="flex">
+				<table cellpadding="0" cellspacing="0" class="flex" align="center">
 					<tr><td class="vtop">
-						<table cellpadding="0" cellspacing="0" class="mainSearch top10">
+						<table cellpadding="0" cellspacing="0" class="mainSearch top10" align="center">
 							<tr><td class="headerBorder headerMid center">
 									<div style="width: 400px;">Търси в най-големият сайт за снимки в България</div>
 								</td>
@@ -176,31 +175,20 @@
 								<div class="fLeft pLeft10 pTop10">
 									<form action="SearchServlet" method="post">
 										<table cellpadding="0" cellspacing="0" class="searchTable">
-											<tr><td colspan="2">търсенето става по име </td></tr>
-											<tr><td>Име: </td>
-												<td><input type="text" class="textInput" name="searchName" id="searchName" /></td>
-											</tr>
-											
-											<tr><td colspan="2">
+											<tr><td colspan="2"></td></tr>
+											<tr><td width="100px">Име на снимка: </td>
+												<td width="160px"><input type="text" class="textInput" name="searchName" id="searchName" /></td>
+											<td colspan="2" width="130px">
 												<input type="submit" class="button" style="width:90px;" name="btnSearch" value="Търси" />
-												</td>
-											</tr>
+											</td>
+											
 										<%	String search = (String) request.getAttribute("search");
 											if (search != null) {
 										%>	<tr><td><%= search %></td></tr>
 										<%	} %>
-										</table>
-									</form>
-								</div>
-								<div class="fRight top10 right10">
-									<div class="stats">
-										<div class="bold">Регистрации: </div>
-										<div>Общо: <span class="bold"><%= allUsers.length %></span></div>
-								
-									</div>
-									<div class="center" style="line-height:17px;">
-										<a href="register.jsp" class="link bold">Регистрирай се</a>
-									</div>
+										</div>
+										</tr>
+									</table></form>
 								</div>
 								</td>
 							</tr>
@@ -212,7 +200,7 @@
 							</tr>
 						</table>
 				
-					<table class="tabsMiddle top10" cellpadding="0" cellspacing="0">
+					<table class="tabsMiddle top10" cellpadding="0" cellspacing="0" align="center">
 						<tr>
 					<%	for (int k = 0; k < photoId.length;k++) {
 							if (photoName[k] != null){
@@ -225,21 +213,16 @@
 									count++;
 								}
 							%>
-							<td class="tabsTableMiddle">
-								<div class="smallestProfile">
-										<div class="smallProfilePicOnline">
-											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>"><img src="<%= pathAll[k] %>" width="110" alt="" title="<%= photoName[k] %>" /></a>
-										</div>
+							<td class="tabsTableMiddle" align="center">
+								<div class="smallestProfile" align="center">
 										
-										<div class="lh17">
-											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>" class="link bold">Виж на цял екран</a>
-											</div>
-											<% String[] viewName = photoName[k].split("[.]");
+											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>"><img src="<%= pathAll[k] %>" width="170px" alt="" title="<%= photoName[k] %>" /></a>
+										
+										<% String[] viewName = photoName[k].split("[.]");
 											if (viewName[0].length()>20){
 												viewName[0] = viewName[0].substring(0,19);}%>
-											<div style="color: green;"><%= viewName[0] %></div>
-										
-										
+										<div class="lh17">
+											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>" class="link bold"><%= viewName[0] %></a>
 										<div class="lh17">Коментари <span class="bold"><%= photoComment[k] %></span></div>
 	
 									</div>
