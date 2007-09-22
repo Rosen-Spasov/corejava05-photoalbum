@@ -51,8 +51,7 @@ User userLogin = (User) session.getAttribute("login");
 	<tr>
 		<td></td>
 		<td>
-		<div style="color: red;">За съжаление няма намерен потребител с
-		това име</div>
+		<div style="color: red;">За съжаление няма намерен потребител с това име</div>
 		</td>
 	</tr>
 	<tr>
@@ -154,8 +153,7 @@ User userLogin = (User) session.getAttribute("login");
 				<%
 				for (Category categ : category) {
 				%>
-				<div class="<%= type[t] %>"><img src="img/tl.gif" class="tl"
-					alt="tl" /> <span class="mainTab1"><a
+				<div class="<%= type[t] %>"><img src="img/tl.gif" class="tl" alt="tl" /> <span class="mainTab1"><a
 					href="ShowAllPictuers?param=<%= categ %>" title="<%= categ %>"><%=categ%></a></span>
 				<img src="img/tr.gif" class="tr" alt="tr" /></div>
 				<% if (t >= 6){
@@ -235,7 +233,7 @@ User userLogin = (User) session.getAttribute("login");
 			<div class="smallestProfile">
 			<td class="tabsTableMiddle">
 			<div class="smallProfilePicOnline"><a href="fullScreen.jsp?pic=<%= photoId[k] %>"><img src="<%=pathAll[k] %>" alt="<%= photoName[k] %>"
-				title="<%= photoName[k] %>" height="150px" /></a></div>
+				title="<%= photoName[k] %>" height="150px" width="200"/></a></div>
 			<%
 			 if (userLogin == null) {
 			if (owner != null) {
