@@ -149,6 +149,10 @@
 												<td colspan="2" width="130px">
 													<input type="submit" class="button" style="width:90px;" name="btnSearch" value="Търси" />
 												</td>
+												<%	String search = (String) request.getAttribute("search");
+													if (search != null) {
+												%>	<tr><td><%= search %></td></tr>
+												<%	} %>
 											</tr>
 										</table>
 									</form>
@@ -160,14 +164,16 @@
 						</table>
 						<table class="tabsMiddle top10" cellpadding="0" cellspacing="0" align="center" >
 						<%	for (int k = 0; k < photoId.length; k++) {
-								if (photoName[k] != null) {
+								if (photoName[k] != null){
 									if (count == 3) {
 										count = 1;
-									} else {
+						%>
+							<tr>
+								<%	} else {
 										count++;
 									}
-						%>
-							<tr><td class="tabsTableMiddle" align="center" width="200px">
+								%>
+								<td class="tabsTableMiddle" align="center" width="200px">
 									<div class="smallestProfile" align="center">
 										<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>">
 											<img src="<%= pathAll[k] %>"  height="127px" width="170px" alt="" title="<%= photoName[k] %>" />
@@ -181,17 +187,15 @@
 											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>" class="link bold"><%= viewName[0] %></a>
 											<div class="lh17">Коментари <span class="bold"><%= photoComment[k] %></span></div>
 										</div>
-									</div>
-								</td>
-							</tr>
-						<%		}
-							 }
-						%>							
-						<tr><td class="tabsBottomMid" width="600">
+					<%		}
+						 }
+					%>							
+						<tr>
+							<td class="tabsBottomMid" width="600">
 								<div class="fLeft left10">
-									<%	int prevPage = currentPage - 1;
-										int nextPage = currentPage + 1;
-									%>
+								<%	int prevPage = currentPage - 1;
+									int nextPage = currentPage + 1;
+								%>
 									<a href="PageServlet?page=<%= prevPage %>" ><img src="img/btnLeft.gif" align="absmiddle" /></a>
 									<a href="PageServlet?page=<%= nextPage %>" ><img src="img/btnRight.gif" align="absmiddle" /></a>
 									<span id="menPage"><%= currentPage %></span> от <span><%= pages %></span>
