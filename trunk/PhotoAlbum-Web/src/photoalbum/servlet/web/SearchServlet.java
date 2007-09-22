@@ -30,7 +30,7 @@ public class SearchServlet extends javax.servlet.http.HttpServlet implements
 		if (searchName.length()>0) {
 			
 			User user = edit.getUserByUsername(searchName);
-			session.setAttribute("user", user);
+			session.setAttribute("userSearch", user);
 			request.getRequestDispatcher("ShowUser.jsp").forward(request, response);
 
 		} else {

@@ -38,7 +38,11 @@ public class PageServlet extends javax.servlet.http.HttpServlet implements
 		int allPhotoCounter = 0;
 		int now = 0;
 		PhotoAlbumManipulator edit = new PhotoAlbumManipulator();
-		User[] allUser = edit.getAllUsers();
+		int photoAtRow = 3;
+		int photoColumn = 2;
+		int photosAtPage = photoAtRow * photoColumn;
+		User[] allUser = allUser = edit.getAllUsers();
+		
 		for (User userAll : allUser) {
 			Set<Category> allCategory = userAll.getCategories();
 			for (Category allCat : allCategory) {
@@ -46,20 +50,18 @@ public class PageServlet extends javax.servlet.http.HttpServlet implements
 				allPhotoCounter += allPhoto.size();
 			}
 		}
-
-		
-		String[] pathAll = new String[6];
-		String[] photoId = new String[6];
-		String[] photoName = new String[6];
-		String[] photoComment = new String[6];
-		
+		String[] pathAll = new String[photosAtPage];
+		String[] photoId = new String[photosAtPage];
+		String[] photoName = new String[photosAtPage];
+		String[] photoComment = new String[photosAtPage];
 		String[] pathAllFirst = new String[allPhotoCounter];
 		String[] photoIdFirst = new String[allPhotoCounter];
 		String[] photoNameFirst = new String[allPhotoCounter];
 		String[] photoCommentFirst = new String[allPhotoCounter];
-		int pa = 1 + allPhotoCounter / 6;
+		int pa = 1 + allPhotoCounter / photosAtPage;
 		String pages = "" + pa;
 		int count = 0;
+		
 		for (User userAll : allUser) {
 			Set<Category> allCategory = userAll.getCategories();
 			for (Category allCat : allCategory) {
@@ -112,8 +114,8 @@ public class PageServlet extends javax.servlet.http.HttpServlet implements
 	
 			
 		}
-		
-		System.out.println("minawam");
+		session.setAttribute("photoAtRow", photoAtRow);
+		session.setAttribute("photoAtPage", photosAtPage);
 		session.setAttribute("nowPage", pageCurrent);
 		session.setAttribute("ref", "aaa");
 		session.setAttribute("allUser", allUser);
