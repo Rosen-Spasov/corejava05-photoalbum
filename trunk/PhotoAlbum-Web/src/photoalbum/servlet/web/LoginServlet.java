@@ -1,5 +1,8 @@
 package photoalbum.servlet.web;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -91,6 +94,17 @@ import photoalbum.entities.User;
 			
 			result = false;
 		}
+                String target = "(([0-9]+)?([A-Za-z]+)?)(([0-9]+)?([A-Za-z]+)?)*";
+                if (!userName.matches(target))	{
+			errors[3]="enter a valid name"
+                        result = false;
+		}
+
+                if (!pass.matches(target))	{
+			errors[4]="enter a valid password"
+                        result = false;
+		}	  	
+                
 		
 		return result;
 	}   	  	    
