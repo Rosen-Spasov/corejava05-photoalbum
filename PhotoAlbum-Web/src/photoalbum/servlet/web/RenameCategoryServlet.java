@@ -67,13 +67,9 @@ import photoalbum.entities.User;
 			errorsCat[1] = "Enter name";
 			result = false;
 		}
-		if (newCategoryName.contains("[/.,!?]")){
-			errorsCat[2] = "ne moje da sydyrja /.,!?";
-			result = false;
-		}
 		String target = "(([0-9]+)?([A-Za-z]+)?)(([0-9]+)?([A-Za-z]+)?)*";
 		if (!newCategoryName.matches(target))	{
-			errorsCat[3] = "enter valid categoryName" ;
+			errorsCat[2] = "enter valid categoryName" ;
 			result = false;
 		}	
 	
