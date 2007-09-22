@@ -99,8 +99,16 @@ import photoalbum.entities.User;
 			errors[6]="repeat password corect";
 			result = false;
 		}
-		
-		
+		String target = "(([0-9]+)?([A-Za-z]+)?)(([0-9]+)?([A-Za-z]+)?)*"; 
+		if (uName.matches(target))	{
+			errors[7]="enter valid user name";
+			result = false;
+		}	
+		if (pass.matches(target))	{
+			errors[8]="enter valid password";
+			result = false;
+		}	
+			
 		if (result){
 			errors[0]="successful registration";
 			try {
