@@ -3,10 +3,6 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="photoalbum.entities.User"%>
-<%@page import="photoalbum.PhotoAlbumManipulator"%>
-<%@page import="java.util.Set"%>
-<%@page import="photoalbum.entities.Category"%>
-<%@page import="photoalbum.entities.Photo"%>
 <html>
 <head>
 	<title>Фото албум - Намери снимките, които търсиш!</title>
@@ -14,11 +10,11 @@
 	<script type="text/javascript"></script>
 </head>
 <body onload="">
-	<% User userLogin = null;
+	<%	User userLogin = null;
 		if (session.getAttribute("login")!=null){
-		userLogin = (User)session.getAttribute("login");
-	}
-	 %>
+			userLogin = (User)session.getAttribute("login");
+		}
+	%>
 	<table class="mainTable" cellpadding="0" cellspacing="0" align="center">
 		<tr><td colspan="3" class="mainTop"></td></tr>
 		<tr><td colspan="3" class="mainTopMenu">
@@ -28,8 +24,8 @@
 						<% if (userLogin == null) { %>
 						<a href="register.jsp">Регистрация</a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
 						<% }else {  %>
-						<a href="ShowUser.jsp"><%= "Добре дошъл " + userLogin.getFirstName() + " " + userLogin.getLastName() %></a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
-						<% session.setAttribute("user",userLogin); %>
+						<a href="ShowUser.jsp"><%= "Добре дошъл, " + userLogin.getFirstName() + " " + userLogin.getLastName() %></a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+						<% session.setAttribute("user", userLogin); %>
 						<a href="ExitServlet">Изход</a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
 						<% } %>
 						<a href="SearchServlet">Търсене</a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
@@ -41,7 +37,7 @@
 					<!--loginform -->
 			<form action="LoginServlet" method="post">
 				<table cellpadding="0" cellspacing="0">
-					<tr><td class="leftLoginTop">&nbsp;</td></tr>
+					<tr><td class="leftLoginTop top10">&nbsp;</td></tr>
 					<tr><td><table cellpadding="0" cellspacing="0" class="leftLoginForm">
 								<tr><td class="left pTop10 pLeft10"><label for="userName">Име: </label></td>
 									<td class="left pTop10 pRight10"><input type="text" class="textInput" name="username" id="username" /></td>
@@ -49,33 +45,38 @@
 								<tr><td class="left pLeft10"><label for="pass">Парола: </label></td>
 									<td class="left pRight10"><input type="password" class="textInput" name="pass" id="pass" /></td>
 								</tr>
-								<% if (session.getAttribute("errors")!=null){
-									String[] errors = (String[])session.getAttribute("errors");
-									for (String err: errors){
-										if (err!=null){%>
+								<%	if (session.getAttribute("errors") != null) {
+										String[] errors = (String[]) session.getAttribute("errors");
+										for (String err : errors){
+											if (err != null) {
+								%>
 								<tr><td colspan="2"><%= err %></td></tr>
-								<%} } }%>
+								<%			}
+										}
+									}
+								%>
 								<tr><td></td>
 									<td class="left">
-									<input type="submit" class="button" style="width: 90px;" name="login" id="login" value="Вход" />
+										<input type="submit" class="button" style="width: 90px;" name="login" id="login" value="Вход" />
 									</td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr><td class="leftLoginBottom">&nbsp;</td></tr>
+					<tr><td style="font-size: 8px;">&nbsp;</td></tr>
 				</table>
 			</form>
 			<% } %>
 <!--left menu -->
-			<table class="leftMenu top10" cellpadding="0" cellspacing="0">
+			<table class="leftMenu" cellpadding="0" cellspacing="0">
 				<tr><td class="header" colspan="2"><div>Потребители</div></td></tr>
 				<%	User[] allUsers = (User[]) session.getAttribute("allUser");
 					if (allUsers != null) {
 						for (User user: allUsers) {
 				%>
 				<tr>
-					<td class="fill" width="10px"><img class="bullet" src="./img/bullet.png" /></td>
+					<td class="fill"><img class="bullet" src="./img/bullet.png" /></td>
 					<td class="fill"><a href="SearchServlet?searchName=<%= user.getUsername() %>"><%= user.getUsername() %></a></td>
 				</tr>
 				<%		}
@@ -85,24 +86,19 @@
 			</table>
 <!--left menu end -->
 
-		<%	String ref = (String)session.getAttribute("ref");
-			if (ref == null){
-			response.sendRedirect("PageServlet");
-		
+		<%	String ref = (String) session.getAttribute("ref");
+			if (ref == null) {
+				response.sendRedirect("PageServlet");
 			} else {
 				session.setAttribute("ref", null);
-				String pages = (String)session.getAttribute("pag");
-	//			out.println(session.getAttribute("nowPage"));
-				
-				int nowPage = 1;
-				
+				String pages = (String) session.getAttribute("pag");
+				int currentPage = 1;
 				if (session.getAttribute("nowPage")!=null){
-	//			out.println(session.getAttribute("nowPage"));
-				nowPage = Integer.parseInt(session.getAttribute("nowPage").toString());
+					currentPage = Integer.parseInt(session.getAttribute("nowPage").toString());
 				}
-				pages =""+1;
-				if (session.getAttribute("allPages")!=null){
-					pages = (String)session.getAttribute("allPages");
+				pages = "" + 1;
+				if (session.getAttribute("allPages") != null) {
+					pages = (String) session.getAttribute("allPages");
 				}
 				String[] photoId = ((String[])session.getAttribute("photoId"));
 				String[] photoComment=((String[])session.getAttribute("photoComment"));
@@ -110,64 +106,32 @@
 				String[] photoName=(String[])session.getAttribute("photoName");
 				ref = null;
 				int count = 0;
-				
 		%>
-
-			<div class="kare">
-				<table cellpadding="0" cellspacing="0" class="top10">
-					<tr><td class="headerBorder headerMin">
-							<div style="width: 150px;">Mясто за реклама</div>
-						</td>
-					</tr>
-				</table>
-				<table cellpadding="0" cellspacing="0" class="top10">
-					<tr>
-						<td>
-							<a href="http://academy.devbg.org/" target="_blank" title="Н А Р С"><img src="img/logo.gif" alt="Национална академия за разработка на софтуер" align="left" width="170"/></a>
-						</td></tr>
-						<tr>
-						<td class="pLeft10">
-							<div><a href="http://academy.devbg.org/" class="bold purple2" target="_blank" title="Национална академия за разработка на софтуер">НАРС</a></div>
-							<div class="size10"><a href="http://academy.devbg.org/" class="black" target="_blank" title="Обучение и професионална реализация в НАРС">Обучение и професионална реализация</a></div>
-						</td>
-					</tr>
-				</table>
-				
-				<table cellpadding="0" cellspacing="0" class="top10">
-					<tr><td>
-							<a href="http://www.amam.bg/" target="_blank" title="кликни &amp; хапни"><img src="img/kare_amam.jpg" alt="кликни &amp; хапни" align="left" /></a>
-						</td>
-						<td class="pLeft10">
-							<div><a href="http://www.amam.bg/" class="bold purple2" target="_blank" title="кликни &amp; хапни">Amam.bg</a></div>
-							<div class="size10"><a href="http://www.amam.bg/?ad=004;00;03" class="black" target="_blank" title="кликни &amp; хапни">кликни &amp; хапни</a></div>
-						</td>
-					</tr>
-				</table>
-				<table cellpadding="0" cellspacing="0" class="top10">
-					<tr><td>
-							<a href="http://www.amam.bg/" target="_blank" title="Nani.bg - внесете уют"><img src="img/nani_1_40x40.jpg" alt="Nani.bg" align="left" /></a>
-						</td>
-						<td class="pLeft10">
-							<div><a href="http://www.nani.bg" class="bold purple2" target="_blank" title="Nani.bg - внесете уют">Nani.bg</a></div>
-							<div class="size10"><a href="http://www.nani.bg" class="black" target="_blank" title="Nani.bg - внесете уют">внесете уют</a></div>
-						</td>
-					</tr>
-				</table>
-			</div>
-			<hr />
-			<div>
-				<table cellpadding="0" cellspacing="0" class="top5">
-					<tr>
-						
-					</tr>
-				</table>
-				<table cellpadding="0" cellspacing="0" class="top5">
-					<tr>
-					</tr>
-				</table>
-			</div>	</td>				
+				<div class="kare">
+					<table cellpadding="0" cellspacing="0" class="top10">
+						<tr><td class="headerBorder headerMin" colspan="2">
+								<div style="width: 150px;">Mясто за реклама</div>
+							</td>
+						</tr>
+						<tr><td class="fill"><a href="http://www.amam.bg/" target="_blank" title="кликни &amp; хапни"><img src="img/kare_amam.jpg" alt="кликни &amp; хапни" align="left" /></a>
+							</td>
+							<td class="fill">
+								<div><a href="http://www.amam.bg/" class="bold purple2" target="_blank" title="кликни &amp; хапни">Amam.bg</a></div>
+								<div class="size10"><a href="http://www.amam.bg/?ad=004;00;03" class="black" target="_blank" title="кликни &amp; хапни">Кликни &amp; Хапни</a></div>
+							</td>
+						</tr>
+						<tr><td class="fill"><a href="http://www.amam.bg/" target="_blank" title="Nani.bg - внесете уют"><img src="img/nani_1_40x40.jpg" alt="Nani.bg" align="left" /></a>
+							</td>
+							<td class="fill">
+								<div><a href="http://www.nani.bg" class="bold purple2" target="_blank" title="Nani.bg - внесете уют">Nani.bg</a></div>
+								<div class="size10"><a href="http://www.nani.bg" class="black" target="_blank" title="Nani.bg - внесете уют">Внесете Уют</a></div>
+							</td>
+						</tr>
+						<tr><td class="bottom" colspan="2"></td></tr>
+					</table>
+				</div>
+			</td>				
 <!-- search banner -->
-		
 			<td colspan="2" class="mainCenterNone vtop">
 				<table cellpadding="0" cellspacing="0" class="flex" align="center" >
 					<tr><td class="vtop">
@@ -182,154 +146,132 @@
 										<table cellpadding="0" cellspacing="0" class="searchTable" align="center">
 											<tr align="center"><td width="100px">Име на снимка: </td>
 												<td width="160px"><input type="text" class="textInput" name="searchName" id="searchName" /></td>
-											<td colspan="2" width="130px">
-												<input type="submit" class="button" style="width:90px;" name="btnSearch" value="Търси" />
-											</td>
-											
-										<%	String search = (String) request.getAttribute("search");
-											if (search != null) {
-										%>	<tr><td><%= search %></td></tr>
-										<%	} %>
-										
-										</tr>
-									</table></form>
+												<td colspan="2" width="130px">
+													<input type="submit" class="button" style="width:90px;" name="btnSearch" value="Търси" />
+												</td>
+											</tr>
+										</table>
+									</form>
 								</div>
 								</td>
 							</tr>
-							<tr>
-								<td class="mainSearchTd lh10">&nbsp;</td>
-							</tr>
-							<tr>
-								<td class="bottomMid">&nbsp;</td>
-							</tr>
+							<tr><td class="mainSearchTd lh10">&nbsp;</td></tr>
+							<tr><td class="bottomMid">&nbsp;</td></tr>
 						</table>
-				
-					<table class="tabsMiddle top10" cellpadding="0" cellspacing="0" align="center" >
-						<tr>
-					<%	for (int k = 0; k < photoId.length;k++) {
-							if (photoName[k] != null){
-								if (count == 3) {
-									count = 1;
-					%>
-						</tr>
-						<tr>
-							<%	} else {
-									count++;
-								}
-							%>
-							<td class="tabsTableMiddle" align="center" width="200px">
-								<div class="smallestProfile" align="center"  >
-										
-											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>"><img src="<%= pathAll[k] %>"  height="127px" width="170px" alt="" title="<%= photoName[k] %>" /></a>
-										
-										<% String[] viewName = photoName[k].split("[.]");
-											if (viewName[0].length()>20){
-												viewName[0] = viewName[0].substring(0,19);}%>
+						<table class="tabsMiddle top10" cellpadding="0" cellspacing="0" align="center" >
+						<%	for (int k = 0; k < photoId.length; k++) {
+								if (photoName[k] != null) {
+									if (count == 3) {
+										count = 1;
+									} else {
+										count++;
+									}
+						%>
+							<tr><td class="tabsTableMiddle" align="center" width="200px">
+									<div class="smallestProfile" align="center">
+										<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>">
+											<img src="<%= pathAll[k] %>"  height="127px" width="170px" alt="" title="<%= photoName[k] %>" />
+										</a>
+										<%	String[] viewName = photoName[k].split("[.]");
+											if (viewName[0].length() > 20) {
+												viewName[0] = viewName[0].substring(0,19);
+											}
+										%>
 										<div class="lh17">
 											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>" class="link bold"><%= viewName[0] %></a>
-										<div class="lh17">Коментари <span class="bold"><%= photoComment[k] %></span></div>
-	
+											<div class="lh17">Коментари <span class="bold"><%= photoComment[k] %></span></div>
+										</div>
 									</div>
-					<%		}
-						 }
-					%>							
-						<tr>
-							<td class="tabsBottomMid" width="600">
+								</td>
+							</tr>
+						<%		}
+							 }
+						%>							
+						<tr><td class="tabsBottomMid" width="600">
 								<div class="fLeft left10">
-								<% int prev = nowPage-1;
-									int next = nowPage+1; %>
-									<a href="PageServlet?page=<%= prev%>" ><img src="img/btnLeft.gif" align="absmiddle" /></a>
-									<a href="PageServlet?page=<%= next%>" ><img src="img/btnRight.gif" align="absmiddle" /></a>
-									<span id="menPage"><%= nowPage %></span> от <span><%= pages %></span>
+									<%	int prevPage = currentPage - 1;
+										int nextPage = currentPage + 1;
+									%>
+									<a href="PageServlet?page=<%= prevPage %>" ><img src="img/btnLeft.gif" align="absmiddle" /></a>
+									<a href="PageServlet?page=<%= nextPage %>" ><img src="img/btnRight.gif" align="absmiddle" /></a>
+									<span id="menPage"><%= currentPage %></span> от <span><%= pages %></span>
 								</div>
 								<div class="fRight right10">
-									<div style="line-height:17px;">
-										
-									</div>
+									<div style="line-height:17px;"></div>
 								</div>
 							</td>
 						</tr>
 					</table>
-			<%} %>			
-					</td>
-		<td class="vtop pLeft20">
-							
-	
-			<div>
-		
-<script type="text/javascript"
-  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
+		<%} %>			
+				</td>
+				<td class="vtop pLeft20">
+					<div><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+					</div>
+					<div class="weddings top10" style="border: 1px solid white;">
+						<div class="top10 left10">
+							<img src="http://img.elmaz.com/style/img/num1.gif" align="absmiddle" />
+							<% if (allUsers!=null){ %>
+							<a href="SearchServlet" class="link yellow">Намери</a> своята снимка или на твой приятел сред <%= allUsers.length  %> регистрирани потребители
+							<% } %>
+						</div>
+						<div class="left10 top10">
+							<img src="http://img.elmaz.com/style/img/num2.gif" align="absmiddle" />
+							<a href="register.jsp" class="link yellow">Регистрирай се</a> и си направи профил напълно безплатно
+						</div>
+						<div class="left10 top10">
+							<img src="http://img.elmaz.com/style/img/num3.gif" align="absmiddle" />
+							Срещни стари познати ;-)
+						</div>
+					</div>
+					<div class="specialLinks top10">
+						<div class="headerSmall rightSquare" style="border-bottom:3px solid #6cce00;padding-top: 3px;height:19px;">
+							<div>Посетете</div>
+						</div>
+						<div class="top10 left10 right10 size10">
+							<a target="_blank" class="link purple2 lh17" href="http://www.news.bg" title="Вижте най новите новини!">News.bg</a> <span class="purple separator">|</span>
+							<a target="_blank" class="link purple2 lh17" href="http://www.zazz.bg" title="Забавни видео и снимки">Sibir.bg</a> <span class="purple separator">|</span>
+							<a target="_blank" class="link purple2 lh17" href="http://www.garibaldicafe.net" title="Гарибалди Кафе">Гарибалди Кафе</a> <span class="purple separator">|</span>
+							<a target="_blank" class="link purple2 lh17" href="http://www.fresh.bg" title="Fresh.bg">Fresh.bg</a> <span class="purple separator">|</span>
+							<a target="_blank" class="link purple2 lh17" href="http://www.amam.bg" title="Amam.bg">Amam.bg</a> <span class="purple separator">|</span>
+							<a target="_blank" class="link purple2 lh17" href="http://www.slon.bg" title="Slon.bg">Slon.bg</a> <span class="purple separator">|</span>
+							<a target="_blank" class="link purple2 lh17" href="http://www.yoosms.com?affid=3" title="gsm мелодии и картинки">gsm мелодии и картинки</a> <span class="purple separator">|</span>
+							<a target="_blank" class="link purple2 lh17" href="http://www.helpos.com" title="Реферати">Реферати</a> <span class="purple separator">|</span>
+							<a target="_blank" class="link purple2 lh17" href="http://www.kefche.com" title="Kefche.com">Kefche.com</a> <span class="purple separator">|</span>
+							<a target="_blank" class="link purple2 lh17" href="http://www.comfort.bg/" title="Comfort.bg">Comfort.bg</a> <span class="purple separator">|</span>
+							<a target="_blank" class="link purple2 lh17" href="http://ide.li" title="Ide.li">Ide.li</a> <span class="purple separator">|</span>
+							<a target="_blank" class="link purple2 lh17" href="http://www.e-televizor.com" title="Онлайн телевизия">Онлайн телевизия</a> <span class="purple separator">|</span>
+							<a target="_blank" class="link purple2 lh17" href="http://bgtop.net/in.php/1029159402" title=".: BG TOP 100 :.">.: BG TOP 100 :.</a> <span class="purple separator">|</span>
+							<a target="_blank" class="link purple2 lh17" href="http://www.insurance.bg/products/index.php?cat=products&amp;OnlineRequests=1&amp;RequestId=10&amp;ProductId=11"</a>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr><td colspan="3" style="line-height: 0px; height: 10px;">&nbsp;</td>
+	</tr>
+	<tr><td colspan="3" class="mainBottom">
+		<div>
+			<div class="fLeft vtop left10 top10">
+				<a class="link" href="http://academy.devbg.org/">За контакти</a><span class="separator">|</span>
+				<a class="link" href="Advertisement.jsp">За реклама</a><span class="separator">|</span>
+				<a class="link" href="Dot.jsp">Права и задължения</a><span class="separator">|</span>
+				<a class="link" href="Help.jsp">Помощ</a><span class="separator">|</span>
+				<div class="left">
+					<div style="padding-top: 10px;padding-bottom: 10px;">
+						<span class="separator" />
+						<span class="separator" />
+					</div>
 				</div>
-							<div class="weddings top10" style="border: 1px solid white;">
-				<div class="top10 left10">
-					<img src="http://img.elmaz.com/style/img/num1.gif" align="absmiddle" />
-					<% if (allUsers!=null){ %>
-					<a href="SearchServlet" class="link yellow">Намери</a> своята снимка или на твои приятел сред <%= allUsers.length  %> 
-					регистрирани потребители
-					<% } %>
-				</div>
-				<div class="left10 top10">
-					<img src="http://img.elmaz.com/style/img/num2.gif" align="absmiddle" />
-					<a href="register.jsp" class="link yellow">Регистрирай се</a> и си направи профил напълно безплатно
-				</div>
-				<div class="left10 top10">
-					<img src="http://img.elmaz.com/style/img/num3.gif" align="absmiddle" />
-					Срещни стари познати ;-)
-				</div>
-				
 			</div>
-						<div class="specialLinks top10">
-				<div class="headerSmall rightSquare" style="border-bottom:3px solid #6cce00;padding-top: 3px;height:19px;">
-					<div>Посетете</div>
-				</div>
-				<div class="top10 left10 right10 size10"><a target="_blank" class="link purple2 lh17" href="http://www.news.bg" title="Вижте най новите новини!">News.bg
-				</a> <span class="purple separator">|</span> <a target="_blank" class="link purple2 lh17" href="http://www.zazz.bg" title="Забавни видео и снимки">Sibir.bg</a> 
-				<span class="purple separator">|</span> <a target="_blank" class="link purple2 lh17" href="http://www.garibaldicafe.net" title="Гарибалди Кафе">Гарибалди Кафе</a> 
-				<span class="purple separator">|</span> <a target="_blank" class="link purple2 lh17" href="http://www.fresh.bg" title="Fresh.bg">Fresh.bg</a> 
-				<span class="purple separator">|</span> <a target="_blank" class="link purple2 lh17" href="http://www.amam.bg" title="Amam.bg">Amam.bg</a> 
-				<span class="purple separator">|</span> <a target="_blank" class="link purple2 lh17" href="http://www.slon.bg" title="Slon.bg">Slon.bg</a> 
-				<span class="purple separator">|</span> <a target="_blank" class="link purple2 lh17" href="http://www.yoosms.com?affid=3" title="gsm мелодии и картинки">gsm мелодии и картинки</a>
-				<span class="purple separator">|</span> <a target="_blank" class="link purple2 lh17" href="http://www.helpos.com" title="Реферати">Реферати</a> 
-				<span class="purple separator">|</span> <a target="_blank" class="link purple2 lh17" href="http://www.kefche.com" title="Kefche.com">Kefche.com</a> 
-				<span class="purple separator">|</span> <a target="_blank" class="link purple2 lh17" href="http://www.comfort.bg/" title="Comfort.bg">Comfort.bg</a> 
-				<span class="purple separator">|</span> <a target="_blank" class="link purple2 lh17" href="http://ide.li" title="Ide.li">Ide.li</a> 
-				<span class="purple separator">|</span> <a target="_blank" class="link purple2 lh17" href="http://www.e-televizor.com" title="Онлайн телевизия">Онлайн телевизия</a> 
-				<span class="purple separator">|</span> <a target="_blank" class="link purple2 lh17" href="http://bgtop.net/in.php/1029159402" title=".: BG TOP 100 :.">.: BG TOP 100 :.</a> 
-				<span class="purple separator">|</span> <a target="_blank" class="link purple2 lh17" href="http://www.insurance.bg/products/index.php?cat=products&amp;OnlineRequests=1&amp;RequestId=10&amp;ProductId=11" 	</div>
+			<div class="fRight vtop right10 top10">
+				Copyright © 2007-2007 Менте Софтуер<br>
+				<div class="right">Web Design: НАРС</div>
+			</div>
+		</div>
 		</td>
 	</tr>
 </table>
-		</td>
-							</tr>
-						<tr>
-				<td colspan="3" style="line-height: 0px; height: 10px;">&nbsp;</td>
-			</tr>
-			<tr>
-				<td colspan="3" class="mainBottom">
-					
-<div>
-	<div class="fLeft vtop left10 top10">
-		
-		<a class="link" href="http://academy.devbg.org/">За контакти</a><span class="separator">|</span>
-		<a class="link" href="Advertisement.jsp">За реклама</a><span class="separator">|</span>
-				<a class="link" href="Dot.jsp">Права и задължения</a><span class="separator">|</span>
-		<a class="link" href="Help.jsp">Помощ</a><span class="separator">|</span>
-		<div class="left"><div style="padding-top: 10px;padding-bottom: 10px;">
-	
-	<span class="separator"></span>
-
-	<span class="separator"></span>
-
-	</div></div>
-	</div>
-	<div class="fRight vtop right10 top10">
-		Copyright © 2007-2007 менте софтуер<br />
-		<div class="right">Web Design: НАРС</div>
-	</div>
-	
-</div>				</td>
-			</tr>
-		</table>
 </body>
 </html>
