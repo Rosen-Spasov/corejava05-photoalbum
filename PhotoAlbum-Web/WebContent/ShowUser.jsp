@@ -1,25 +1,21 @@
+<%-- jsf:pagecode language="java" location="/src/pagecode/OldMainPage.java" --%><%-- /jsf:pagecode --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
-<%@page import="java.util.Set"%>
 <%@page import="photoalbum.entities.User"%>
-<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Set"%>
 <%@page import="photoalbum.entities.Category"%>
-<%@page import="photoalbum.entities.Photo"%>
-<%@page import="photoalbum.entities.Comment"%>
 <html>
-<link rel="stylesheet" type="text/css" href="Themes/showUser.css" />
-
-
 <head>
-<title>ShowUser</title>
+	<link rel="stylesheet" type="text/css" href="Themes/main.css" />
+	<script type="text/javascript"></script>
+	<title>ShowUser</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="GENERATOR" content="Rational Application Developer">
 
 <script type="text/javascript">
 function click(){
-if(confirm("сигурен ли си, че искаш да изтриеш категорияta ")){
+if(confirm("сигурен ли си, че искаш да изтриеш категориятa ")){
 window.alert("изтрита");
 window.location.href="DeleteCategoryServlet";
 
@@ -28,266 +24,201 @@ window.location.href="DeleteCategoryServlet";
 </script>
 </head>
 <body>
-<% User userLogin = (User) session.getAttribute("login"); %>
-<% String someBody = "";
-	if (userLogin!=null){
-		someBody = userLogin.getUsername();
-	}
-%>
-<table  width="100%" cellspacing="0" cellpadding="0" >
-	<tr style="background-image:url(img/headBG.png); width: 50000px " align="center">
-		<td align="center"><span style="font-size: 30px; color: fuchsia;" >Добре дошъл <%= userLogin %></span></td>
+	<%	User userLogin = null;
+		if (session.getAttribute("login")!=null){
+			userLogin = (User)session.getAttribute("login");
+		}
+		User user = (User) session.getAttribute("user");
+		Set<Category> category = user.getCategories();
+		User[] allUsers = (User[]) session.getAttribute("allUser");
+	%>
+	<table class="mainTable" cellpadding="0" cellspacing="0" align="center">
+		<tr><td colspan="3" class="mainTop"></td></tr>
+		<tr><td colspan="3" class="mainTopMenu">
+			<table cellspacing="0" class="flex">
+				<tr><td class="left pLeft10">Най-големият сайт за снимки в България! </td>
+				<td class="right" align="right">
+						<% if (userLogin == null) { %>
+						<a href="register.jsp">Регистрация</a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+						<% }else {  %>
+						<a href="ShowUser.jsp"><%= "Добре дошъл, " + userLogin.getFirstName() + " " + userLogin.getLastName() %></a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+						
+						<a href="ExitServlet">Изход</a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+						<% } %>
+						<a href="SearchServlet">Търсене</a><span class="separator"><img src="img/separator.png" align="absmiddle" /></span>
+						<a href="Help.jsp">Помощ</a>
+					</td></tr></table>
+			
+		<tr><td class="mainLeft vtop">
+		 			
+<!--left menu -->
+			<table class="leftMenu" cellpadding="0" cellspacing="0">
+				<tr><td class="header" colspan="2"><div>Категории</div></td></tr>
+				<tr><td class="fill"><img class="bullet" src="./img/bullet.png" /></td>
+				<td class="fill"><a href="ShowPageServlet?category=null">Виж всички снимки</a></td>
+			</tr>
+				<%	if (category != null) {
+						for (Category categ: category) {
+				%>
+				<tr>
+					<td class="fill"><img class="bullet" src="./img/bullet.png" /></td>
+					<td class="fill"><a href="ShowPageServlet?category=<%= categ.getCatName() %>"><%= categ.getCatName() %></a></td>
+			
+				</tr>
+				<%		}
+					}
+				%>
+				<tr><td class="bottom" colspan="2"></td></tr>
+			</table>
+<!--left menu end -->
+
+		<%	if (session.getAttribute("categoryToView")!=null){
+				String pages = (String) session.getAttribute("pag");
+				int currentPage = 1;
+				if (session.getAttribute("nowPage")!=null){
+					currentPage = Integer.parseInt(session.getAttribute("nowPage").toString());
+				}
+				pages = "" + 1;
+				if (session.getAttribute("allPages") != null) {
+					pages = (String) session.getAttribute("allPages");
+				}
+				Integer nextPage = Integer.valueOf((Integer) session.getAttribute("nextPage"));
+				int photoAtPage = Integer.valueOf((Integer) session.getAttribute("photoAtPage"));
+				int photoAtRow = Integer.valueOf((Integer) session.getAttribute("photoAtRow"));
+				int nowPage = nextPage / photoAtPage;
+				String[] photoId = ((String[])session.getAttribute("photoId"));
+				String[] photoComment=((String[])session.getAttribute("photoComment"));
+				String[] pathAll=(String[])session.getAttribute("pathAll");
+				String[] photoName=(String[])session.getAttribute("photoName");
+				int count = 0;
+		%>
+				<div class="kare">
+					<table cellpadding="0" cellspacing="0" class="top10">
+						<tr><td class="headerBorder headerMin" colspan="2">
+								<div style="width: 150px;">Mясто за реклама</div>
+							</td>
+						</tr>
+						<tr><td class="fill"><a href="http://www.amam.bg/" target="_blank" title="кликни &amp; хапни"><img src="img/kare_amam.jpg" alt="кликни &amp; хапни" align="left" /></a>
+							</td>
+							<td class="fill">
+								<div><a href="http://www.amam.bg/" class="bold purple2" target="_blank" title="кликни &amp; хапни">Amam.bg</a></div>
+								<div class="size10"><a href="http://www.amam.bg/?ad=004;00;03" class="black" target="_blank" title="кликни &amp; хапни">Кликни &amp; Хапни</a></div>
+							</td>
+						</tr>
+						<tr><td class="fill"><a href="http://www.amam.bg/" target="_blank" title="Nani.bg - внесете уют"><img src="img/nani_1_40x40.jpg" alt="Nani.bg" align="left" /></a>
+							</td>
+							<td class="fill">
+								<div><a href="http://www.nani.bg" class="bold purple2" target="_blank" title="Nani.bg - внесете уют">Nani.bg</a></div>
+								<div class="size10"><a href="http://www.nani.bg" class="black" target="_blank" title="Nani.bg - внесете уют">Внесете Уют</a></div>
+							</td>
+						</tr>
+						
+						<tr><td class="bottom" colspan="2"></td></tr>
+					</table>
+				</div>
+			</td>				
+<!-- search banner -->
+			<td colspan="2" class="mainCenterNone vtop">
+				<table cellpadding="0" cellspacing="0" class="flex" align="center" >
+					<tr><td class="vtop">
+						<table cellpadding="0" cellspacing="0" class="mainSearch top10" align="center">
+							<tr><td class="headerBorder headerMid center">
+									<div style="width: 400px;">Търси в най-големият сайт за снимки в България</div>
+								</td>
+							</tr>
+							<tr><td class="mainSearchTd">
+								<div class="fLeft pLeft10 pTop10">
+									<form action="SearchServlet" method="post">
+										<table cellpadding="0" cellspacing="0" class="searchTable" align="center">
+											<tr align="center"><td width="100px">Име на снимка: </td>
+												<td width="160px"><input type="text" class="textInput" name="searchName" id="searchName" /></td>
+												<td colspan="2" width="130px">
+													<input type="submit" class="button" style="width:90px;" name="btnSearch" value="Търси" />
+												</td>
+												<%	String search = (String) request.getAttribute("search");
+													if (search != null) {
+												%>	<tr><td><%= search %></td></tr>
+												<%	} %>
+											</tr>
+										</table>
+									</form>
+								</div>
+								</td>
+							</tr>
+							<tr><td class="mainSearchTd lh10">&nbsp;</td></tr>
+							<tr><td class="bottomMid">&nbsp;</td></tr>
+						</table>
+						<table class="tabsMiddle top10" cellpadding="0" cellspacing="0" align="center" >
+						<%	for (int k = 0; k < photoId.length; k++) {
+								if (photoName[k] != null){
+									if (count == photoAtRow) {
+										count = 1;
+						%>
+							<tr>
+								<%	} else {
+										count++;
+									}
+								%>
+								<td class="tabsTableMiddle" align="center" width="200px">
+									<div class="smallestProfile" align="center">
+										<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>">
+											<img src="<%= pathAll[k] %>"  height="127px" width="170px" alt="" title="<%= photoName[k] %>" />
+										</a>
+										<%	String[] viewName = photoName[k].split("[.]");
+											if (viewName[0].length() > 20) {
+												viewName[0] = viewName[0].substring(0,19);
+											}
+										%>
+										<div class="lh17">
+											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>" class="link bold"><%= viewName[0] %></a>
+											<div class="lh17">Коментари <span class="bold"><%= photoComment[k] %></span></div>
+										</div>
+					<%		}
+						 }
+					%>							
+						<tr>
+							<td class="tabsBottomMid" width="600">
+								<div class="fLeft left10">
+								<%	int prevPage = currentPage - 1;
+									nextPage = currentPage + 1;
+								%>
+									<a href="ShowPageServlet?page=<%= prevPage %>" ><img src="img/btnLeft.gif" align="absmiddle" /></a>
+									<a href="ShowPageServlet?page=<%= nextPage %>" ><img src="img/btnRight.gif" align="absmiddle" /></a>
+									<span id="menPage"><%= currentPage %></span> от <span><%= pages %></span>
+								</div>
+								<div class="fRight right10">
+									<div style="line-height:17px;"></div>
+								</div>
+							</td>
+						</tr>
+					</table></table>
+		<%} %>			
+				</td>
+			
+					
+	<tr><td colspan="3" style="line-height: 0px; height: 10px;">&nbsp;</td>
+	</tr>
+	<tr><td colspan="3" class="mainBottom">
+		<div>
+			<div class="fLeft vtop left10 top10">
+				<a class="link" href="http://academy.devbg.org/">За контакти</a><span class="separator">|</span>
+				<a class="link" href="Advertisement.jsp">За реклама</a><span class="separator">|</span>
+				<a class="link" href="Dot.jsp">Права и задължения</a><span class="separator">|</span>
+				<a class="link" href="Help.jsp">Помощ</a><span class="separator">|</span>
+				<div class="left">
+					<div style="padding-top: 10px;padding-bottom: 10px;">
+						<span class="separator" />
+						<span class="separator" />
+					</div>
+				</div>
+			</div>
+			<div class="fRight vtop right10 top10">
+				Copyright © 2007-2007 Менте Софтуер<br>
+				<div class="right">Web Design: НАРС</div>
+			</div>
+		</div>
+		</td>
 	</tr>
 </table>
-
-<%
-	User user = (User) session.getAttribute("user");
-	if (user == null) {
-%>
-<table class="main_table" align="center" cellpadding="0" cellspacing="0">
-	<tr>
-		<td></td>
-		<td>
-		<div style="color: red;">За съжаление няма намерен потребител с това име</div>
-		</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td><a href="MainPage.jsp">връщане в начална страница</a> <%
- } else {
- %>
-		
-	<tr>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td></td>
-		
-		<td style="" align="center">
-		<div style="font-size: 20px; color: maroon; background-color: aqua"
-			align="center"><%="Това е профила на " + user.getFirstName() + " "+ user.getLastName()%></div>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2"
-			style="width: 950px; height: 21px; padding:0; margin:0; background-color: white;"
-			class="">
-		<table class="mainTabsTable" cellpadding="0" cellspacing="0"
-			align="center">
-			<tr>
-				<td class="mainMenu">
-				<%
-						Set<Category> category = user.getCategories();
-						String[] type = { "mainTab searchTab", "mainTab profileTab",
-						"mainTab messagesTab", "mainTab invTab",
-						"mainTab startTab selectedStart", "mainTab videoTab",
-						"mainTab photoTab", "mainTab groupsTab" };
-				%>
-
-				<div class="<%= type[0] %>"><img src="img/tl.gif" class="tl"
-					alt="tl" /> <span class="mainTab1"><a href="Search.jsp"
-					title="Търсене">Търсене</a></span> <img src="img/tr.gif" class="tr"
-					alt="tr" /></div>
-
-				<%
-				if (user.equals(userLogin)) {
-				%>
-				<div class="<%= type[1] %>"><img src="img/tl.gif" class="tl"
-					alt="tl" /> <span class="mainTab1"><a
-					href="addCategory.jsp" title="Добави категория">Добави категория</a></span> <img src="img/tr.gif" class="tr" alt="tr" /></div>
-				<%
-						if (session.getAttribute("currentCategory") != null) {
-						String cat = (String) session.getAttribute("currentCategory");
-						if (!cat.equalsIgnoreCase("allPictures")) {
-				%>
-				<div class="<%= type[2] %>"><img src="img/tl.gif" class="tl"
-					alt="tl" /> <span class="mainTab1"><a href="renameCategory.jsp" title="Категория">Преименувай категория</a>
-					</span> <img src="img/tr.gif" class="tr" alt="tr" /></div>
-				
-				<div class="<%= type[5] %>"><img src="img/tl.gif" class="tl"
-					alt="tl" /> <span class="mainTab1"><a href="javascript: click()" title="Категория">Изтрии категория</a></span>
-					 <img src="img/tr.gif" class="tr" alt="tr" /></div>
-					 <div class="<%= type[3] %>"><img src="img/tl.gif" class="tl"
-					alt="tl" /> <span class="mainTab1"><a href="AddPhotoServlet?cat=<%= cat %>" title="Добави снимка">Добави снимка</a></span>
-					 <img src="img/tr.gif" class="tr" alt="tr" /></div>
-				<%
-							}
-							}
-				%> <%
- }
- %> <%
- if (userLogin == null) {
-
- %>
-
-				<div class="sideMenuLinks"><a class="grey" href="register.jsp"
-					title="Регистрация в Sibir.bg">Регистрация</a></div>
-				<div class="sideMenuLinks"><a class="grey" href="MainPage.jsp"
-					title="Вход в photo album">Вход</a><span class="separator grey">|</span></div>
-				<%
-				} else {
-				%>
-				<div class="sideMenuLinks"><a class="grey" href="ExitServlet"
-					title="Регистрация в Sibir.bg">Излез</a></div>
-				<%
-				}
-				%>
-				<div class="sideMenuLinks"><a class="grey" href="MainPage.jsp" title="Вход в photo album">Начална страница</a>
-				<span class="separator grey">|</span></div>
-				</td>
-			</tr>
-
-			<tr>
-				<td class="mainMenu">
-				<%
-				int t = 1;
-				%>
-				<div class="<%= type[0] %>"><img src="img/tl.gif" class="tl"
-					alt="tl" /> <span class="mainTab1"><a
-					href="ShowAllPictuers?param=<%= "allPictures" %>"
-					title="allPictures">Виж всички снимки</a></span> <img src="img/tr.gif"
-					class="tr" alt="tr" /></div>
-				<%
-				for (Category categ : category) {
-				%>
-				<div class="<%= type[t] %>"><img src="img/tl.gif" class="tl" alt="tl" /> <span class="mainTab1"><a
-					href="ShowAllPictuers?param=<%= categ %>" title="<%= categ %>"><%=categ%></a></span>
-				<img src="img/tr.gif" class="tr" alt="tr" /></div>
-				<% if (t >= 6){
-				t=0;
-				}else{
-				t++;}
-				}%>
-				</td>
-			</tr>
-			<% if (session.getAttribute("childCategories")!=null){
-				t = 0;
-				String[] childCategories =(String[])session.getAttribute("childCategories"); %>
-				<tr><td class="mainMenu">
-				<% for (Category childCateg : category) {
-				%>
-				<div class="<%= type[t] %>"><img src="img/tl.gif" class="tl"
-					alt="tl" /> <span class="mainTab1"><a
-					href="ShowAllPictuers?param=<%= childCateg %>" title="<%= childCateg %>"><%=childCateg%></a></span>
-				<img src="img/tr.gif" class="tr" alt="tr" /></div>
-				<% if (t >= 6){
-				t=0;}else{
-				t++;}}%>
-				</td></tr>
-				<%	}%>
-
-		</table>
-		</td>
-	</tr>
-	<%
-	}
-	%>
-	<table class="tabsMiddle top10" cellpadding="2" cellspacing="0"
-		align="center">
-		<tr>
-			<td class="tabs">
-			<div class="rightTabStub">&nbsp;</div>
-
-
-			<div class="leftTabStubMiddle">&nbsp;</div>
-			</td>
-		</tr>
-		<tr>
-			<%
-				String[] owner = null;
-				if (session.getAttribute("owner") != null) {
-					owner = (String[]) session.getAttribute("owner");
-				}
-			%>
-			<%
-				String pages = (String) session.getAttribute("pages");
-				if (session.getAttribute("photoAtPage") != null) {
-					if (session.getAttribute("nextPage") != null) {
-						if (session.getAttribute("photoAtRow") != null) {
-					Integer nextPage = Integer.valueOf((Integer) session.getAttribute("nextPage"));
-					int photoAtPage = Integer.valueOf((Integer) session.getAttribute("photoAtPage"));
-					int photoAtRow = Integer.valueOf((Integer) session.getAttribute("photoAtRow"));
-					int nowPage = nextPage / photoAtPage;
-					String[] photoId = ((String[]) session.getAttribute("photoId"));
-					String[] photoComment = ((String[]) session.getAttribute("photoComment"));
-					String[] pathAll = (String[]) session.getAttribute("pathAll");
-					String[] photoName = (String[]) session.getAttribute("photoName");
-					if (photoName.length > 0) {
-						int count = 0;
-						for (int k = 0; k < photoId.length; k++) {
-							if (photoName[k] != null) {
-								if (count == photoAtRow) {
-			%>
-		</tr>
-		<tr>
-			<%
-						count = 1;
-						} else {
-							count++;
-						}
-			%>
-
-			<div class="smallestProfile">
-			<td class="tabsTableMiddle">
-			<div class="smallProfilePicOnline"><a href="fullScreen.jsp?pic=<%= photoId[k] %>"><img src="<%=pathAll[k] %>" alt="<%= photoName[k] %>"
-				title="<%= photoName[k] %>" height="150px" width="200"/></a></div>
-			<%
-			 if (userLogin == null) {
-			if (owner != null) {
-			%> Собственик :<%=owner[k]%><br>
-			<%}}%>
-			<div class="lh17"><a href="fullScreen.jsp?pic=<%= photoId[k] %>" class="link bold">Виж на цял екран</a> <br>
-			<%=photoName[k]%></div>
-			<div class="lh17">Коментари<span class="bold"><%=photoComment[k].toString()%></span></div>
-			<br>
-			<br>
-
-			<%
-			if (userLogin != null) {
-			%>
-			<div style="color: blue;"><a href="comment.jsp?pic=<%=photoId[k] %>" class="link bold">Добави коментар</a></div>
-			<% } %> 
-			<% if (user.equals(userLogin)) { %>
-
-			<div style="color: red;">
-			<div><a href="deletePicture.jsp?pic=<%=photoId[k] %>"
-				class="bold purple2" title="Изтрии снимката">Изтрии снимката</a></div>
-
-			</div>
-			<div style="color: green;"><a
-				href="renamePicture.jsp?pic=<%= photoId[k] %>" class="link bold">Преименувай</a>
-			</div>
-			</td>
-
-
-			<%
-							}
-							}
-						
-					}}
-			%>
-		<% if (Integer.parseInt(pages) > 1){ 
-		%>
-		<tr>
-			<td class="tabsBottomMid">
-			<div class="fLeft left10"><a href="ShowPageServlet?page=prev"><img src="img/btnLeft.gif" align="absmiddle" /></a>
-			 <a href="ShowPageServlet?page=next"><img src="img/btnRight.gif" align="absmiddle" /></a> 
-			 <span id="menPage"><%=nowPage%></span> от <span id="menTotalPages"><%=pages%></span></div>
-
-			<%}if (photoName[0]==null){%>
-			<tr><td class="tabsBottomMid"><div style="color: red; font-size: 30px;">В тази категория няма снимки</td></tr>
-			<% }
-					 }
-					}
-				}
-			%>
-
-
-			</div>
-			</td>
-		</tr>
-
-	</table>
 </body>
 </html>
