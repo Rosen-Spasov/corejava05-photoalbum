@@ -108,10 +108,6 @@ public class AddNewCategoryServlet extends javax.servlet.http.HttpServlet
 		errors[1] = "Enter name";
 			result = false;
 		}
-		if (newName.contains("[/.,!?]")) {
-			errors[2] = "ne moje da sydyrja /.,!?";
-			result = false;
-		}
                 String target = "(([0-9]+)?([A-Za-z]+)?)(([0-9]+)?([A-Za-z]+)?)*";
                 if (!newName.matches(target))	{
 			errors[3] = "Enter validate name,only with numbers and letters";
