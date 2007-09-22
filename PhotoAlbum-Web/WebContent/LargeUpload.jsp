@@ -95,8 +95,11 @@
                    File filein = new File(upBean.getFolderstore()+java.io.File.separator+chunkbaseStr+"."+c);
                    FileInputStream fin = new FileInputStream(filein);
                    int read = -1;
-                   while ((read = fin.read(buffer)) > 0) fout.write(buffer,0,read);
-                   fin.close();
+                   while ((read = fin.read(buffer)) > 0) {
+                	   out.println("eot ni");
+                	   fout.write(buffer,0,read);
+                   }
+                    fin.close();
                  	filein.delete();
                  }
                 fout.close();
@@ -122,7 +125,7 @@
     </tr>
     <tr>  <td align="left">
         <input type="hidden" name="todo" value="upload">
-          <input type="file" name="uploadfile" size="50">
+          <input type="file" name="uploadfile" size="50" >
       </td>
     </tr>
     <tr> <td align="left">

@@ -2,6 +2,7 @@ package photoalbum.servlet.web;
 
 import java.io.IOException;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +41,7 @@ public class AddNewCategoryServlet extends javax.servlet.http.HttpServlet
 				try {
 					System.out.println("Dobawqme q w glawnata:");
 					edit.addCategory(user, newName);
+					request.getRequestDispatcher("ShowAllPictuers?param=allPictures").forward(request,response);
 				} catch (CreateCategoryException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -63,7 +65,7 @@ public class AddNewCategoryServlet extends javax.servlet.http.HttpServlet
 							}}
 						else{
 							errorsAdd[0]= "Kategoriq s towa ime sy6testwuwa";
-							session.setAttribute("errors", errorsAdd);
+							session.setAttribute("errorsAdd", errorsAdd);
 							request.getRequestDispatcher("addCategory.jsp").forward(request,response);
 						}
 					}
@@ -73,9 +75,8 @@ public class AddNewCategoryServlet extends javax.servlet.http.HttpServlet
 			
 		} else {
 			System.out.println(errorsAdd.length);
-			session.setAttribute("errors", errorsAdd);
-			request.getRequestDispatcher("addCategory.jsp").forward(request,
-					response);
+			session.setAttribute("errorsAdd", errorsAdd);
+			request.getRequestDispatcher("addCategory.jsp").forward(request, response);
 
 		}
 	}
@@ -107,8 +108,10 @@ public class AddNewCategoryServlet extends javax.servlet.http.HttpServlet
 		errors[1] = "Enter name";
 			result = false;
 		}
-		if (newName.contains("[/.,!?]")) {
-			errors[2] = "ne moje da sydyrja /.,!?";
+	
+		
+		if (newName.matches("[\\\\/.*,!?\"<>|]+")) {
+			errors[2] = "ne moje da sydyrja \\/.*,!?\"<>|";
 			result = false;
 		}
 
