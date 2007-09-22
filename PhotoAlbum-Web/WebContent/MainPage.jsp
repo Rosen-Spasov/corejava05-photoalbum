@@ -220,7 +220,7 @@
 							<td class="tabsTableMiddle" align="center">
 								<div class="smallestProfile" align="center">
 										
-											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>"><img src="<%= pathAll[k] %>" width="170px" alt="" title="<%= photoName[k] %>" /></a>
+											<a href="fullScreen.jsp?pic=<%= Integer.parseInt(photoId[k]) %>"><img src="<%= pathAll[k] %>"  height="127" width="170px" alt="" title="<%= photoName[k] %>" /></a>
 										
 										<% String[] viewName = photoName[k].split("[.]");
 											if (viewName[0].length()>20){
@@ -253,7 +253,7 @@
 			<%} %>			
 					</td>
 		<td class="vtop pLeft20">
-							<div class="right right10 advertisement"><img src="http://img.elmaz.com/style/img/advArrow.png" /> реклама</div>
+							
 	
 			<div>
 		
