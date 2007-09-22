@@ -28,21 +28,18 @@ window.location.href="DeleteCategoryServlet";
 </script>
 </head>
 <body>
-
-<table border="0" width="100%" cellspacing="0" cellpadding="0"
-	style="padding:0px 0px 0px 0px; border:1px solid White;">
-	<tr style="background-image:url(Themes/headBG.png)">
-		<td width="124" style="border-right:0px solid White;"><img
-			src="Themes/top-left.gif"></td>
-		<td
-			style=" background-image: Themes/headBG.png; text-align:center; border-right:  ">
-		<span style="font-size: 30px; color: fuchsia;">Фото албум</span></td>
-		<td width="125"><img src="Themes/top-right.gif"></td>
+<% User userLogin = (User) session.getAttribute("login"); %>
+<% String someBody = "";
+	if (userLogin!=null){
+		someBody = userLogin.getUsername();
+	}
+%>
+<table  width="100%" cellspacing="0" cellpadding="0" >
+	<tr style="background-image:url(img/headBG.png); width: 50000px " align="center">
+		<td align="center"><span style="font-size: 30px; color: fuchsia;" >Добре дошъл <%= userLogin %></span></td>
 	</tr>
 </table>
-<%
-User userLogin = (User) session.getAttribute("login");
-%>
+
 <%
 	User user = (User) session.getAttribute("user");
 	if (user == null) {
@@ -66,6 +63,7 @@ User userLogin = (User) session.getAttribute("login");
 	</tr>
 	<tr>
 		<td></td>
+		
 		<td style="" align="center">
 		<div style="font-size: 20px; color: maroon; background-color: aqua"
 			align="center"><%="Това е профила на " + user.getFirstName() + " "+ user.getLastName()%></div>
