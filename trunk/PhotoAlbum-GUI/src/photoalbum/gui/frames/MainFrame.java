@@ -206,6 +206,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	 */
 	private void initialize() {
 		this.setSize(580, 327);
+		this.setResizable(false);
 		this.setJMenuBar(getMBarMain());
 		this.setContentPane(getJContentPane());
 		this.getTreeData().setEnabled(false);
@@ -420,16 +421,12 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	
 	private void newSession() {
 		if (this.getNewSessionDialog().showDialog() == DialogResult.CONNECT) {
-//			SwingUtilities.invokeLater(new Runnable() {
-//				public void run() {
-//					connect();
-//				}
-//			});
-			new Thread() {
+			Thread helpThread = new Thread() {
 				public void run() {
 					connect();
 				}
-			}.start();
+			};
+			helpThread.start();
 		}
 	}
 	
