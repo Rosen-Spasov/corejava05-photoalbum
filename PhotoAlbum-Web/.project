@@ -27,4 +27,11 @@
 		<nature>org.eclipse.wst.common.modulecore.ModuleCoreNature</nature>
 		<nature>org.eclipse.jem.workbench.JavaEMFNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>Hibernate-src</name>
+			<type>2</type>
+			<location>C:/Java/workspace/corejava05-photoalbum/PhotoAlbum-Hibernate/src</location>
+		</link>
+	</linkedResources>
 </projectDescription>
