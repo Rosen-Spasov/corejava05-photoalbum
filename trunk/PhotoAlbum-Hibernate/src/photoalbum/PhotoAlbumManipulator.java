@@ -42,13 +42,12 @@ public class PhotoAlbumManipulator {
 		return hbConnection;
 	}
 	
-	public boolean accessGranted(String userName, String password) {
+	public boolean accessGranted(String username, String password) {
 		
-		User user = getHbConnection().getUserByUserName(userName);
+		User user = getHbConnection().getUserByUsername(username);
 		if (user != null && user.getPassword().equals(password)) {
 			return true;
 		}
-		getHbConnection().close();
 
 		return false;
 	}
@@ -66,7 +65,7 @@ public class PhotoAlbumManipulator {
 	}
 	
 	public User getUserByUsername(String username) {
-		return getHbConnection().getUserByUserName(username);
+		return getHbConnection().getUserByUsername(username);
 	}
 	
 	public void addUser(String username, String password, String firstName, String lastName) throws CreateUserException {
@@ -75,7 +74,7 @@ public class PhotoAlbumManipulator {
 	}
 	
 	public void addUser(User user) throws CreateUserException {
-		if (getHbConnection().getUserByUserName(user.getUsername()) == null) {
+		if (getHbConnection().getUserByUsername(user.getUsername()) == null) {
 			getHbConnection().beginTransaction();
 			try {
 				getHbConnection().save(user);
@@ -420,6 +419,10 @@ public class PhotoAlbumManipulator {
 			commentInDB.getPhoto().removeComment(commentInDB);
 			deleteObject(commentInDB);
 		}
+	}
+	
+	public void close() {
+		getHbConnection().close();
 	}
 
 }

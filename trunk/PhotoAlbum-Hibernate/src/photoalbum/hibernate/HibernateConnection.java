@@ -130,7 +130,7 @@ public class HibernateConnection {
 		return (Comment) this.get(Comment.class, commentId);
 	}
 	
-	public User getUserByUserName(String username) {
+	public User getUserByUsername(String username) {
 		User result = null;
 		
 		String hql = "from User u where u.Username=:username";

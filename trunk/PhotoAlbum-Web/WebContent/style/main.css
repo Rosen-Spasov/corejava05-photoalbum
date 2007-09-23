@@ -165,7 +165,7 @@
 	.button {
 		border: 1px solid white;
 		background: #5e4191;
-		background-image: url('../img/btnback.png');
+		background-image: url('../images/btnback.png');
 		color: white;
 		font-size: 13px;
 		height: 28px;
@@ -183,7 +183,7 @@
 	}
 	
 	.headerMin {
-		background-image: url('../img/headbackmin.png');
+		background-image: url('../images/headbackmin.png');
 		width: 170px;
 		height:22px;
 	}
@@ -196,7 +196,7 @@
 	}
 	
 	.headerMid {
-		background-image: url('../img/headbackmid.png');
+		background-image: url('../images/headbackmid.png');
 		width: 450px;
 		height:22px;
 	}
@@ -209,7 +209,7 @@
 	}
 	
 	.headerBiggest {
-		background-image: url('../img/headbackbiggest.png');
+		background-image: url('../images/headbackbiggest.png');
 		width: 770px;
 		height:22px;
 	}
@@ -222,7 +222,7 @@
 	}
 	
 	.headerBig {
-		background-image: url('../img/headbackbig.png');
+		background-image: url('../images/headbackbig.png');
 		width: 590px;
 		height:22px;
 	}
@@ -234,7 +234,7 @@
 		font-size: 12px;
 	}
 	.headerSmall {
-		background-image: url('../img/headbacksmall.png');
+		background-image: url('../images/headbacksmall.png');
 		width: 170px;
 		height:22px;
 	}
@@ -251,12 +251,12 @@
 		/*margin-right: 5px;*/
 	}
 	.bottomMin {
-		background-image: url('../img/bottombackmin.png');
+		background-image: url('../images/bottombackmin.png');
 		height: 4px;
 		line-height: 4px;
 	}
 	.bottomMid {
-		background-image: url('../img/bottombackmid.png');
+		background-image: url('../images/bottombackmid.png');
 		height: 4px;
 		line-height: 4px;
 	}
@@ -286,12 +286,12 @@
 	.link {
 		color: #5a3c8b;
 		text-decoration: none;
-		background: url('../img/dottedbordermenu.gif') repeat-x 100% 100%;
+		background: url('../images/dottedbordermenu.gif') repeat-x 100% 100%;
 		padding-bottom: 1px;
 		white-space: nowrap;
 	}
 	.link:hover {
-		background: url('../img/fullbordermenu.gif') repeat-x 100% 100%;
+		background: url('../images/fullbordermenu.gif') repeat-x 100% 100%;
 	}
 	.linkNormal {
 		color: #5a3c8b;
@@ -328,7 +328,7 @@
 	.list {
 		/*border: 1px solid red;*/
 		padding-left:10px;
-		list-style-image: url('../img/bullet.png');
+		list-style-image: url('../images/bullet.png');
 	}
 	.list li {
 		margin-bottom: 10px;
@@ -336,7 +336,7 @@
 	.listPurple {
 		/*border: 1px solid red;*/
 		padding-left:10px;
-		list-style-image: url('../img/bulletPurple.gif');
+		list-style-image: url('../images/bulletPurple.gif');
 	}
 	.listPurple li {
 		margin-bottom: 10px;
@@ -351,7 +351,7 @@
 		margin-left: -20px;
 		width: 450px;
 		height:250px;
-		background-image: url('../img/loading.gif');
+		background-image: url('../images/loading.gif');
 		background-position: center center;
 		background-repeat: no-repeat;
 		/*background-color: #DEDEDE;*/
@@ -362,7 +362,7 @@
 		margin-left: -10px;
 		width: 590px;
 		height:455px;
-		background-image: url('../img/loading.gif');
+		background-image: url('../images/loading.gif');
 		background-position: center center;
 		background-repeat: no-repeat;
 		/*background-color: #DEDEDE;*/
@@ -374,7 +374,7 @@
 		width: 200px;
 		height:52px;
 		left:0;
-		background-image: url('../img/loading.gif');
+		background-image: url('../images/loading.gif');
 		background-position: center center;
 		background-repeat: no-repeat;
 		/*background-color: #DEDEDE;*/
@@ -401,11 +401,11 @@
 		width: 100%;
 	}
 	.tabSelected {
-		background-image: url('../img/tabSelected.png') !important;
+		background-image: url('../images/tabSelected.png') !important;
 	}
 	.tab {
 		display:block;
-		background-image: url('../img/tab.png');
+		background-image: url('../images/tab.png');
 		float:right;
 		width:100px;
 		padding-right: 4px;
@@ -428,7 +428,7 @@
 	}
 	
 	.tabsBottomMid {
-		background-image: url('../img/tabsBottomMid.png');
+		background-image: url('../images/tabsBottomMid.png');
 		height:37px;
 	}
 /*tabs end*/
@@ -470,7 +470,7 @@
 	.mainTopMenu {
 		width: 960px;
 		height: 28px;
-		background: url('../img/topMenuBack.png');
+		background: url('../images/topMenuBack.png');
 		color: white;
 	}
 	
@@ -508,13 +508,42 @@
 	.leftMenu a {
 		color: #5a3c8b;
 		text-decoration: none;
-		background: #f2f0f9 url('../img/dottedbordermenu.gif') repeat-x 100% 100%;
+		background: #f2f0f9 url('../images/dottedbordermenu.gif') repeat-x 100% 100%;
 		padding-bottom: 2px;
 		white-space: nowrap;
 	}
 	
 	.leftMenu a:hover {
-		background: #f2f0f9 url('../img/fullbordermenu.gif') repeat-x 100% 100%;
+		background: #f2f0f9 url('../images/fullbordermenu.gif') repeat-x 100% 100%;
+	}
+	
+	.centerMenu {
+		background: #f2f0f9;
+	}
+	
+	.centerMenu .leftItem {
+		border-left: 1px solid #dad2ec;
+		line-height: 20px;
+		height: 20px;
+	}
+	
+	.centerMenu .rightItem {
+		border-right: 1px solid #dad2ec;
+		line-height: 20px;
+		height: 20px;
+		padding-left: 15px;
+	}
+	
+	.centerMenu a {
+		color: #5a3c8b;
+		text-decoration: none;
+		background: #f2f0f9 url('../images/dottedbordermenu.gif') repeat-x 100% 100%;
+		padding-bottom: 2px;
+		white-space: nowrap;
+	}
+	
+	.centerMenu a:hover {
+		background: #f2f0f9 url('../images/fullbordermenu.gif') repeat-x 100% 100%;
 	}
 	
 	.mainCenterNone {
@@ -577,20 +606,20 @@
 
 /*leftLoginForm*/
 	.leftLoginForm {
-		background: url('../img/loginFill.png');
+		background: url('../images/loginFill.png');
 		width: 170px;
 		height: 120px;
 	}
 	
 	.leftLoginTop {
-		background: url('../img/loginTop.png');
+		background: url('../images/loginTop.png');
 		width: 170px;
 		height: 5px;
 		line-height: 5px;
 	}
 	
 	.leftLoginBottom {
-		background: url('../img/loginBottom.png');
+		background: url('../images/loginBottom.png');
 		width: 170px;
 		height: 5px;
 		line-height: 5px;
@@ -600,20 +629,20 @@
 		color:black;
 		
 		text-decoration: none;
-		background: url('../img/dottedborderlogin.gif') repeat-x 100% 100%;
+		background: url('../images/dottedborderlogin.gif') repeat-x 100% 100%;
 		padding-bottom: 2px;
 		white-space: nowrap;
 	}
 	
 	.leftLoginForm a:hover {
-		background: url('../img/fullborderlogin.gif') repeat-x 100% 100%;
+		background: url('../images/fullborderlogin.gif') repeat-x 100% 100%;
 	}
 	
 	.leftLoginForm td {
 		padding: 3px;
 	}
 	
-	#username {
+	#user {
 		width: 90px;
 	}
 	
@@ -806,12 +835,12 @@
 	}
 	
 	.smallProfileHead {
-		background-image: url('../img/smallProfileHead.png');
+		background-image: url('../images/smallProfileHead.png');
 		height: 24px;
 	}
 	
 	.smallProfileHeadVIP {
-		background-image: url('../img/smallProfileHeadVip.png');
+		background-image: url('../images/smallProfileHeadVip.png');
 	}
 	
 	.smallProfileName {
@@ -833,15 +862,15 @@
 	}
 	
 	.offlineBtn {
-		background-image: url('../img/offline.gif');
+		background-image: url('../images/offline.gif');
 	}
 	
 	.onlineBtn {
-		background-image: url('../img/online.gif');
+		background-image: url('../images/online.gif');
 	}
 	
 	.updatedBtn {
-		background-image: url('../img/updated.gif');
+		background-image: url('../images/updated.gif');
 		width: 80px;
 	}
 	
@@ -853,11 +882,11 @@
 		top: -20px;
 		text-align: center;
 		padding-top: 6px;
-		background-image: url('../img/picPlaceholder.png');
+		background-image: url('../images/picPlaceholder.png');
 	}
 	
 	.picPlaceholderVip {
-		background-image: url('../img/picPlaceholderVip.png');
+		background-image: url('../images/picPlaceholderVip.png');
 	}
 	
 	.smallProfileBody {
@@ -875,12 +904,12 @@
 		height: 46px;
 		/*padding-bottom: 10px;*/
 		text-align:center;
-		background-image: url('../img/smallProfileBottom.png');
+		background-image: url('../images/smallProfileBottom.png');
 		vertical-align: bottom;
 	}
 	
 	.smallProfileBottomVip {
-		background-image: url('../img/smallProfileBottomVip.png');
+		background-image: url('../images/smallProfileBottomVip.png');
 	}
 	
 	.smallProfileInfo {
@@ -899,15 +928,15 @@
 		height: 108px;
 		text-align: center;
 		padding-top: 6px;
-		background-image: url('../img/picPlaceholder.png');
+		background-image: url('../images/picPlaceholder.png');
 	}
 	
 	.picPlaceholderNormalVip {
-		background-image: url('../img/picPlaceholderVip.png');
+		background-image: url('../images/picPlaceholderVip.png');
 	}
 	
 	.picPlaceholderNormalOnline {
-		background-image: url('../img/picPlaceholderOnline.png');
+		background-image: url('../images/picPlaceholderOnline.png');
 	}
 	
 	.smallerProfile {
@@ -916,7 +945,7 @@
 	}
 	
 	.isFriend {
-		background-image: url('../img/friendBack.gif');
+		background-image: url('../images/friendBack.gif');
 		width:72px;
 		height:16px;
 		/*padding-left: 12px;*/
@@ -941,7 +970,7 @@
 	}
 	
 	.stats {
-		background: url('../img/statsBack.png');
+		background: url('../images/statsBack.png');
 		height:132px;
 		width:135px;
 		/*padding-top: 20px;*/
@@ -951,7 +980,7 @@
 	}
 	
 	.weddings {
-		background: url('../img/weddingsback.png');
+		background: url('../images/weddingsback.png');
 		height: 200px;
 		width: 300px;
 	}
@@ -959,7 +988,7 @@
 	.buttonReg {
 		border: 1px solid #5a3c8b;
 		background: #f9bb1b;
-		background-image: url('../img/regBtn.png');
+		background-image: url('../images/regBtn.png');
 		color: #5a3c8b;
 		font-size: 13px;
 		height: 28px;
@@ -990,12 +1019,12 @@
 /*forms*/
 	.midBottom {
 		height: 46px;
-		background-image: url('../img/midBottom.png');
+		background-image: url('../images/midBottom.png');
 	}
 	
 	.bigBottom {
 		height: 46px;
-		background-image: url('../img/smallProfileBottom.png');
+		background-image: url('../images/smallProfileBottom.png');
 	}
 	
 	.midBody {
@@ -1035,7 +1064,7 @@
 /*forms end*/
 
 	.msgHead {
-		background-image:url('../img/msgHeadBack.png');
+		background-image:url('../images/msgHeadBack.png');
 		height:20px;
 	}
 	
@@ -1053,33 +1082,33 @@
 	}
 	
 	.searchMenuTopCenter {
-		background-image: url('../img/searchMenuTop.png');
+		background-image: url('../images/searchMenuTop.png');
 	}
 	
 	.searchMenuTopLeft {
 		width: 14px;
-		background-image: url('../img/searchMenuTopLeft.png');
+		background-image: url('../images/searchMenuTopLeft.png');
 	}
 	
 	.searchMenuTopRight {
 		width: 14px;
-		background-image: url('../img/searchMenuTopRight.png');
+		background-image: url('../images/searchMenuTopRight.png');
 	}
 
 /* info block */
 	.infoHead {
 		height: 22px;
-		background-image: url('../img/infoHead.png');
+		background-image: url('../images/infoHead.png');
 	}
 	
 	.infoLeft {
 		width: 8px;
-		background-image: url('../img/infoHeadLeft.png');
+		background-image: url('../images/infoHeadLeft.png');
 	}
 	
 	.infoRight {
 		width: 8px;
-		background-image: url('../img/infoHeadRight.png');
+		background-image: url('../images/infoHeadRight.png');
 	}
 /* info block end */
 
@@ -1093,12 +1122,12 @@
 	}
 	
 	.galleryProfileHead {
-		background-image: url('../img/galleryProfileHead.png');
+		background-image: url('../images/galleryProfileHead.png');
 		height:24px;
 	}
 	
 	.galleryProfileHeadVip {
-		background-image: url('../img/galleryProfileHeadVip.png');
+		background-image: url('../images/galleryProfileHeadVip.png');
 	}
 	
 	.galleryProfileBody {
@@ -1115,12 +1144,12 @@
 	}
 	
 	.galleryProfileBottom {
-		background-image: url('../img/galleryProfileBottom.png');
+		background-image: url('../images/galleryProfileBottom.png');
 		height: 46px;
 	}
 	
 	.galleryProfileBottomVip {
-		background-image: url('../img/galleryProfileBottomVip.png');
+		background-image: url('../images/galleryProfileBottomVip.png');
 	}
 	
 	.galleryProfileInfo {
@@ -1140,7 +1169,7 @@
 	}
 	
 	.galleryBottom {
-		background-image: url('../img/galleryBottomBack.png');
+		background-image: url('../images/galleryBottomBack.png');
 		height:38px;
 	}
 	
@@ -1150,11 +1179,11 @@
 	}
 	
 	.listEven {
-		background-image: url('../img/msgHeadBack.png');
+		background-image: url('../images/msgHeadBack.png');
 	}
 	
 	.listVip {
-		background-image: url('../img/listVip.png');
+		background-image: url('../images/listVip.png');
 	}
 /*gallery end*/
 
@@ -1164,7 +1193,7 @@
 		width:110px;
 		height:110px;
 		
-		background-image: url('../img/overlay.png');
+		background-image: url('../images/overlay.png');
 		opacity:0.65;
 		filter:alpha(Opacity=65);
 	}
@@ -1182,7 +1211,7 @@
 		border: 2px solid #5a3c8b;
 	}
 .checksBack {
-	background-image: url('../img/checksBack.png');
+	background-image: url('../images/checksBack.png');
 	padding-top: 10px;
 	padding-left: 10px;
 	width:535px;
@@ -1204,7 +1233,7 @@
 	}
 	
 	.tableBody {
-		background-image: url('../img/searchTableBottom.png');
+		background-image: url('../images/searchTableBottom.png');
 		background-position: bottom;
 		background-repeat: repeat-x;
 		padding-left: 10px;
@@ -1213,7 +1242,7 @@
 	}
 	
 	.tableBodyQ {
-		background-image: url('../img/searchTableBottom.png');
+		background-image: url('../images/searchTableBottom.png');
 		background-position: bottom;
 		background-repeat: repeat-x;
 		padding-left: 10px;
@@ -1243,36 +1272,36 @@
 	}
 	
 	.checksBody {
-		background-image: url('../img/checksBody.png');
+		background-image: url('../images/checksBody.png');
 		height: 39px;
 	}
 	.ch
 	ecksLeft {
-		background-image: url('../img/checksLeft.png');
+		background-image: url('../images/checksLeft.png');
 		height: 39px;
 		width: 3px;
 	}
 	
 	.checksRight {
-		background-image: url('../img/checksRight.png');
+		background-image: url('../images/checksRight.png');
 		height: 39px;
 		width: 3px;
 		background-repeat: no-repeat;
 	}
 	
 	.checksBodyQ {
-		background-image: url('../img/checksBodyQ.png');
+		background-image: url('../images/checksBodyQ.png');
 		height: 25px;
 	}
 	
 	.checksLeftQ {
-		background-image: url('../img/checksLeftQ.png');
+		background-image: url('../images/checksLeftQ.png');
 		height: 25px;
 		width: 3px;
 	}
 	
 	.checksRightQ {
-		background-image: url('../img/checksRightQ.png');
+		background-image: url('../images/checksRightQ.png');
 		height: 25px;
 		width: 3px;
 		background-repeat: no-repeat;
@@ -1281,7 +1310,7 @@
 
 /*custom Rosen*/
 	.header {
-		background-image: url('../img/back_head.png');
+		background-image: url('../images/back_head.png');
 		width: 170px;
 		height: 22px;
 		border-bottom: 3px solid #fabc01;
@@ -1310,15 +1339,15 @@
 		margin-bottom: 2px;
 		color: #5a3c8b;
 		text-decoration: none;
-		background: url('../img/dottedbordermenu.gif') repeat-x 100% 100%;
+		background: url('../images/dottedbordermenu.gif') repeat-x 100% 100%;
 	}
 	
 	.fill a:hover {
-		background: url('../img/fullbordermenu.gif') repeat-x 100% 100%;
+		background: url('../images/fullbordermenu.gif') repeat-x 100% 100%;
 	}
 	
 	.bottom {
-		background-image: url('../img/back_bottom.png');
+		background-image: url('../images/back_bottom.png');
 		width: 170px;
 		height: 11px;
 	}
@@ -1331,7 +1360,7 @@
 	.topMain {
 		width: 960px;
 		height: 65px;
-		background-image: url("../img/headBG.png");
+		background-image: url("../images/headBG.png");
 	}
 	
 	.topMain div {
