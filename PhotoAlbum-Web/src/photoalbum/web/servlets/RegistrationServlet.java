@@ -38,19 +38,19 @@ public class RegistrationServlet extends BaseServlet {
 		super.doPost(request, response);
 
 		if (initialized) {
-			String username = (String) request.getAttribute(USERNAME);
-			String password = (String) request.getAttribute(PASSWORD);
-			String passwordConfirm = (String) request.getAttribute(PASSWORD_CONFIRM);
-			String firstName = (String) request.getAttribute(FIRST_NAME);
-			String lastName = (String) request.getAttribute(LAST_NAME);
+			String username = request.getParameter(USERNAME);
+			String password = request.getParameter(PASSWORD);
+			String passwordConfirm = request.getParameter(PASSWORD_CONFIRM);
+			String firstName = request.getParameter(FIRST_NAME);
+			String lastName = request.getParameter(LAST_NAME);
 			if (password != null && password.equals(passwordConfirm)) {
 				try {
 					pam.addUser(username, password, firstName, lastName);
+					request.getRequestDispatcher("login?action=login").forward(request, response);
 				} catch (CreateUserException e) {
 					logger.log(e);
 				}
 			}
-			request.getRequestDispatcher("login").forward(request, response);
 		}
 	}   	  	    
 }
