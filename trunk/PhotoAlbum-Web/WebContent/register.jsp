@@ -18,38 +18,38 @@
 						</td>
 					</tr>
 					<tr><td class="leftItem right pTop10">
-							<label id="lbUsername" for="username">Потребителско име:</label>
+							<label for="username">Потребителско име:</label>
 						</td>
 						<td class="rightItem pTop10">
-							<input type="text" id="username" />
+							<input type="text" name="username" />
 						</td>
 					</tr>
 					<tr><td class="leftItem right pTop10">
-							<label id="lbPassword" for="password">Парола:</label>
+							<label for="password">Парола:</label>
 						</td>
 						<td class="rightItem pTop10">
-							<input type="password" id="password" />
+							<input type="password" name="password" />
 						</td>
 					</tr>
 					<tr><td class="leftItem right pTop10">
-							<label id="lbPasswordConfirm" for="passwordConfirm">Потвърдете паролата:</label>
+							<label for="passwordConfirm">Потвърдете паролата:</label>
 						</td>
 						<td class="rightItem pTop10">
-							<input type="password" id="passwordConfirm" />
+							<input type="password" name="passwordConfirm" />
 						</td>
 					</tr>
 					<tr><td class="leftItem right pTop10">
-							<label id="lbFirstName" for="firstName">Име:</label>
+							<label for="firstName">Име:</label>
 						</td>
 						<td class="rightItem pTop10">
-							<input type="text" id="firstName" />
+							<input type="text" name="firstName" />
 						</td>
 					</tr>
 					<tr><td class="leftItem right pTop10">
-							<label id="lbLastName" for="lastName">Фамилия:</label>
+							<label for="lastName">Фамилия:</label>
 						</td>
 						<td class="rightItem pTop10">
-							<input type="text" id="lastName" />
+							<input type="text" name="lastName" />
 						</td>
 					</tr>
 					<tr><td class="leftItem right lh10">&nbsp;</td>
@@ -59,7 +59,7 @@
 							<a href="">Обратно към главната страница</a>
 						</td>
 						<td class="rightItem lh10">
-							<input class="button" type="submit" id="submit" value="Продължи">
+							<input class="button" type="submit" name="submit" value="Продължи">
 						</td>
 					</tr>
 					<tr><td class="leftItem right lh10">&nbsp;</td>

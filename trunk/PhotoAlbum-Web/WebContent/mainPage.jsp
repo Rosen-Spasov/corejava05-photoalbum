@@ -42,8 +42,8 @@
 							<a href="register.jsp">Регистрация</a><span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
 						</c:when>
 						<c:otherwise>
-							<c:out value='Добре дошъл, ${loggedUser.firstName} ${loggedUser.lastName}' /><span class="separator"><img src="img/separator.png" align="middle" /></span>
-							<a href="ExitServlet">Изход</a><span class="separator"><img src="./images/separator.png" align="middle" /></span>
+							<c:out value='Добре дошъл, ${loggedUser.firstName} ${loggedUser.lastName}' /><span class="separator"><img src="./images/separator.png" align="middle" /></span>
+							<a href="./login?action=logout">Изход</a><span class="separator"><img src="./images/separator.png" align="middle" /></span>
 						</c:otherwise>
 					</c:choose>
 					<a href="SearchServlet">Търсене</a><span class="separator"><img src="./images/separator.png" align="middle" /></span>
@@ -56,15 +56,15 @@
 	<tr><td class="mainLeft vtop">
 			<c:choose>
 				<c:when test="${empty loggedUser}">
-					<form method="POST" action="login">
+					<form method="POST" action="./login?action=login">
 						<table cellpadding="0" cellspacing="0">
 							<tr><td class="leftLoginTop top10">&nbsp;</td></tr>
 							<tr><td><table cellpadding="0" cellspacing="0" class="leftLoginForm">
 										<tr><td class="left pTop10 pLeft10"><label for="user">Име: </label></td>
-											<td class="left pTop10 pRight10"><input type="text" class="textInput" name="user" id="user" /></td>
+											<td class="left pTop10 pRight10"><input type="text" class="textInput" name="username" id="user" /></td>
 										</tr>
 										<tr><td class="left pLeft10"><label for="pass">Парола: </label></td>
-											<td class="left pRight10"><input type="password" class="textInput" name="pass" id="pass" /></td>
+											<td class="left pRight10"><input type="password" class="textInput" name="password" id="pass" /></td>
 										</tr>
 										<c:if test="${!empty sessionScope.errors}">
 											<c:forEach var="error" items="${sessionScope.errors}">
