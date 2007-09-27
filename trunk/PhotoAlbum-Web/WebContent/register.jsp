@@ -5,13 +5,16 @@
 <html>
 <head>
 	<title>Регистрация</title>
+	<script type="text/javascript" src="validation.js">
+</script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="GENERATOR" content="Rational Application Developer">
 	<link rel="stylesheet" type="text/css" href="./style/main.css" />
+
 </head>
 <body>
 <table class="mainTable" cellpadding="0" cellspacing="0" align="center">
-	<tr><td><form method="POST" action="registration">
+	<tr><td><form name="person" method="POST" action="registration" onsubmit="validate()">
 				<table class="centerMenu top10" cellpadding="0" cellspacing="0" align="center">
 					<tr><td class="headerMid" colspan="2">
 							<div>Регистрация</div>

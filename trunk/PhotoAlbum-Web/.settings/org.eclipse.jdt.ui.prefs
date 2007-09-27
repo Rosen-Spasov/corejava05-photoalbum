@@ -1,3 +1,4 @@
-#Sun Sep 23 12:00:14 EEST 2007
+#Thu Sep 27 17:07:03 EEST 2007
 eclipse.preferences.version=1
-internal.default.compliance=default
+instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true
+org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
