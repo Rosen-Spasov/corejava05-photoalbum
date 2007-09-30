@@ -345,7 +345,7 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 		if (btnEdit == null) {
 			btnEdit = new JButton();
 			btnEdit.setBounds(new Rectangle(15, 45, 91, 16));
-			btnEdit.setText("Добави");
+			btnEdit.setText("Промени");
 			btnEdit.addActionListener(this);
 		}
 		return btnEdit;
@@ -444,10 +444,10 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 				this.getBtnRefresh().setEnabled(true);
 				this.getMItemNewSession().setEnabled(false);				
 			} else {
-				JOptionPane.showMessageDialog(this, "Невалидна парола. Конекцията отказана.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Невалидна парола. Конекцията отказана.", "Грешка при свързването", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (Throwable e) {
-			JOptionPane.showMessageDialog(this, "Връзката към сървъра не може да бъде осъществена. Проверете параметрите на Вашата конекция и се свържете със системния администратор.", "DB Connection Failed", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Връзката към сървъра не може да бъде осъществена. Проверете параметрите на Вашата конекция и се свържете със системния администратор.", "Грешка при свързването", JOptionPane.ERROR_MESSAGE);
 			Logger.getDefaultInstance().log(e);
 		} finally {
 			this.setCursor(Cursor.getDefaultCursor());

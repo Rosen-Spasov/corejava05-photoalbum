@@ -1,4 +1,3 @@
-<%-- jsf:pagecode language="java" location="/src/pagecode/OldMainPage.java" --%><%-- /jsf:pagecode --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@	page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
@@ -8,6 +7,7 @@
 <html>
 
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Фото албум - Намери снимките, които търсиш!</title>
 	<link rel="stylesheet" type="text/css" href="./style/main.css" />
 	<script type="text/javascript"></script>
@@ -39,14 +39,20 @@
 				<td class="right pRight10">
 					<c:choose>
 						<c:when test="${empty loggedUser}">
-							<a href="register.jsp">Регистрация</a><span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
+							<a href="register.jsp">Регистрация</a>
+							<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
 						</c:when>
 						<c:otherwise>
-							<c:out value='Добре дошъл, ${loggedUser.firstName} ${loggedUser.lastName}' /><span class="separator"><img src="./images/separator.png" align="middle" /></span>
-							<a href="./login?action=logout">Изход</a><span class="separator"><img src="./images/separator.png" align="middle" /></span>
+							<font style="font-size: 12px;">
+								<c:out value='Добре дошъл, ${loggedUser.firstName} ${loggedUser.lastName}' />
+								<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
+							</font>
+							<a href="./login?action=logout">Изход</a>
+							<span class="separator"><img src="./images/separator.png" align="middle" /></span>
 						</c:otherwise>
 					</c:choose>
-					<a href="SearchServlet">Търсене</a><span class="separator"><img src="./images/separator.png" align="middle" /></span>
+					<a href="SearchServlet">Търсене</a>
+					<span class="separator"><img src="./images/separator.png" align="middle" /></span>
 					<a href="Help.jsp">Помощ</a>
 				</td>
 			</tr>
@@ -95,9 +101,9 @@
 				</tr>
 				<c:if test="${!empty sessionScope.allUsers}">
 					<c:forEach var="user" items="${sessionScope.allUsers}">
-					<tr><td class="fill"><img class="bullet" src="./images/bullet.png" /></td>
-						<td class="fill"><a href="SearchServlet?searchName=${user.username}">${user.username}</a></td>
-					</tr>
+						<tr><td class="fill"><img class="bullet" src="./images/bullet.png" /></td>
+							<td class="fill"><a href="./user?userId=${user.userId}">${user.username}</a></td>
+						</tr>
 					</c:forEach>
 				</c:if>
 				<tr><td class="bottom" colspan="2"></td></tr>

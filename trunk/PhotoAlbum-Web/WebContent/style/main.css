@@ -144,6 +144,10 @@
 		padding-top: 10px !important;
 	}
 	
+	.pTop5 {
+		padding-top: 5px !important;
+	}
+	
 	.pTop3 {
 		padding-top: 3px;
 	}
@@ -383,48 +387,44 @@
 
 /*tabs*/
 	.tabsMiddle {
-		width: 450px;
+		width: 767px;
 	}
-	.rightTabStub{
-		height:20px;
-		float:right;
+	.leftTabStub{
+		height: 20px;
+		float: left;
 		width: 8px;
 		border-bottom: 1px solid #dad2ec;
 	}
-	.leftTabStubMiddle {
-		height:20px;
-		float:right;
-		width: 233px;
+	.rightTabStub {
+		height: 20px;
+		float: left;
+		width: 657px;
 		border-bottom: 1px solid #dad2ec;
 	}
 	.tabs {
 		width: 100%;
 	}
 	.tabSelected {
+		color: #5a3c8b;
 		background-image: url('../images/tabSelected.png') !important;
 	}
 	.tab {
 		display:block;
-		background-image: url('../images/tab.png');
-		float:right;
+		float: left;
 		width:100px;
-		padding-right: 4px;
+		padding-right: 2px;
 		height: 18px;
 		text-align:center;
 		padding-top:3px;
-		cursor: pointer;
 	}
 	.tab:hover {
-		text-decoration:underline;
 	}
 	.tabsTableMiddle {
-		/*width: 100%;*/
-		width: 420px;
-		margin-top:21px;
+		width: 100%;
 		border: 1px solid #dad2ec;
 		border-top: none;
 		border-bottom: none;
-		padding-left: 20px;
+		padding-left: 40px;
 	}
 	
 	.tabsBottomMid {
@@ -482,7 +482,7 @@
 	
 	.mainLeft {
 		width: 170px;
-		height: 400px;
+		/*height: 400px;*/
 		text-align: left;
 		padding-top: 10px;
 	}
@@ -491,30 +491,37 @@
 		background: #f2f0f9;
 	}
 	
-	.leftMenu .left {
+	.leftMenu .leftItem {
 		border-left: 1px solid #dad2ec;
 		line-height: 20px;
 		height: 20px;
 		width: 10px;
 	}
 	
-	.leftMenu .pRight10 {
+	.leftMenu .rightItem {
 		border-right: 1px solid #dad2ec;
 		line-height: 20px;
 		height: 20px;
-		width: 110px;
+		padding-left: 10px;
+		width: 160px;
+		/*width: 110px;*/
+	}
+	
+	.leftMenu .bullet {
+		margin-left: 20px;
+		margin-bottom: 2px;
 	}
 	
 	.leftMenu a {
 		color: #5a3c8b;
 		text-decoration: none;
-		background: #f2f0f9 url('../images/dottedbordermenu.gif') repeat-x 100% 100%;
+		background: #f2f0f9 url('dottedbo.gif') repeat-x 100% 100%;
 		padding-bottom: 2px;
 		white-space: nowrap;
 	}
 	
 	.leftMenu a:hover {
-		background: #f2f0f9 url('../images/fullbordermenu.gif') repeat-x 100% 100%;
+		background: #f2f0f9 url('fullbord.gif') repeat-x 100% 100%;
 	}
 	
 	.centerMenu {
@@ -547,7 +554,7 @@
 	}
 	
 	.mainCenterNone {
-		width: 790px;
+		width: 781px;
 		padding-left: 20px;
 		height: 400px;
 		text-align: left;
@@ -800,7 +807,6 @@
 	.smallestProfile {
 		width: 120px;
 		float:left;
-		height:200px;
 		margin-right: 20px;
 		margin-top: 20px;
 	}
@@ -1368,6 +1374,11 @@
 		color: white;
 		font-size: 18px;
 		font: bold;
+	}
+	
+	.pic {
+	 	width: 100px;
+	 	height: 100px;
 	}
 
 /*custom Rosen end*/

@@ -26,15 +26,35 @@ public abstract class BaseServlet extends HttpServlet implements Servlet {
 	
 	protected HttpSession session;
 	
-	protected boolean initialized = false;
+	private boolean initialized = false;
 	
-	protected PhotoAlbumManipulator pam;
+	private PhotoAlbumManipulator pam;
 	
-	protected Logger logger;
+	private Logger logger;
 	
 	public BaseServlet() {
 		super();
-	}   	
+	}
+	
+	protected boolean isInitialized() {
+		return initialized;
+	}
+	
+	protected PhotoAlbumManipulator getPam() {
+		if (pam == null) {
+			pam = new PhotoAlbumManipulator();
+			session.setAttribute(ATTR_PAM, pam);
+		}
+		return pam;
+	}
+	
+	protected Logger getLogger() {
+		if (logger == null) {
+			logger = Logger.getDefaultInstance();
+			session.setAttribute(ATTR_LOGGER, logger);
+		}
+		return logger;
+	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
@@ -42,11 +62,11 @@ public abstract class BaseServlet extends HttpServlet implements Servlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		session = request.getSession();
-		if (session.getAttribute(ATTR_INITIALIZED) != null) {
-			initialized = (Boolean) session.getAttribute(ATTR_INITIALIZED);
-		}
-		if (initialized) {
+//		initialized = (Boolean) session.getAttribute(ATTR_INITIALIZED);
+		if (pam == null) {
 			pam = (PhotoAlbumManipulator) session.getAttribute(ATTR_PAM);
+		}
+		if (logger == null) {
 			logger = (Logger) session.getAttribute(ATTR_LOGGER);
 		}
 	}

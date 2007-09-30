@@ -37,19 +37,17 @@ public class LoginServlet extends BaseServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doPost(request, response);
-
-		if (initialized) {
-			String action = request.getParameter(PARAM_ACTION);
-			if (LOGIN.equals(action)) {
-				String username = request.getParameter(PARAM_USERNAME);
-				String password = request.getParameter(PARAM_PASSWORD);
-				if (pam.accessGranted(username, password)) {
-					User loggedUser = pam.getUserByUsername(username);
-					session.setAttribute(PARAM_LOGGED_USER, loggedUser);
-				}
-			} else if (LOGOUT.equals(action)) {
-				session.removeAttribute(PARAM_LOGGED_USER);
+		
+		String action = request.getParameter(PARAM_ACTION);
+		if (LOGIN.equals(action)) {
+			String username = request.getParameter(PARAM_USERNAME);
+			String password = request.getParameter(PARAM_PASSWORD);
+			if (getPam().accessGranted(username, password)) {
+				User loggedUser = getPam().getUserByUsername(username);
+				session.setAttribute(PARAM_LOGGED_USER, loggedUser);
 			}
+		} else if (LOGOUT.equals(action)) {
+			session.removeAttribute(PARAM_LOGGED_USER);
 		}
 		
 		response.sendRedirect("mainPage.jsp");
