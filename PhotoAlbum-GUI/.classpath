@@ -10,10 +10,8 @@
 	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/hibernate3.jar"/>
-	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/jstl.jar"/>
 	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/jta.jar"/>
 	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/log4j-1.2.11.jar"/>
 	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/ojdbc14.jar"/>
-	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/standard.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

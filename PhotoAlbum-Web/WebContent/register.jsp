@@ -5,7 +5,7 @@
 <html>
 <head>
 	<title>Регистрация</title>
-	<script type="text/javascript" src="validation.js">
+	<script type="text/javascript" src="./js/validation.js">
 </script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="GENERATOR" content="Rational Application Developer">
@@ -59,7 +59,7 @@
 						<td class="rightItem lh10">&nbsp;</td>
 					</tr>
 					<tr><td class="leftItem right lh10">
-							<a href="">Обратно към главната страница</a>
+							<a href="./mainPage.jsp">Обратно към главната страница</a>
 						</td>
 						<td class="rightItem lh10">
 							<input class="button" type="submit" name="submit" value="Продължи">

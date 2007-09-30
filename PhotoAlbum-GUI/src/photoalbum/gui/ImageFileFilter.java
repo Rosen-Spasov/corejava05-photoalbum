@@ -12,9 +12,11 @@ public class ImageFileFilter extends FileFilter {
 			return true;
 		}
 		String fileName = f.getName();
-		if (fileName.endsWith(".jpg") || fileName.endsWith(".gif") || fileName.endsWith(".png")) {
+		if (fileName.toLowerCase().endsWith(".jpg") ||
+			fileName.toLowerCase().endsWith(".gif") ||
+			fileName.toLowerCase().endsWith(".png"))
+		{
 			return true;
-			
 		}
 		return false;
 	}
