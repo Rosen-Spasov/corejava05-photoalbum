@@ -5,26 +5,32 @@ passwordConfirm=person.passwordConfirm.value;
 firstName=person.firstName.value;
 lastName=person.lastName.value;
 
-if (isEmpty(username,'enter user name')==false){
+if (isEmpty(username,'Въведете потребителско име')==false){
 event.returnValue=false;
-}else if (sizeValidation(username,10,'username ne moje da e pove4e ot 10 simvola')==false){
+}else if (sizeValidation(username,10,'Потребителското име неможе да е повече от 10 символа')==false){
 event.returnValue=false;
-}else if (isEmpty(password,'enter password')==false){
+}else if (containIllegalChar(username,'Може да съдържа само букви и цифри на латиница')==false){
 event.returnValue=false;
-}else if (sizeValidation(password,10,'password ne moje da e pove4e ot 10 simvola')==false){
+}else if (isEmpty(password,'Въведете парола')==false){
 event.returnValue=false;
-}else if (isEmpty(passwordConfirm,'passwordConfirm')==false){
+}else if (sizeValidation(password,10,'Паролата неможе да е повече от 10 символа')==false){
+event.returnValue=false;
+}else if (isEmpty(passwordConfirm,'Въведените пароли са различни')==false){
 event.returnValue=false;
 }else if (passwordConfirm!=password){
-alert('wrong password');
+alert('Грешна парола');
 event.returnValue=false;
-}else if (isEmpty(firstName,'firstName')==false){
+}else if (isEmpty(firstName,'Име')==false){
 event.returnValue=false;
-}else if (sizeValidation(firstName,10,'firstName ne moje da e pove4e ot 10 simvola')==false){
+}else if (sizeValidation(firstName,10,'Името неможе да е повече от 10 символа')==false){
 event.returnValue=false;
-}else if (isEmpty(lastName,'lastName')==false){
+}else if (containIllegalChar(firstName,'Може да съдържа само букви и цифри на латиница')==false){
 event.returnValue=false;
-}else if (sizeValidation(lastName,10,'lastName ne moje da e pove4e ot 10 simvola')==false){
+}else if (isEmpty(lastName,'Въведете Фамилия')==false){
+event.returnValue=false;
+}else if (sizeValidation(lastName,10,'Фамилията неможе да е повече от 10 символа')==false){
+event.returnValue=false;
+}else if (containIllegalChar(lastName,'Може да съдържа само букви и цифри на латиница')==false){
 event.returnValue=false;
 }
 
@@ -46,3 +52,14 @@ if (field.lastIndexOf('')>maxSize){
 return true;
 }
 
+function containIllegalChar(field,msg){
+	re = /[^A-Za-z0-9._]/g;
+	if(field.match(re)){
+		alert(msg);
+		return false;
+	}
+	return true;
+}
+
+
+			
