@@ -17,10 +17,11 @@
 <c:set var="loggedUser" value="${sessionScope.loggedUser}" />
 
 <!-- This is the user whose profile we are currently viewing. -->
-<c:set var="selectedUser" value="${requestScope.selectedUser}" />
-<c:set var="selectedCategory" value="${requestScope.selectedCategory}" />
-<c:set var="photoPages" value="${requestScope.photoPages}" />
-<c:set var="pageIndex" value="${requestScope.pageIndex}" />
+<c:set var="selectedUser" value="${sessionScope.selectedUser}" />
+<c:set var="selectedCategory" value="${sessionScope.selectedCategory}" />
+<c:set var="photoPages" value="${sessionScope.photoPages}" />
+<c:set var="pageIndex" value="${param.pageIndex}" />
+<c:set var="totalPages" value="${param.totalPages}" />
 <c:choose>
 	<c:when test="${!empty selectedCategory}">
 		<c:set var="subCategories" value="${selectedCategory.categories}" />
@@ -46,7 +47,7 @@
 	<tr><td class="vseparator">&nbsp;</td></tr>
 	<tr><td colspan="3" class="mainTopMenu">
 		<table cellpadding="0" cellspacing="0" class="flex">
-			<tr><td class="left pLeft10">Най-големият сайт за снимки в България!</td>
+			<tr><td class="left pLeft10">В момента разглеждате профила на ${selectedUser.username}</td>
 				<td class="right pRight10">
 					<c:choose>
 						<c:when test="${empty loggedUser}">
@@ -55,7 +56,7 @@
 						</c:when>
 						<c:otherwise>
 							<font style="font-size: 12px;">
-								<c:out value='Добре дошъл, ${loggedUser.firstName} ${loggedUser.lastName}' />
+								<c:out value='Добре дошъл, ${loggedUser.firstName} ${loggedUser.lastName}!' />
 								<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
 							</font>
 							<a href="./login?action=logout">Изход</a>
@@ -64,7 +65,7 @@
 					</c:choose>
 					<a href="SearchServlet">Търсене</a>
 					<span class="separator"><img src="./images/separator.png" align="middle" /></span>
-					<a href="Help.jsp">Помощ</a>
+					<a href="">Начало</a>
 				</td>
 			</tr>
 		</table>
@@ -72,6 +73,62 @@
 	</tr>
 	<tr><td class="mainLeft vtop">
 			<table cellpadding="0" cellspacing="0" class="leftMenu">
+				<tr><td colspan="2" class="headerMin" style="border-bottom: 3px solid #fabc01;">
+						<div>Навигация</div>
+					</td>
+				</tr>
+				<tr><td class="leftItem pTop10">
+						<img src="./images/bullet.png" class="bullet" alt="bullet" />
+					</td>
+					<td class="rightItem pTop10">
+						<a href="">Начална страница</a>
+					</td>
+				</tr>
+				<c:if test="${!empty loggedUser && loggedUser.userId == selectedUser.userId}">
+					<tr><td class="leftItem pTop10">
+							<img src="./images/bullet.png" class="bullet" alt="bullet" />
+						</td>
+						<td class="rightItem pTop10">
+							<c:choose>
+								<c:when test="${!empty selectedCategory}">
+									<a href="category.jsp?action=ADD&parentType=CATEGORY&parentId=${selectedCategory.categoryId}">Добави</a>
+								</c:when>
+								<c:otherwise>
+									<a href="category.jsp?action=ADD&parentType=USER&parentId=${selectedUser.userId}">Добави</a>
+								</c:otherwise>
+							</c:choose>
+						</td>
+					</tr>
+					<c:if test="${!empty selectedCategory}">
+						<tr><td class="leftItem pTop10">
+								<img src="./images/bullet.png" class="bullet" alt="bullet" />
+							</td>
+							<td class="rightItem pTop10">
+								<a href="category.jsp?action=RENAME&categoryId=${selectedCategory.categoryId}">Преименувай</a>
+							</td>
+						</tr>
+						<tr><td class="leftItem pTop10">
+								<img src="./images/bullet.png" class="bullet" alt="bullet" />
+							</td>
+							<td class="rightItem pTop10">
+								<a href="">Изтрий</a>
+							</td>
+						</tr>
+					</c:if>
+				</c:if>
+				<tr><td class="leftItem pTop10">
+						<img src="./images/bullet.png" class="bullet" alt="bullet" />
+					</td>
+					<td class="rightItem pTop10">
+						<a onclick="javascript:history.back()">Назад</a>
+					</td>
+				</tr>
+				<tr><td class="leftItem lh10">&nbsp;</td>
+					<td class="rightItem lh10">&nbsp;</td>
+				</tr>
+				<tr><td colspan="2" class="bottomMin">&nbsp;</td></tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="leftMenu top10">
 				<tr><td colspan="2" class="headerMin" style="border-bottom: 3px solid #fabc01;">
 						<div>Подкатегории</div>
 					</td>
@@ -163,13 +220,17 @@
 					</tr>
 					<tr><td class="tabsBottomMid">
 							<div class="fLeft left10">
-								<a href=""><img src="./images/btnLeft.gif" /></a>
-								<a href=""><img src="./images/btnRight.gif" /></a>
-								<span>${pageIndex} от 0</span>
+								<c:if test="${pageIndex > 0}">
+									<a href="./user.jsp?pageIndex=${pageIndex - 1}&totalPages=${totalPages}"><img src="./images/btnLeft.gif" /></a>
+								</c:if>
+								<c:if test="${pageIndex + 1 < totalPages}">
+									<a href="./user.jsp?pageIndex=${pageIndex + 1}&totalPages=${totalPages}"><img src="./images/btnRight.gif" /></a>
+								</c:if>
+								<span style="vertical-align: 50%">${pageIndex + 1} от ${totalPages}</span>
 							</div>
 							<div class="fRight right10">
 								<div style="line-height:17px;">
-									<a href="" class="link">Виж всички потребители &raquo;</a>
+									<a href="" class="link">Добави снимка в настоящата категория &raquo;</a>
 								</div>
 							</div>
 						</td>

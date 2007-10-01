@@ -618,17 +618,19 @@ public class MainFrame extends JFrame implements ICustomIconsSupplier, TreeSelec
 	}
 	
 	private void delete() {
-		if (!this.getTreeData().isSelectionEmpty()) {
-			DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getTreeData().getLastSelectedPathComponent();
-			if (selectedNode != null && selectedNode != getRootNode()) {
-				try {
-					this.networkConnection.delete(selectedNode.getUserObject());
-					DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
-					parentNode.remove(selectedNode);
-					reloadTree();
-				} catch (Throwable e) {
-					Logger.getDefaultInstance().log(e);
-					JOptionPane.showMessageDialog(this, "Cannot delete selected object.", "Delete Object Failed", JOptionPane.ERROR_MESSAGE);
+		if (JOptionPane.showConfirmDialog(this, "Сигурен ли сте, че искате да изтриете избрания елемент?", "Диалог за Изтриване", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			if (!this.getTreeData().isSelectionEmpty()) {
+				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) this.getTreeData().getLastSelectedPathComponent();
+				if (selectedNode != null && selectedNode != getRootNode()) {
+					try {
+						this.networkConnection.delete(selectedNode.getUserObject());
+						DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) selectedNode.getParent();
+						parentNode.remove(selectedNode);
+						reloadTree();
+					} catch (Throwable e) {
+						Logger.getDefaultInstance().log(e);
+						JOptionPane.showMessageDialog(this, "Cannot delete selected object.", "Delete Object Failed", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		}

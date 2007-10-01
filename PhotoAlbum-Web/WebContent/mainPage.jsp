@@ -14,7 +14,7 @@
 </head>
 
 <body>
-<c:if test="${empty sessionScope.initialized}">
+<c:if test="${empty sessionScope.initialized || param.refresh == true}">
 	<c:redirect url="/initSession" />
 </c:if>
 <c:set var="allUsers" value="${sessionScope.allUsers}" />
@@ -53,7 +53,7 @@
 					</c:choose>
 					<a href="SearchServlet">Търсене</a>
 					<span class="separator"><img src="./images/separator.png" align="middle" /></span>
-					<a href="Help.jsp">Помощ</a>
+					<a href="mainPage.jsp?refresh=true">Начало</a>
 				</td>
 			</tr>
 		</table>
@@ -89,24 +89,32 @@
 								</td>
 							</tr>
 							<tr><td class="leftLoginBottom">&nbsp;</td></tr>
-							<tr><td style="font-size: 8px;">&nbsp;</td></tr>
 						</table>
 					</form>
+					<div class="lh10">&nbsp;</div>
 				</c:when>
 			</c:choose>
-			<table class="leftMenu" cellpadding="0" cellspacing="0">
-				<tr><td class="header" colspan="2">
+			<table cellpadding="0" cellspacing="0" class="leftMenu">
+				<tr><td colspan="2" class="headerMin" style="border-bottom: 3px solid #fabc01;">
 						<div>Потребители</div>
 					</td>
 				</tr>
 				<c:if test="${!empty sessionScope.allUsers}">
 					<c:forEach var="user" items="${sessionScope.allUsers}">
-						<tr><td class="fill"><img class="bullet" src="./images/bullet.png" /></td>
-							<td class="fill"><a href="./user?userId=${user.userId}">${user.username}</a></td>
+						<tr><td class="leftItem pTop10">
+								<img src="./images/bullet.png" class="bullet" alt="bullet" />
+							</td>
+							<td class="rightItem pTop10">
+								<a href="./user?userId=${user.userId}">${user.username}</a>
+							</td>
 						</tr>
 					</c:forEach>
 				</c:if>
-				<tr><td class="bottom" colspan="2"></td></tr>
+				<tr><td class="leftItem lh10">&nbsp;</td>
+					<td class="rightItem lh10">&nbsp;</td>
+				</tr>
+				<tr><td colspan="2" class="bottomMin">&nbsp;</td>
+				</tr>
 			</table>
 			<div class="kare">
 				<table cellpadding="0" cellspacing="0" class="top10">
