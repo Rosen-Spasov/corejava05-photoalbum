@@ -5,12 +5,10 @@
 <html>
 <head>
 	<title>Регистрация</title>
-	<script type="text/javascript" src="./js/validation.js">
-</script>
+	<script type="text/javascript" src="./js/validation.js" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="GENERATOR" content="Rational Application Developer">
 	<link rel="stylesheet" type="text/css" href="./style/main.css" />
-
 </head>
 <body>
 <table class="mainTable" cellpadding="0" cellspacing="0" align="center">

@@ -34,6 +34,8 @@ public class UserServlet extends photoalbum.web.servlets.BaseServlet implements 
 	
 	public static final String ATTR_PHOTO_PAGES = "photoPages";
 	
+	public static final String ATTR_TOTAL_PAGES = "totalPages";
+	
 	public static final String REQUEST_DISPATCHER = "user.jsp";
 	
 	public static final int PHOTOS_PER_PAGE = 16;
@@ -48,30 +50,51 @@ public class UserServlet extends photoalbum.web.servlets.BaseServlet implements 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doPost(request, response);
-		
+
+		int pageIndex = 0;
+		int totalPages = 0;
 		try {
-			int userId = Integer.parseInt(request.getParameter(PARAM_USER_ID));
-			User selectedUser = getPam().getUserById(userId);
-			if (selectedUser != null) {
-				request.setAttribute(ATTR_SELECTED_USER, selectedUser);
+			try {
+				int userId = Integer.parseInt(request.getParameter(PARAM_USER_ID));
+				User selectedUser = getPam().getUserById(userId);
+				if (selectedUser != null) {
+					session.setAttribute(ATTR_SELECTED_USER, selectedUser);
+				} else {
+					session.setAttribute(ATTR_SELECTED_USER, null);
+				}
+			} catch (NumberFormatException e) {
+				session.setAttribute(ATTR_SELECTED_USER, null);
+				getLogger().log("Could not parse user ID or no user ID has been provided at all.");
 			}
 			
-			int categoryId = Integer.parseInt(request.getParameter(PARAM_CATEGORY_ID));
-			Category selectedCategory = getPam().getCategoryById(categoryId);
-			if (selectedCategory != null) {
-				request.setAttribute(ATTR_SELECTED_CATEGORY, selectedCategory);
-				Set<Photo> photos = selectedCategory.getPhotos();
-				PhotoPage[] photoPages = PhotoPage.getPages(photos);
-				request.setAttribute(ATTR_PHOTO_PAGES, photoPages);
-				
-				int pageIndex = Integer.parseInt(request.getParameter(PARAM_PAGE_INDEX));
-				request.setAttribute(ATTR_PAGE_INDEX, pageIndex);
+			try {
+				int categoryId = Integer.parseInt(request.getParameter(PARAM_CATEGORY_ID));
+				Category selectedCategory = getPam().getCategoryById(categoryId);
+				if (selectedCategory != null) {
+					session.setAttribute(ATTR_SELECTED_CATEGORY, selectedCategory);
+					Set<Photo> photos = selectedCategory.getPhotos();
+					PhotoPage[] photoPages = PhotoPage.getPages(photos);
+					if (photoPages != null) {
+						session.setAttribute(ATTR_PHOTO_PAGES, photoPages);
+						totalPages = photoPages.length;
+					}
+				} else {
+					session.setAttribute(ATTR_SELECTED_CATEGORY, null);
+					session.setAttribute(ATTR_PHOTO_PAGES, null);
+				}
+			} catch (NumberFormatException e) {
+				session.setAttribute(ATTR_SELECTED_CATEGORY, null);
+				session.setAttribute(ATTR_PHOTO_PAGES, null);
+				getLogger().log("Could not parse category ID or no category ID has been provided at all.");
 			}
-		} catch (NumberFormatException e) {
-			request.setAttribute(ATTR_PAGE_INDEX, 0);
-			getLogger().log(e);
+			
+			try {
+				pageIndex = Integer.parseInt(request.getParameter(PARAM_PAGE_INDEX));
+			} catch (NumberFormatException e) {
+				getLogger().log("Could not parse page index or no page index has been provided at all.");
+			}
 		} finally {
-			request.getRequestDispatcher(REQUEST_DISPATCHER).forward(request, response);
+			request.getRequestDispatcher(REQUEST_DISPATCHER + "?pageIndex=" + pageIndex + "&totalPages=" + totalPages).forward(request, response);
 		}
 	}   	  	    
 }

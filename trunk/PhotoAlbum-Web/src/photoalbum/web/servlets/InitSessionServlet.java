@@ -40,11 +40,8 @@ import photoalbum.entities.User;
 		getPam();
 		getLogger();
 		
-		User[] allUsers = (User[]) session.getAttribute(ATTR_ALL_USERS);
-		if (allUsers == null) {
-			allUsers = getPam().getAllUsers();
-			session.setAttribute(ATTR_ALL_USERS, allUsers);
-		}
+		User[] allUsers = getPam().getAllUsers();
+		session.setAttribute(ATTR_ALL_USERS, allUsers);
 		
 		session.setAttribute(ATTR_INITIALIZED, true);
 		response.sendRedirect(REDIRECT);

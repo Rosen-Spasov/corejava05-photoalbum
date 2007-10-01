@@ -515,13 +515,14 @@
 	.leftMenu a {
 		color: #5a3c8b;
 		text-decoration: none;
-		background: #f2f0f9 url('dottedbo.gif') repeat-x 100% 100%;
+		background: url('../images/dottedbordermenu.gif') repeat-x 100% 100%;
 		padding-bottom: 2px;
 		white-space: nowrap;
 	}
 	
 	.leftMenu a:hover {
-		background: #f2f0f9 url('fullbord.gif') repeat-x 100% 100%;
+		background: url('../images/fullbordermenu.gif') repeat-x 100% 100%;
+		cursor: pointer;
 	}
 	
 	.centerMenu {
