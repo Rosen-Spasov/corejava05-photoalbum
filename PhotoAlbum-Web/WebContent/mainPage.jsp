@@ -116,29 +116,26 @@
 				<tr><td colspan="2" class="bottomMin">&nbsp;</td>
 				</tr>
 			</table>
-			<div class="kare">
-				<table cellpadding="0" cellspacing="0" class="top10">
-					<tr><td class="headerBorder headerMin" colspan="2">
-							<div style="width: 150px;">Mясто за реклама</div>
-						</td>
-					</tr>
-					<tr><td class="fill"><a href="http://www.amam.bg/" target="_blank" title="кликни &amp; хапни"><img src="./images/kare_amam.jpg" alt="кликни &amp; хапни" align="left" /></a>
-						</td>
-						<td class="fill">
-							<div><a href="http://www.amam.bg/" class="bold purple2" target="_blank" title="кликни &amp; хапни">Amam.bg</a></div>
-							<div class="size10"><a href="http://www.amam.bg/" class="black" target="_blank" title="кликни &amp; хапни">Кликни &amp; Хапни</a></div>
-						</td>
-					</tr>
-					<tr><td class="fill"><a href="http://www.nani.bg" target="_blank" title="Nani.bg - внесете уют"><img src="./images/nani_1_40x40.jpg" alt="Nani.bg" align="left" /></a>
-						</td>
-						<td class="fill">
-							<div><a href="http://www.nani.bg" class="bold purple2" target="_blank" title="Nani.bg - внесете уют">Nani.bg</a></div>
-							<div class="size10"><a href="http://www.nani.bg" class="black" target="_blank" title="Nani.bg - внесете уют">Внесете Уют</a></div>
-						</td>
-					</tr>
-					<tr><td class="bottom" colspan="2"></td></tr>
-				</table>
-			</div>
+			<table cellpadding="0" cellspacing="0" class="top10" width="170px">
+				<tr><td class="headerBorder headerMin" colspan="2">
+						<div style="width: 150px;">Mясто за реклама</div>
+					</td>
+				</tr>
+				<tr><td class="pTop10"><a href="http://www.amam.bg/" title="кликни &amp; хапни"><img src="./images/kare_amam.jpg" alt="кликни &amp; хапни" align="left" /></a>
+					</td>
+					<td><div><a href="http://www.amam.bg/" class="link bold" title="кликни &amp; хапни">Amam.bg</a></div>
+						<div class="size10">Кликни &amp; Хапни</div>
+					</td>
+				</tr>
+				<tr><td class="pTop10"><a href="http://www.nani.bg" title="Nani.bg - внесете уют"><img src="./images/nani_1_40x40.jpg" alt="Nani.bg" align="left" /></a>
+					</td>
+					<td><div><a href="http://www.nani.bg" class="link bold" title="Nani.bg - внесете уют">Nani.bg</a></div>
+						<div class="size10">Внесете Уют</div>
+					</td>
+				</tr>
+				<tr><td colspan="2"><hr/></td></tr>
+			</table>
+			
 		</td>
 	</tr>
 	<tr><td colspan="3" style="line-height: 0px; height: 10px;">&nbsp;</td>

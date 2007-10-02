@@ -156,6 +156,10 @@
 		padding-bottom: 10px !important;
 	}
 	
+	.pBottom5 {
+		padding-bottom: 5px !important;
+	}
+	
 	.vseparator {
 		height: 2px;
 		line-height: 2px;
