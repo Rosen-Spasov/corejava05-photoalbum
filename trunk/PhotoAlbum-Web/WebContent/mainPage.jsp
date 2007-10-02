@@ -10,7 +10,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Фото албум - Намери снимките, които търсиш!</title>
 	<link rel="stylesheet" type="text/css" href="./style/main.css" />
-	<script type="text/javascript" />
+	<script type="text/javascript"></script>
 </head>
 
 <body>
@@ -126,10 +126,10 @@
 						</td>
 						<td class="fill">
 							<div><a href="http://www.amam.bg/" class="bold purple2" target="_blank" title="кликни &amp; хапни">Amam.bg</a></div>
-							<div class="size10"><a href="http://www.amam.bg/?ad=004;00;03" class="black" target="_blank" title="кликни &amp; хапни">Кликни &amp; Хапни</a></div>
+							<div class="size10"><a href="http://www.amam.bg/" class="black" target="_blank" title="кликни &amp; хапни">Кликни &amp; Хапни</a></div>
 						</td>
 					</tr>
-					<tr><td class="fill"><a href="http://www.amam.bg/" target="_blank" title="Nani.bg - внесете уют"><img src="./images/nani_1_40x40.jpg" alt="Nani.bg" align="left" /></a>
+					<tr><td class="fill"><a href="http://www.nani.bg" target="_blank" title="Nani.bg - внесете уют"><img src="./images/nani_1_40x40.jpg" alt="Nani.bg" align="left" /></a>
 						</td>
 						<td class="fill">
 							<div><a href="http://www.nani.bg" class="bold purple2" target="_blank" title="Nani.bg - внесете уют">Nani.bg</a></div>
