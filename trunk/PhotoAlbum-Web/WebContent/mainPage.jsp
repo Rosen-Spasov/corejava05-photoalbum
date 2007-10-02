@@ -10,7 +10,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Фото албум - Намери снимките, които търсиш!</title>
 	<link rel="stylesheet" type="text/css" href="./style/main.css" />
-	<script type="text/javascript"></script>
+	<script type="text/javascript" />
 </head>
 
 <body>
@@ -105,7 +105,7 @@
 								<img src="./images/bullet.png" class="bullet" alt="bullet" />
 							</td>
 							<td class="rightItem pTop10">
-								<a href="./user?userId=${user.userId}">${user.username}</a>
+								<a href="./user?action=LOAD&userId=${user.userId}">${user.username}</a>
 							</td>
 						</tr>
 					</c:forEach>
@@ -146,10 +146,10 @@
 	<tr><td colspan="3" class="mainBottom">
 		<div>
 			<div class="fLeft vtop left10 top10">
-				<a class="link" href="http://academy.devbg.org/">Контакти</a><span class="separator">|</span>
-				<a class="link" href="Advertisement.jsp">Реклама</a><span class="separator">|</span>
-				<a class="link" href="Dot.jsp">Права и задължения</a><span class="separator">|</span>
-				<a class="link" href="Help.jsp">Помощ</a><span class="separator">|</span>
+				<a class="link" href="./contacts.jsp">Контакти</a><span class="separator">|</span>
+				<a class="link" href="./advertisement.jsp">Реклама</a><span class="separator">|</span>
+				<a class="link" href="./rights.jsp">Права и задължения</a><span class="separator">|</span>
+				<a class="link" href="./help.jsp">Помощ</a><span class="separator">|</span>
 				<div class="left">
 					<div style="padding-top: 10px;padding-bottom: 10px;">
 						<span class="separator" />
@@ -159,7 +159,7 @@
 			</div>
 			<div class="fRight vtop right10 top10">
 				Copyright © 2007-2007 Менте Софтуер<br>
-				<div class="right">Web Design: НАРС</div>
+				<div class="right">Web Design: Пичовете</div>
 			</div>
 		</div>
 		</td>

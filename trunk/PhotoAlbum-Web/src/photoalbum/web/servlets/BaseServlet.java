@@ -69,5 +69,7 @@ public abstract class BaseServlet extends HttpServlet implements Servlet {
 		if (logger == null) {
 			logger = (Logger) session.getAttribute(ATTR_LOGGER);
 		}
+		
+		response.setCharacterEncoding("UTF-8");
 	}
 }

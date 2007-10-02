@@ -30,10 +30,10 @@
 						</c:when>
 						<c:when test='${param.action == "RENAME"}'>
 							<tr><td class="leftItem right pTop10">
-									<label for="prevName">Старото име е:</label>
+									<label for="currentName">Текущото име е:</label>
 								</td>
 								<td class="rightItem pTop10">
-									<input type="text" disabled="disabled" name="prevName" value="${param.prevName}"/>
+									<input type="text" disabled="disabled" name="currentName" value="${param.currentName}"/>
 								</td>
 							</tr>
 							<tr><td class="leftItem right pTop10">
@@ -46,7 +46,7 @@
 						</c:when>
 					</c:choose>
 					<tr><td class="leftItem right lh10">
-							<a onclick="javascript:history.back()">Назад</a>
+							<a style="cursor: pointer;" onclick="javascript:history.back()">Назад</a>
 						</td>
 						<td class="rightItem lh10">
 							<input class="button" type="submit" name="submit" value="Продължи">
@@ -58,6 +58,7 @@
 					<tr><td class="bottomMid" colspan="2">&nbsp;</td></tr>
 				</table>
 				<input type="hidden" name="action" value="${param.action}" />
+				<input type="hidden" name="categoryId" value="${param.categoryId}" />
 				<input type="hidden" name="parentId" value="${param.parentId}" />
 				<input type="hidden" name="parentType" value="${param.parentType}" />
 			</form>

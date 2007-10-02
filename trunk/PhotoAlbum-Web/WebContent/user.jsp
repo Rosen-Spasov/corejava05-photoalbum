@@ -84,6 +84,32 @@
 						<a href="">Начална страница</a>
 					</td>
 				</tr>
+				<c:if test="${!empty selectedCategory}">
+					<tr><td class="leftItem pTop10">
+							<img src="./images/bullet.png" class="bullet" alt="bullet" />
+						</td>
+						<td class="rightItem pTop10">
+							<a href="./user?action=LOAD&userId=${selectedUser.userId}&categoryId=${selectedCategory.parentCategory.categoryId}">Нагоре</a>
+						</td>
+					</tr>
+				</c:if>
+				<tr><td class="leftItem pTop10">
+						<img src="./images/bullet.png" class="bullet" alt="bullet" />
+					</td>
+					<td class="rightItem pTop10">
+						<a onclick="javascript:history.back()">Назад</a>
+					</td>
+				</tr>
+				<tr><td class="leftItem lh10">&nbsp;</td>
+					<td class="rightItem lh10">&nbsp;</td>
+				</tr>
+				<tr><td colspan="2" class="bottomMin">&nbsp;</td></tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="leftMenu top10">
+				<tr><td colspan="2" class="headerMin" style="border-bottom: 3px solid #fabc01;">
+						<div>Меню</div>
+					</td>
+				</tr>
 				<c:if test="${!empty loggedUser && loggedUser.userId == selectedUser.userId}">
 					<tr><td class="leftItem pTop10">
 							<img src="./images/bullet.png" class="bullet" alt="bullet" />
@@ -104,25 +130,27 @@
 								<img src="./images/bullet.png" class="bullet" alt="bullet" />
 							</td>
 							<td class="rightItem pTop10">
-								<a href="category.jsp?action=RENAME&categoryId=${selectedCategory.categoryId}">Преименувай</a>
+								<a href="category.jsp?action=RENAME&categoryId=${selectedCategory.categoryId}&currentName=${selectedCategory.catName}">
+									Преименувай
+								</a>
 							</td>
 						</tr>
 						<tr><td class="leftItem pTop10">
 								<img src="./images/bullet.png" class="bullet" alt="bullet" />
 							</td>
 							<td class="rightItem pTop10">
-								<a href="">Изтрий</a>
+								<a href="./category?action=DELETE&categoryId=${selectedCategory.categoryId}">Изтрий</a>
+							</td>
+						</tr>
+						<tr><td class="leftItem pTop10">
+								<img src="./images/bullet.png" class="bullet" alt="bullet" />
+							</td>
+							<td class="rightItem pTop10">
+								<a href="">Добави снимка</a>
 							</td>
 						</tr>
 					</c:if>
 				</c:if>
-				<tr><td class="leftItem pTop10">
-						<img src="./images/bullet.png" class="bullet" alt="bullet" />
-					</td>
-					<td class="rightItem pTop10">
-						<a onclick="javascript:history.back()">Назад</a>
-					</td>
-				</tr>
 				<tr><td class="leftItem lh10">&nbsp;</td>
 					<td class="rightItem lh10">&nbsp;</td>
 				</tr>
@@ -143,7 +171,7 @@
 							<img src="./images/bullet.png" class="bullet" alt="bullet" />
 						</td>
 						<td class="rightItem pTop10">
-							<a href="./user?userId=${selectedUser.userId}&categoryId=${category.categoryId}">
+							<a href="./user?action=LOAD&userId=${selectedUser.userId}&categoryId=${category.categoryId}">
 								<c:out value="${category.catName}" />
 							</a>
 						</td>
@@ -210,9 +238,8 @@
 										</div>
 										<div class="vipPic">&nbsp;</div>
 										<div class="lh17">
-											<a href="" class="link bold">${photo.phName}</a>
+											<a href="" class="link bold">Номер: ${photo.photoId}</a>
 										</div>
-										<div class="lh17">Коментари <span class="bold">0</span></div>
 									</div>
 								</c:forEach>
 							</div>
