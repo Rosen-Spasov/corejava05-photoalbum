@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import photoalbum.CreateCategoryException;
+import photoalbum.entities.Category;
 import photoalbum.entities.interfaces.ICategoryContainer;
 
 
@@ -19,6 +20,8 @@ import photoalbum.entities.interfaces.ICategoryContainer;
 	public static final String PARAM_PARENT_TYPE = "parentType";
 	
 	public static final String PARAM_PARENT_ID = "parentId";
+	
+	public static final String PARAM_CATEGORY_ID = "categoryId";
 	
 	public static final String PARAM_CAT_NAME = "catName";
 	
@@ -51,14 +54,27 @@ import photoalbum.entities.interfaces.ICategoryContainer;
 				}
 				break;
 			case DELETE:
+				try {
+					int categoryId = Integer.parseInt(request.getParameter(PARAM_CATEGORY_ID));
+					deleteCategory(categoryId);
+				} catch (NumberFormatException e) {
+					getLogger().log(e);
+				}
 				break;
 			case RENAME:
+				try {
+					int categoryId = Integer.parseInt(request.getParameter(PARAM_CATEGORY_ID));
+					String catName = request.getParameter(PARAM_CAT_NAME);
+					renameCategory(categoryId, catName);
+				} catch (NumberFormatException e) {
+					getLogger().log(e);
+				}
 				break;
 			default:
 				getLogger().log("[" + action + "] is not a valid [action] parameter. It must be equal to ADD, DELETE or RENAME.");
 			}
 		} finally {
-			response.sendRedirect("mainPage.jsp?refresh=true");
+			response.sendRedirect("./user?action=REFRESH");
 		}
 	}
 
@@ -84,5 +100,15 @@ import photoalbum.entities.interfaces.ICategoryContainer;
 				getLogger().log(e);
 			}
 		}
+	}
+	
+	private void deleteCategory(int categoryId) {
+		Category category = getPam().getCategoryById(categoryId);
+		getPam().deleteCategory(category);
+	}
+	
+	private void renameCategory(int categoryId, String catName) {
+		Category category = getPam().getCategoryById(categoryId);
+		getPam().renameCategory(category, catName);
 	}
 }
