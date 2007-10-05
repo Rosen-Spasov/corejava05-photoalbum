@@ -42,7 +42,7 @@ public class UserServlet extends photoalbum.web.servlets.BaseServlet implements 
 	
 	public static final int PHOTOS_PER_PAGE = 16;
 	
-	public static enum Action {LOAD, REFRESH}
+	public static enum Action {LOAD, REFRESH, NEXT_PAGE, PREV_PAGE}
 
 	public UserServlet() {
 		super();
@@ -64,8 +64,13 @@ public class UserServlet extends photoalbum.web.servlets.BaseServlet implements 
 			case LOAD:
 				loadUserInfo(request, response);
 				break;
-			default:
+			case NEXT_PAGE:
+				loadNextPage();
 				break;
+			case PREV_PAGE:
+				loadPrevPage();
+				break;
+			default:
 			}
 		} finally {
 			forwardRequest(request, response);
@@ -77,14 +82,16 @@ public class UserServlet extends photoalbum.web.servlets.BaseServlet implements 
 		User selectedUser = (User) session.getAttribute(ATTR_SELECTED_USER);
 		if (selectedUser != null) {
 			int userId = selectedUser.getUserId();
-			session.setAttribute(ATTR_SELECTED_USER, getPam().getUserById(userId));
+			selectedUser = getPam().getUserById(userId);
+			session.setAttribute(ATTR_SELECTED_USER, selectedUser);
 		}
 		
 		int totalPages = 0;
 		Category selectedCategory = (Category) session.getAttribute(ATTR_SELECTED_CATEGORY);
 		if (selectedCategory != null) {
 			int categoryId = selectedCategory.getCategoryId();
-			session.setAttribute(ATTR_SELECTED_CATEGORY, getPam().getCategoryById(categoryId));
+			selectedCategory = getPam().getCategoryById(categoryId);
+			session.setAttribute(ATTR_SELECTED_CATEGORY, selectedCategory);
 			
 			PhotoPage[] photoPages = getPages(selectedCategory);
 			if (photoPages != null) {
@@ -104,11 +111,7 @@ public class UserServlet extends photoalbum.web.servlets.BaseServlet implements 
 		try {
 			int userId = Integer.parseInt(request.getParameter(PARAM_USER_ID));
 			User selectedUser = getPam().getUserById(userId);
-			if (selectedUser != null) {
-				session.setAttribute(ATTR_SELECTED_USER, selectedUser);
-			} else {
-				session.setAttribute(ATTR_SELECTED_USER, null);
-			}
+			session.setAttribute(ATTR_SELECTED_USER, selectedUser);
 		} catch (NumberFormatException e) {
 			session.setAttribute(ATTR_SELECTED_USER, null);
 			getLogger().log("Could not parse user ID or no user ID has been provided at all.");
@@ -117,17 +120,11 @@ public class UserServlet extends photoalbum.web.servlets.BaseServlet implements 
 		try {
 			int categoryId = Integer.parseInt(request.getParameter(PARAM_CATEGORY_ID));
 			Category selectedCategory = getPam().getCategoryById(categoryId);
-			if (selectedCategory != null) {
-				session.setAttribute(ATTR_SELECTED_CATEGORY, selectedCategory);
-				PhotoPage[] photoPages = getPages(selectedCategory);
-				if (photoPages != null) {
-					session.setAttribute(ATTR_PHOTO_PAGES, photoPages);
-					totalPages = photoPages.length;
-					session.setAttribute(ATTR_TOTAL_PAGES, totalPages);
-				}
-			} else {
-				session.setAttribute(ATTR_SELECTED_CATEGORY, null);
-				session.setAttribute(ATTR_PHOTO_PAGES, null);
+			session.setAttribute(ATTR_SELECTED_CATEGORY, selectedCategory);
+			PhotoPage[] photoPages = getPages(selectedCategory);
+			session.setAttribute(ATTR_PHOTO_PAGES, photoPages);
+			if (photoPages != null) {
+				totalPages = photoPages.length;
 			}
 		} catch (NumberFormatException e) {
 			session.setAttribute(ATTR_SELECTED_CATEGORY, null);
@@ -137,28 +134,49 @@ public class UserServlet extends photoalbum.web.servlets.BaseServlet implements 
 
 		try {
 			pageIndex = Integer.parseInt(request.getParameter(PARAM_PAGE_INDEX));
-			session.setAttribute(ATTR_PAGE_INDEX, pageIndex);
 		} catch (NumberFormatException e) {
 			getLogger().log("Could not parse page index or no page index has been provided at all.");
 		}
+		
+		session.setAttribute(ATTR_PAGE_INDEX, pageIndex);
+		session.setAttribute(ATTR_TOTAL_PAGES, totalPages);
 	}
 	
 	private PhotoPage[] getPages(Category category) {
+		if (category == null) {
+			return null;
+		}
+		
 		Set<Photo> photos = category.getPhotos();
 		PhotoPage[] photoPages = PhotoPage.getPages(photos);
 		
 		return photoPages;
 	}
 	
-	private void forwardRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int pageIndex = 0;
+	private void loadNextPage() {
 		if (session.getAttribute(ATTR_PAGE_INDEX) != null) {
-			pageIndex = (Integer) session.getAttribute(ATTR_PAGE_INDEX);
+			int pageIndex = (Integer) session.getAttribute(ATTR_PAGE_INDEX);
+			if (session.getAttribute(ATTR_TOTAL_PAGES) != null) {
+				int totalPages = (Integer) session.getAttribute(ATTR_TOTAL_PAGES);
+				if (pageIndex < totalPages - 1) {
+					pageIndex++;
+					session.setAttribute(ATTR_PAGE_INDEX, pageIndex);
+				}
+			}
 		}
-		int totalPages = 0;
-		if (session.getAttribute(ATTR_TOTAL_PAGES) != null) {
-			totalPages = (Integer) session.getAttribute(ATTR_TOTAL_PAGES);
+	}
+	
+	private void loadPrevPage() {
+		if (session.getAttribute(ATTR_PAGE_INDEX) != null) {
+			int pageIndex = (Integer) session.getAttribute(ATTR_PAGE_INDEX);
+			if (pageIndex > 0) {
+				pageIndex--;
+				session.setAttribute(ATTR_PAGE_INDEX, pageIndex);
+			}
 		}
-		request.getRequestDispatcher(REQUEST_DISPATCHER + "?pageIndex=" + pageIndex + "&totalPages=" + totalPages).forward(request, response);
+	}
+	
+	private void forwardRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher(REQUEST_DISPATCHER).forward(request, response);
 	}
 }

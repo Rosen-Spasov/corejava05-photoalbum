@@ -65,6 +65,15 @@
 		<servlet-class>
 		photoalbum.web.servlets.PhotoServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>
+		UploadServlet</display-name>
+		<servlet-name>UploadServlet</servlet-name>
+		<servlet-class>
+		photoalbum.web.servlets.UploadServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>InitSessionServlet</servlet-name>
 		<url-pattern>/initSession</url-pattern>
@@ -92,6 +101,10 @@
 	<servlet-mapping>
 		<servlet-name>PhotoServlet</servlet-name>
 		<url-pattern>/photo</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UploadServlet</servlet-name>
+		<url-pattern>/upload</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>mainPage.jsp</welcome-file>

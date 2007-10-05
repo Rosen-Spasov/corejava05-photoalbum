@@ -176,7 +176,7 @@
 		background-image: url('../images/btnback.png');
 		color: white;
 		font-size: 13px;
-		height: 28px;
+		height: 20px;
 		/*width: auto; /*IE da nqma default padding??*/
 		/*overflow: visible; /*IE da nqma default padding??*/
 		background-repeat: repeat-x;
@@ -300,6 +300,7 @@
 	}
 	.link:hover {
 		background: url('../images/fullbordermenu.gif') repeat-x 100% 100%;
+		cursor: pointer;
 	}
 	.linkNormal {
 		color: #5a3c8b;
@@ -563,6 +564,14 @@
 		padding-left: 20px;
 		height: 400px;
 		text-align: left;
+	}
+	
+	.mainCenter {
+		width: 781px;
+		padding-left: 20px;
+		padding-top: 10px;
+		height: 400px;
+		text-align: center;
 	}
 	
 	.mainBottom {

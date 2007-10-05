@@ -1,6 +1,8 @@
 package photoalbum.entities;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Comment implements Serializable, Comparable<Comment> {
 
@@ -13,6 +15,40 @@ public class Comment implements Serializable, Comparable<Comment> {
 	private Photo photo;
 
 	private User user;
+	
+	private Date commentDate;
+	
+	private String dateAsString;
+	
+	private String sender;
+	
+	public String getDateAsString() {
+		if (dateAsString == null) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			dateAsString = dateFormat.format(getCommentDate());
+		}
+		return dateAsString;
+	}
+	
+	public void setDateAsString(String dateAsString) {
+		this.dateAsString = dateAsString;
+	}
+
+	public Date getCommentDate() {
+		return commentDate;
+	}
+
+	public void setCommentDate(Date commentDate) {
+		this.commentDate = commentDate;
+	}
+
+	public String getSender() {
+		return sender;
+	}
+
+	public void setSender(String sender) {
+		this.sender = sender;
+	}
 
 	public int getCommentId() {
 		return commentId;
@@ -50,9 +86,15 @@ public class Comment implements Serializable, Comparable<Comment> {
 	}
 	
 	public Comment(User user, Photo photo, String text) {
+		this(user, photo, text, new Date(), "");
+	}
+	
+	public Comment(User user, Photo photo, String text, Date commentDate, String sender) {
 		this.setText(text);
 		this.setPhoto(photo);
 		this.setUser(user);
+		this.setCommentDate(commentDate);
+		this.setSender(sender);
 	}
 	
 	public String toString() {
@@ -65,7 +107,9 @@ public class Comment implements Serializable, Comparable<Comment> {
 			Comment comment = (Comment) obj;
 			result = this.getText().equals(comment.getText()) &&
 						this.getPhoto().equals(comment.getPhoto()) &&
-						this.getUser().equals(comment.getUser());
+						this.getUser().equals(comment.getUser()) &&
+						this.getCommentDate().equals(comment.getCommentDate()) &&
+						this.getSender().equals(comment.getSender());
 		}
 		return result;
 	}

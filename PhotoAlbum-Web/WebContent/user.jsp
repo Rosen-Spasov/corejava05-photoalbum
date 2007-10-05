@@ -20,8 +20,8 @@
 <c:set var="selectedUser" value="${sessionScope.selectedUser}" />
 <c:set var="selectedCategory" value="${sessionScope.selectedCategory}" />
 <c:set var="photoPages" value="${sessionScope.photoPages}" />
-<c:set var="pageIndex" value="${param.pageIndex}" />
-<c:set var="totalPages" value="${param.totalPages}" />
+<c:set var="pageIndex" value="${sessionScope.pageIndex}" />
+<c:set var="totalPages" value="${sessionScope.totalPages}" />
 <c:choose>
 	<c:when test="${!empty selectedCategory}">
 		<c:set var="subCategories" value="${selectedCategory.categories}" />
@@ -30,7 +30,6 @@
 		<c:set var="subCategories" value="${selectedUser.categories}" />
 	</c:otherwise>
 </c:choose>
-
 <table class="mainTable" cellpadding="0" cellspacing="0" align="center">
 	<tr><td class="mainTop" colspan="3">
 		<div class="mainTopLogo">
@@ -81,7 +80,14 @@
 						<img src="./images/bullet.png" class="bullet" alt="bullet" />
 					</td>
 					<td class="rightItem pTop10">
-						<a href="">Начална страница</a>
+						<a href="./mainPage.jsp?refresh=true">Начална страница</a>
+					</td>
+				</tr>
+				<tr><td class="leftItem pTop10">
+						<img src="./images/bullet.png" class="bullet" alt="bullet" />
+					</td>
+					<td class="rightItem pTop10">
+						<a href="./user?action=REFRESH">Опресни</a>
 					</td>
 				</tr>
 				<c:if test="${!empty selectedCategory}">
@@ -146,7 +152,7 @@
 								<img src="./images/bullet.png" class="bullet" alt="bullet" />
 							</td>
 							<td class="rightItem pTop10">
-								<a href="">Добави снимка</a>
+								<a href="./upload.jsp">Добави снимка</a>
 							</td>
 						</tr>
 					</c:if>
@@ -232,14 +238,19 @@
 								<c:forEach var="photo" items="${photoPages[pageIndex].photos}">
 									<div class="smallestProfile">
 										<div class="smallProfilePicOffline">
-											<a href="">
+											<a href="./photo?action=LOAD&photoId=${photo.photoId}">
 												<img class="pic" src="${photoPages[pageIndex].absolutePaths[photo.path]}" alt=${photo.phName} title=${photo.phName} />
 											</a>
 										</div>
 										<div class="vipPic">&nbsp;</div>
 										<div class="lh17">
-											<a href="" class="link bold">Номер: ${photo.photoId}</a>
+											<a href="./photo?action=LOAD&photoId=${photo.photoId}" class="link bold">Номер: ${photo.photoId}</a>
 										</div>
+										<c:if test="${!empty loggedUser && loggedUser.userId == selectedUser.userId}">
+											<div class="lh17">
+												<a class="link bold">Изтрий</a>
+											</div>
+										</c:if>
 									</div>
 								</c:forEach>
 							</div>
@@ -248,16 +259,16 @@
 					<tr><td class="tabsBottomMid">
 							<div class="fLeft left10">
 								<c:if test="${pageIndex > 0}">
-									<a href="./user.jsp?pageIndex=${pageIndex - 1}&totalPages=${totalPages}"><img src="./images/btnLeft.gif" /></a>
+									<a href="./user?action=PREV_PAGE"><img src="./images/btnLeft.gif" /></a>
 								</c:if>
 								<c:if test="${pageIndex + 1 < totalPages}">
-									<a href="./user.jsp?pageIndex=${pageIndex + 1}&totalPages=${totalPages}"><img src="./images/btnRight.gif" /></a>
+									<a href="./user?action=NEXT_PAGE"><img src="./images/btnRight.gif" /></a>
 								</c:if>
 								<span style="vertical-align: 50%">${pageIndex + 1} от ${totalPages}</span>
 							</div>
 							<div class="fRight right10">
 								<div style="line-height:17px;">
-									<a href="" class="link">Добави снимка в настоящата категория &raquo;</a>
+									<a href="./upload.jsp" class="link">Добави снимка в настоящата категория &raquo;</a>
 								</div>
 							</div>
 						</td>
