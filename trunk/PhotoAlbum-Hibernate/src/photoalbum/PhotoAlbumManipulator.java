@@ -3,6 +3,7 @@ package photoalbum;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -402,7 +403,11 @@ public class PhotoAlbumManipulator {
 	}
 	
 	public Comment addComment(User user, Photo photo, String text) {
-		Comment comment = new Comment(user, photo, text);
+		return addComment(user, photo, text, new Date(), "");
+	}
+	
+	public Comment addComment(User user, Photo photo, String text, Date date, String sender) {
+		Comment comment = new Comment(user, photo, text, date, sender);
 		user.add(comment);
 		photo.addComment(comment);
 		updateInDB(comment);
