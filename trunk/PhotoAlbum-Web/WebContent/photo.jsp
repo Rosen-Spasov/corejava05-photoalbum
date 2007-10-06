@@ -132,7 +132,11 @@
 			</c:if>
 		</td>
 		<td colspan="2" class="mainCenter vtop">
-			<img src="${photoPages[pageIndex].absolutePaths[selectedPhoto.path]}" style="text-align: center;" alt="${selectedPhoto.path}" />
+			<table>
+				<tr><td><img src="./image?photoId=${selectedPhoto.photoId}" style="text-align: center;" alt="${selectedPhoto.path}"/>
+					</td>
+				</tr>
+			</table>
 			<table cellpadding="0" cellspacing="0" width="400px" style="text-align: left;">
 				<tr><td class="lh10" colspan="2">&nbsp;</td></tr>
 				<c:choose>

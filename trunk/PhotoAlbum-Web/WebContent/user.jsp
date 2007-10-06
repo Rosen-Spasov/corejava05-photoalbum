@@ -236,10 +236,8 @@
 									<div class="smallestProfile">
 										<div class="smallProfilePicOffline">
 											<a href="./photo?action=LOAD&photoId=${photo.photoId}">
-											<!-- 
-												<img class="pic" src="image?id=43234" alt=${photo.phName} title=${photo.phName} />
-											 -->
-											 <img class="pic" src="${photoPages[pageIndex].absolutePaths[photo.path]}" alt=${photo.phName} title=${photo.phName} />
+											<img class="pic" src="./image?photoId=${photo.photoId}" alt=${photo.phName} title=${photo.phName} />
+											 <!-- <img class="pic" src="${photoPages[pageIndex].absolutePaths[photo.path]}" alt=${photo.phName} title=${photo.phName} /> -->
 											</a>
 										</div>
 										<div class="vipPic">&nbsp;</div>
