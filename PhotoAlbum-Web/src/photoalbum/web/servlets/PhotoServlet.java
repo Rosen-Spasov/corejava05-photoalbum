@@ -18,15 +18,11 @@ import photoalbum.entities.Photo;
 	
 	public static final String PARAM_ACTION = "action";
 	
-	public static final String PARAM_PAGE_INDEX = UserServlet.PARAM_PAGE_INDEX;
-	
 	public static final String PARAM_PHOTO_ID = "photoId";
 	
 	public static final String PARAM_PHOTO_NAME = "phName";
 	
 	public static final String ATTR_SELECTED_PHOTO = "selectedPhoto";
-	
-	public static final String ATTR_PHOTO_PAGES = UserServlet.ATTR_PHOTO_PAGES;
 	
 	public static final String DEFAULT_REDIRECT_PAGE = "./photo.jsp";
 	
