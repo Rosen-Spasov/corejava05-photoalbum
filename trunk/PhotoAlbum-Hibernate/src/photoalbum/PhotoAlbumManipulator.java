@@ -403,11 +403,14 @@ public class PhotoAlbumManipulator {
 	}
 	
 	public Comment addComment(User user, Photo photo, String text) {
-		return addComment(user, photo, text, new Date(), "");
+		return addComment(user, photo, text, new Date());
 	}
 	
-	public Comment addComment(User user, Photo photo, String text, Date date, String sender) {
-		Comment comment = new Comment(user, photo, text, date, sender);
+	public Comment addComment(User user, Photo photo, String text, Date date) {
+		if (user == null || photo == null || text == null || text.equals("") || date == null) {
+			return null;
+		}
+		Comment comment = new Comment(user, photo, text, date);
 		user.add(comment);
 		photo.addComment(comment);
 		updateInDB(comment);

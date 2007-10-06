@@ -76,10 +76,10 @@ public class Comment implements Serializable, Comparable<Comment> {
 	}
 	
 	public Comment(User user, Photo photo, String text) {
-		this(user, photo, text, new Date(), "");
+		this(user, photo, text, new Date());
 	}
 	
-	public Comment(User user, Photo photo, String text, Date commentDate, String sender) {
+	public Comment(User user, Photo photo, String text, Date commentDate) {
 		this.setText(text);
 		this.setPhoto(photo);
 		this.setUser(user);

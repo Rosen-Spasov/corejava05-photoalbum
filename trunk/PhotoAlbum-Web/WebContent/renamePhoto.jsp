@@ -33,6 +33,9 @@
 							<input type="text" name="phName" />
 						</td>
 					</tr>
+					<tr><td class="leftItem right lh10">&nbsp;</td>
+						<td class="rightItem lh10">&nbsp;</td>
+					</tr>
 					<tr><td class="leftItem right lh10">
 							<a style="cursor: pointer;" onclick="javascript:history.back()">Назад</a>
 						</td>
@@ -45,10 +48,8 @@
 					</tr>
 					<tr><td class="bottomMid" colspan="2">&nbsp;</td></tr>
 				</table>
-				<input type="hidden" name="action" value="${param.action}" />
-				<input type="hidden" name="categoryId" value="${param.categoryId}" />
-				<input type="hidden" name="parentId" value="${param.parentId}" />
-				<input type="hidden" name="parentType" value="${param.parentType}" />
+				<input type="hidden" name="action" value="RENAME" />
+				<input type="hidden" name="photoId" value="${selectedPhoto.photoId}" />
 			</form>
 		</td>
 	</tr>

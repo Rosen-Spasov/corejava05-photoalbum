@@ -114,7 +114,7 @@
 							<img src="./images/bullet.png" class="bullet" alt="bullet" />
 						</td>
 						<td class="rightItem pTop10">
-							<a>Преименувай</a>
+							<a href="./renamePhoto.jsp">Преименувай</a>
 						</td>
 					</tr>
 					<tr><td class="leftItem pTop10">
@@ -132,37 +132,39 @@
 			</c:if>
 		</td>
 		<td colspan="2" class="mainCenter vtop">
-			<img src="${photoPages[pageIndex].absolutePaths[selectedPhoto.path]}" style="text-align: center;" alt="${selectedPhoto.phName}" />
-			<form method="POST" action="./photo">
+			<img src="${photoPages[pageIndex].absolutePaths[selectedPhoto.path]}" style="text-align: center;" alt="${selectedPhoto.path}" />
+			<table cellpadding="0" cellspacing="0" width="400px" style="text-align: left;">
+				<tr><td class="lh10" colspan="2">&nbsp;</td></tr>
+				<c:choose>
+					<c:when test="${!empty selectedPhoto.comments}">
+						<tr><td colspan="2"><b>Коментари:</b></td></tr>
+						<tr><td colspan="2"><div style="overflow: auto; height: 300px; width: 400px;">
+									<c:forEach var="comment" items="${selectedPhoto.comments}">
+										<hr/>
+										<div style="background-color: #dad2ec;">
+											<c:out value="${comment.dateAsString}, ${comment.user.username}:" />
+										</div>
+										<br/>
+										<c:out value="${comment.text}" />
+										<c:if test="${!empty loggedUser && loggedUser.userId == selectedUser.userId}">
+											<a href="./comment?action=DELETE&commentId=${comment.commentId}" class="link bold">Изтрий</a>
+										</c:if>
+									</c:forEach>
+								</div>
+							</td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+						<tr><td colspan="2"><b>Няма коментари към тази снимка.</b></td></tr>
+					</c:otherwise>
+				</c:choose>
+			</table>
+			<form method="POST" action="./comment?action=ADD">
 				<table cellpadding="0" cellspacing="0" width="400px" style="text-align: left;">
-					<tr><td class="lh10" colspan="2">&nbsp;</td></tr>
-					<c:choose>
-						<c:when test="${!empty selectedPhoto.comments}">
-							<tr><td colspan="2"><b>Коментари:</b></td></tr>
-							<tr><td colspan="2"><div style="overflow: auto; height: 300px; width: 400px;">
-										<c:forEach var="comment" items="${selectedPhoto.comments}">
-											<hr/>
-											<div style="background-color: #dad2ec;">
-												<c:out value="${comment.dateAsString}, ${comment.sender}:" />
-											</div>
-											<br/>
-											<c:out value="${comment.text}" />
-											<c:if test="${!empty loggedUser && loggedUser.userId == selectedUser.userId}">
-												<a class="link bold">Изтрий</a>
-											</c:if>
-										</c:forEach>
-									</div>
-								</td>
-							</tr>
-						</c:when>
-						<c:otherwise>
-							<tr><td colspan="2"><b>Няма коментари към тази снимка.</b></td></tr>
-						</c:otherwise>
-					</c:choose>
 					<c:if test="${!empty loggedUser}">
 						<tr><td class="lh10" colspan="2">&nbsp;</td></tr>
 						<tr><td colspan="2">
-								<textarea rows="8" cols="60" name="comment">Тук напишете своя коментар.</textarea>
+								<textarea rows="8" cols="60" name="text">Тук напишете своя коментар.</textarea>
 							</td>
 						</tr>
 						<tr><td class="lh10" colspan="2">&nbsp;</td></tr>
