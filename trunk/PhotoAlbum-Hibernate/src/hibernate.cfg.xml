@@ -9,7 +9,7 @@
 
         <!-- Database connection settings -->
         <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
-        <property name="connection.url">jdbc:oracle:thin:@spooky:1521/xe</property>
+        <property name="connection.url">jdbc:oracle:thin:@192.168.2.166:1521/xe</property>
         <property name="connection.username">photoalbum</property>
         <property name="connection.password">photoalbum</property>
 

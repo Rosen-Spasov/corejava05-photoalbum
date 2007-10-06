@@ -20,8 +20,6 @@ public class Comment implements Serializable, Comparable<Comment> {
 	
 	private String dateAsString;
 	
-	private String sender;
-	
 	public String getDateAsString() {
 		if (dateAsString == null) {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -40,14 +38,6 @@ public class Comment implements Serializable, Comparable<Comment> {
 
 	public void setCommentDate(Date commentDate) {
 		this.commentDate = commentDate;
-	}
-
-	public String getSender() {
-		return sender;
-	}
-
-	public void setSender(String sender) {
-		this.sender = sender;
 	}
 
 	public int getCommentId() {
@@ -94,7 +84,6 @@ public class Comment implements Serializable, Comparable<Comment> {
 		this.setPhoto(photo);
 		this.setUser(user);
 		this.setCommentDate(commentDate);
-		this.setSender(sender);
 	}
 	
 	public String toString() {
@@ -108,8 +97,7 @@ public class Comment implements Serializable, Comparable<Comment> {
 			result = this.getText().equals(comment.getText()) &&
 						this.getPhoto().equals(comment.getPhoto()) &&
 						this.getUser().equals(comment.getUser()) &&
-						this.getCommentDate().equals(comment.getCommentDate()) &&
-						this.getSender().equals(comment.getSender());
+						this.getCommentDate().equals(comment.getCommentDate());
 		}
 		return result;
 	}
