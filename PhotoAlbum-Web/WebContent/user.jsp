@@ -123,10 +123,10 @@
 						<td class="rightItem pTop10">
 							<c:choose>
 								<c:when test="${!empty selectedCategory}">
-									<a href="category.jsp?action=ADD&parentType=CATEGORY&parentId=${selectedCategory.categoryId}">Добави</a>
+									<a href="category.jsp?action=ADD&parentType=CATEGORY&parentId=${selectedCategory.categoryId}">Добави категория</a>
 								</c:when>
 								<c:otherwise>
-									<a href="category.jsp?action=ADD&parentType=USER&parentId=${selectedUser.userId}">Добави</a>
+									<a href="category.jsp?action=ADD&parentType=USER&parentId=${selectedUser.userId}">Добави категория</a>
 								</c:otherwise>
 							</c:choose>
 						</td>
@@ -145,7 +145,7 @@
 								<img src="./images/bullet.png" class="bullet" alt="bullet" />
 							</td>
 							<td class="rightItem pTop10">
-								<a href="./category?action=DELETE&categoryId=${selectedCategory.categoryId}">Изтрий</a>
+								<a href="./category?action=DELETE&categoryId=${selectedCategory.categoryId}">Изтрий категорията</a>
 							</td>
 						</tr>
 						<tr><td class="leftItem pTop10">
@@ -248,7 +248,7 @@
 										</div>
 										<c:if test="${!empty loggedUser && loggedUser.userId == selectedUser.userId}">
 											<div class="lh17">
-												<a class="link bold">Изтрий</a>
+												<a href="./photo?action=DELETE&photoId=${photo.photoId}" class="link bold">Изтрий</a>
 											</div>
 										</c:if>
 									</div>
