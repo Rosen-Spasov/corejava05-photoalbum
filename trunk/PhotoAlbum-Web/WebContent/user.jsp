@@ -9,7 +9,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>${sessionScope.loggedUser.username}</title>
 	<link rel="stylesheet" type="text/css" href="./style/main.css" />
-	<script type="text/javascript"></script>
+	<script type="text/javascript" src="./js/mainScript.js"></script>
+	
 </head>
 <body>
 <c:set var="allUsers" value="${sessionScope.allUsers}" />
@@ -145,7 +146,7 @@
 								<img src="./images/bullet.png" class="bullet" alt="bullet" />
 							</td>
 							<td class="rightItem pTop10">
-								<a href="./category?action=DELETE&categoryId=${selectedCategory.categoryId}">Изтрий категорията</a>
+								<a href="./category?action=DELETE&categoryId=${selectedCategory.categoryId}" onclick="isConfirm()">Изтрий категорията</a>
 							</td>
 						</tr>
 						<tr><td class="leftItem pTop10">
@@ -200,7 +201,7 @@
 							</tr>
 							<tr><td class="mainSearchTd">
 								<div class="fLeft pLeft10 pTop10">
-									<form action="SearchServlet" method="post">
+									<form action="SearchServlet" name="searchPhoto" method="post" onsubmit="validateSearchName()" >
 										<table cellpadding="0" cellspacing="0" class="searchTable" align="center">
 											<tr align="center">
 												<td width="100px">Име на снимка: </td>
@@ -208,10 +209,6 @@
 												<td colspan="2" width="130px">
 													<input type="submit" class="button" style="width:90px;" name="btnSearch" value="Търси" />
 												</td>
-												<%	String search = (String) request.getAttribute("search");
-													if (search != null) {
-												%>	<tr><td><%= search %></td></tr>
-												<%	} %>
 											</tr>
 										</table>
 									</form>
@@ -239,7 +236,10 @@
 									<div class="smallestProfile">
 										<div class="smallProfilePicOffline">
 											<a href="./photo?action=LOAD&photoId=${photo.photoId}">
-												<img class="pic" src="${photoPages[pageIndex].absolutePaths[photo.path]}" alt=${photo.phName} title=${photo.phName} />
+											<!-- 
+												<img class="pic" src="image?id=43234" alt=${photo.phName} title=${photo.phName} />
+											 -->
+											 <img class="pic" src="${photoPages[pageIndex].absolutePaths[photo.path]}" alt=${photo.phName} title=${photo.phName} />
 											</a>
 										</div>
 										<div class="vipPic">&nbsp;</div>
@@ -248,7 +248,7 @@
 										</div>
 										<c:if test="${!empty loggedUser && loggedUser.userId == selectedUser.userId}">
 											<div class="lh17">
-												<a href="./photo?action=DELETE&photoId=${photo.photoId}" class="link bold">Изтрий</a>
+												<a href="./photo?action=DELETE&photoId=${photo.photoId}" onclick="isConfirm()" class="link bold">Изтрий</a>
 											</div>
 										</c:if>
 									</div>
