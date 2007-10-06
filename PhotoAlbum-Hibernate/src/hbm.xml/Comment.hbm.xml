@@ -18,7 +18,6 @@
 		
 		<property name="Text" column="TEXT" not-null="true" />
 		<property name="CommentDate" column="COMMENT_DATE" not-null="true" />
-		<property name="Sender" column="SENDER" not-null="true" />
 	</class>
 	
 </hibernate-mapping>

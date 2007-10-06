@@ -17,7 +17,7 @@ import photoalbum.entities.Category;
  * Servlet implementation class for Servlet: UploadServlet
  *
  */
- public class UploadServlet extends BaseServlet {
+public class UploadServlet extends BaseServlet {
 
 	private static final long serialVersionUID = -3738719329311650397L;
 	
