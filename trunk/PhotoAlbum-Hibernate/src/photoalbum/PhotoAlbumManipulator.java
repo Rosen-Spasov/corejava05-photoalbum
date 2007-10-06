@@ -413,7 +413,14 @@ public class PhotoAlbumManipulator {
 		Comment comment = new Comment(user, photo, text, date);
 		user.add(comment);
 		photo.addComment(comment);
-		updateInDB(comment);
+		getHbConnection().beginTransaction();
+		try {
+			getHbConnection().save(comment);
+			getHbConnection().commit();
+		} catch (Throwable e) {
+			getHbConnection().rollback();
+			getLogger().log(e);
+		}
 		return comment;
 	}
 	

@@ -24,6 +24,8 @@ public abstract class BaseServlet extends HttpServlet implements Servlet {
 	
 	public static final String ATTR_PAM = "pam";
 	
+	public static final String CHAR_ENCODING = "UTF-8";
+	
 	protected HttpSession session;
 	
 	private boolean initialized = false;
@@ -69,7 +71,7 @@ public abstract class BaseServlet extends HttpServlet implements Servlet {
 		if (logger == null) {
 			logger = (Logger) session.getAttribute(ATTR_LOGGER);
 		}
-		
-		response.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding(CHAR_ENCODING);
+		response.setCharacterEncoding(CHAR_ENCODING);
 	}
 }
