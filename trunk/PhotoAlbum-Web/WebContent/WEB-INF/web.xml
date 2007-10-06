@@ -24,6 +24,15 @@
 		<description>
 		</description>
 		<display-name>
+		SearchServlet</display-name>
+		<servlet-name>SearchServlet</servlet-name>
+		<servlet-class>
+		photoalbum.web.servlets.SearchServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>
 		LoginServlet</display-name>
 		<servlet-name>LoginServlet</servlet-name>
 		<servlet-class>
@@ -114,6 +123,10 @@
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>
 		<url-pattern>/upload</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+	<servlet-name>SearchServlet</servlet-name>
+		<url-pattern>/search</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>CommentServlet</servlet-name>
