@@ -177,6 +177,7 @@
 		color: white;
 		font-size: 13px;
 		height: 20px;
+		width: 90px;
 		/*width: auto; /*IE da nqma default padding??*/
 		/*overflow: visible; /*IE da nqma default padding??*/
 		background-repeat: repeat-x;
@@ -474,7 +475,7 @@
 	
 	.mainTopMenu {
 		width: 960px;
-		height: 28px;
+		height: 27px;
 		background: url('../images/topMenuBack.png');
 		color: white;
 	}
@@ -494,6 +495,7 @@
 	
 	.leftMenu {
 		background: #f2f0f9;
+		width: 170px;
 	}
 	
 	.leftMenu .leftItem {
@@ -508,7 +510,7 @@
 		line-height: 20px;
 		height: 20px;
 		padding-left: 10px;
-		width: 160px;
+		width: 150px;
 		/*width: 110px;*/
 	}
 	
@@ -567,9 +569,7 @@
 	}
 	
 	.mainCenter {
-		width: 781px;
 		padding-left: 20px;
-		padding-top: 10px;
 		height: 400px;
 		text-align: center;
 	}

@@ -50,6 +50,6 @@ public class LoginServlet extends BaseServlet {
 			session.removeAttribute(PARAM_LOGGED_USER);
 		}
 		
-		response.sendRedirect("mainPage.jsp");
+		response.sendRedirect("./mainPage.jsp?refresh=true");
 	}   	  	    
 }

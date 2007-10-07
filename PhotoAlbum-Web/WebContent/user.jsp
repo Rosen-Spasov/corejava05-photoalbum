@@ -46,29 +46,29 @@
 	</tr>
 	<tr><td class="vseparator">&nbsp;</td></tr>
 	<tr><td colspan="3" class="mainTopMenu">
-		<table cellpadding="0" cellspacing="0" class="flex">
-			<tr><td class="left pLeft10">В момента разглеждате профила на ${selectedUser.username}</td>
-				<td class="right pRight10">
-					<c:choose>
-						<c:when test="${empty loggedUser}">
-							<a href="register.jsp">Регистрация</a>
-							<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
-						</c:when>
-						<c:otherwise>
-							<font style="font-size: 12px;">
-								<c:out value='Добре дошъл, ${loggedUser.firstName} ${loggedUser.lastName}!' />
+			<table cellpadding="0" cellspacing="0" class="flex">
+				<tr><td class="left pLeft10">В момента разглеждате профила на ${selectedUser.username}</td>
+					<td class="right pRight10">
+						<c:choose>
+							<c:when test="${empty loggedUser}">
+								<a href="register.jsp">Регистрация</a>
 								<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
-							</font>
-							<a href="./login?action=logout">Изход</a>
-							<span class="separator"><img src="./images/separator.png" align="middle" /></span>
-						</c:otherwise>
-					</c:choose>
-					<a href="SearchServlet">Търсене</a>
-					<span class="separator"><img src="./images/separator.png" align="middle" /></span>
-					<a href="">Начало</a>
-				</td>
-			</tr>
-		</table>
+							</c:when>
+							<c:otherwise>
+								<font style="font-size: 12px;">
+									<c:out value='Добре дошъл, ${loggedUser.firstName} ${loggedUser.lastName}!' />
+									<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
+								</font>
+								<a href="./login?action=logout">Изход</a>
+								<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
+							</c:otherwise>
+						</c:choose>
+						<a href="SearchServlet">Търсене</a>
+						<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
+						<a href="./mainPage.jsp?refresh=true">Начало</a>
+					</td>
+				</tr>
+			</table>
 		</td>
 	</tr>
 	<tr><td class="mainLeft vtop">
@@ -191,7 +191,7 @@
 				</tr>
 			</table>
 		</td>
-		<td colspan="2" class="mainCenterNone vtop">
+		<td colspan="2" class="mainCenter vtop">
 				<table cellpadding="0" cellspacing="0" class="flex" align="center" >
 					<tr><td class="vtop">
 						<table cellpadding="0" cellspacing="0" class="mainSearch top10" align="center">
@@ -264,11 +264,13 @@
 								</c:if>
 								<span style="vertical-align: 50%">${pageIndex + 1} от ${totalPages}</span>
 							</div>
-							<div class="fRight right10">
-								<div style="line-height:17px;">
-									<a href="./upload.jsp" class="link">Добави снимка в настоящата категория &raquo;</a>
+							<c:if test="${!empty loggedUser}">
+								<div class="fRight right10">
+									<div style="line-height:17px;">
+										<a href="./upload.jsp" class="link">Добави снимка в настоящата категория &raquo;</a>
+									</div>
 								</div>
-							</div>
+							</c:if>
 						</td>
 					</tr>
 				</table>

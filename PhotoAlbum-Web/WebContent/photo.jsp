@@ -52,11 +52,11 @@
 								<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
 							</font>
 							<a href="./login?action=logout">Изход</a>
-							<span class="separator"><img src="./images/separator.png" align="middle" /></span>
+							<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
 						</c:otherwise>
 					</c:choose>
 					<a href="SearchServlet">Търсене</a>
-					<span class="separator"><img src="./images/separator.png" align="middle" /></span>
+					<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
 					<a href="./mainPage.jsp?refresh=true">Начало</a>
 				</td>
 			</tr>
@@ -132,12 +132,12 @@
 			</c:if>
 		</td>
 		<td colspan="2" class="mainCenter vtop">
-			<table>
-				<tr><td><img src="./image?photoId=${selectedPhoto.photoId}" style="text-align: center;" alt="${selectedPhoto.path}"/>
+			<table align="center" class="top10">
+				<tr><td><img src="./image?photoId=${selectedPhoto.photoId}" style="text-align: center;" alt="${selectedPhoto.phName}" title="${selectedPhoto.phName}"/>
 					</td>
 				</tr>
 			</table>
-			<table cellpadding="0" cellspacing="0" width="400px" style="text-align: left;">
+			<table align="center" cellpadding="0" cellspacing="0" width="400px" style="text-align: left;">
 				<tr><td class="lh10" colspan="2">&nbsp;</td></tr>
 				<c:choose>
 					<c:when test="${!empty selectedPhoto.comments}">
@@ -164,7 +164,7 @@
 				</c:choose>
 			</table>
 			<form method="POST" action="./comment?action=ADD">
-				<table cellpadding="0" cellspacing="0" width="400px" style="text-align: left;">
+				<table align="center" cellpadding="0" cellspacing="0" width="400px" style="text-align: left;">
 					<c:if test="${!empty loggedUser}">
 						<tr><td class="lh10" colspan="2">&nbsp;</td></tr>
 						<tr><td colspan="2">
