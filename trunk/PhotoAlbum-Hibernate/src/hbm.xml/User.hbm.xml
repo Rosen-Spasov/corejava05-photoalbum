@@ -17,7 +17,7 @@
         	<one-to-many class="Category" />
         </set>
 		
-		<set name="Comments" table="COMMENTS" cascade="all-delete-orphan" lazy="false" outer-join="true">
+		<set name="Comments" table="COMMENTS" cascade="all-delete-orphan" lazy="false" outer-join="true" order-by="COMMENT_DATE desc">
         	<key column="USER_ID" />
         	<one-to-many class="Comment" />
         </set>
