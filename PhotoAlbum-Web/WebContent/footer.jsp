@@ -5,14 +5,14 @@
 <tr><td colspan="3" class="mainBottom">
 		<div>
 			<div class="fLeft vtop left10 top10">
-				<a class="link" href="./contacts.jsp">Контакти</a><span class="separator">|</span>
-				<a class="link" href="./advertisement.jsp">Реклама</a><span class="separator">|</span>
-				<a class="link" href="./rights.jsp">Права и задължения</a><span class="separator">|</span>
-				<a class="link" href="./help.jsp">Помощ</a><span class="separator">|</span>
+				<a class="link" href="./underConstruction.html">Контакти</a><span class="separator">|</span>
+				<a class="link" href="./underConstruction.html">Реклама</a><span class="separator">|</span>
+				<a class="link" href="./underConstruction.html">Права и задължения</a><span class="separator">|</span>
+				<a class="link" href="./underConstruction.html">Помощ</a><span class="separator">|</span>
 				<div class="left">
 					<div style="padding-top: 10px;padding-bottom: 10px;">
-						<span class="separator" />
-						<span class="separator" />
+						<span class="separator"></span>
+						<span class="separator"></span>
 					</div>
 				</div>
 			</div>

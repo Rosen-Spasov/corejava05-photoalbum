@@ -5,12 +5,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
+
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>${selectedPhoto.phName}</title>
+	<title>Фото албум - Намери снимките, които търсиш!</title>
 	<link rel="stylesheet" type="text/css" href="./style/main.css" />
-	<script type="text/javascript"></script>
+	<script type="text/javascript" src="./js/mainScript.js"></script>
+	<script type="text/javascript" src="./js/validation.js"></script>
 </head>
+
 <body>
 <c:set var="allUsers" value="${sessionScope.allUsers}" />
 <!-- This is the currently logged in user. -->
@@ -24,45 +27,7 @@
 <c:set var="pageIndex" value="${sessionScope.pageIndex}" />
 
 <table class="mainTable" cellpadding="0" cellspacing="0" align="center">
-	<tr><td class="mainTop" colspan="3">
-		<div class="mainTopLogo">
-			<img src="./images/headBG.png" class="noBorder" USEMAP="#link" />
-			<map name="link"><area shape="rect" coords="15,10,225,60" href="mainPage.jsp">
-			</map>
-			<div class="mainTopBanner">
-				<div><a href='' title="" class="headerTexLinks">Дали това не е най-големият сайт за снимки в България?!</a>
-				</div>
-			</div>
-		</div>
-		</td>
-	</tr>
-	<tr><td class="vseparator">&nbsp;</td></tr>
-	<tr><td colspan="3" class="mainTopMenu">
-		<table cellpadding="0" cellspacing="0" class="flex">
-			<tr><td class="left pLeft10">В момента разглеждате профила на ${selectedUser.username}</td>
-				<td class="right pRight10">
-					<c:choose>
-						<c:when test="${empty loggedUser}">
-							<a href="register.jsp">Регистрация</a>
-							<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
-						</c:when>
-						<c:otherwise>
-							<font style="font-size: 12px;">
-								<c:out value='Добре дошъл, ${loggedUser.firstName} ${loggedUser.lastName}!' />
-								<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
-							</font>
-							<a href="./login?action=logout">Изход</a>
-							<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
-						</c:otherwise>
-					</c:choose>
-					<a href="SearchServlet">Търсене</a>
-					<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
-					<a href="./mainPage.jsp?refresh=true">Начало</a>
-				</td>
-			</tr>
-		</table>
-		</td>
-	</tr>
+	<c:import url="./header.jsp" />
 	<tr><td class="mainLeft vtop">
 			<table cellpadding="0" cellspacing="0" class="leftMenu">
 				<tr><td colspan="2" class="headerMin" style="border-bottom: 3px solid #fabc01;">
@@ -114,7 +79,7 @@
 							<img src="./images/bullet.png" class="bullet" alt="bullet" />
 						</td>
 						<td class="rightItem pTop10">
-							<a href="./renamePhoto.jsp">Преименувай</a>
+							<a href="./photo?renamePhoto=true">Преименувай</a>
 						</td>
 					</tr>
 					<tr><td class="leftItem pTop10">
@@ -131,7 +96,10 @@
 				</table>
 			</c:if>
 		</td>
-		<td colspan="2" class="mainCenter vtop">
+		<td colspan="2" class="mainCenterNone vtop">
+			<c:if test="${param.renamePhoto == true}">
+				<%@ include file="renamePhoto.jsp" %>
+			</c:if>
 			<table align="center" class="top10">
 				<tr><td><img src="./image?photoId=${selectedPhoto.photoId}" style="text-align: center;" alt="${selectedPhoto.phName}" title="${selectedPhoto.phName}"/>
 					</td>
@@ -180,29 +148,7 @@
 			</form>
 		</td>
 	</tr>
-	<tr><td colspan="3" style="line-height: 0px; height: 10px;">&nbsp;</td>
-	</tr>
-	<tr><td colspan="3" class="mainBottom">
-		<div>
-			<div class="fLeft vtop left10 top10">
-				<a class="link" href="http://academy.devbg.org/">Контакти</a><span class="separator">|</span>
-				<a class="link" href="Advertisement.jsp">Реклама</a><span class="separator">|</span>
-				<a class="link" href="Dot.jsp">Права и задължения</a><span class="separator">|</span>
-				<a class="link" href="Help.jsp">Помощ</a><span class="separator">|</span>
-				<div class="left">
-					<div style="padding-top: 10px;padding-bottom: 10px;">
-						<span class="separator" />
-						<span class="separator" />
-					</div>
-				</div>
-			</div>
-			<div class="fRight vtop right10 top10">
-				Copyright © 2007-2007 Менте Софтуер<br>
-				<div class="right">Web Design: НАРС</div>
-			</div>
-		</div>
-		</td>
-	</tr>
+	<c:import url="./footer.jsp" />
 </table>
 </body>
 </html>

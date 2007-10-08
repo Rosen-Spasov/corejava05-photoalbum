@@ -436,6 +436,10 @@ public class PhotoAlbumManipulator {
 		}
 	}
 	
+	public Set<Photo> searchPhotos(String queryString) {
+		return getHbConnection().searchPhotos(queryString);
+	}
+	
 	public void close() {
 		getHbConnection().close();
 	}

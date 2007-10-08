@@ -1,6 +1,7 @@
 package photoalbum.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 
 import org.hibernate.Query;
@@ -200,6 +201,12 @@ public class HibernateConnection {
 	
 	public void refresh(Object obj) {
 		this.getSession().refresh(obj);
+	}
+	
+	public Set<Photo> searchPhotos(String queryString) {
+		Set<Photo> result = null;
+		
+		return result;
 	}
 	
 }

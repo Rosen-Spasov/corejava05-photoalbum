@@ -70,7 +70,7 @@ import photoalbum.entities.Photo;
 		} catch (NumberFormatException e) {
 			getLogger().log(e);			
 		} finally {
-			response.sendRedirect(redirectPage);
+			request.getRequestDispatcher(redirectPage).forward(request, response);
 		}
 	}
 	

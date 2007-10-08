@@ -1,16 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Реклама</title>
-	<link rel="stylesheet" type="text/css" href="./style/main.css" />
-</head>
-<body>
-	<table width="100%" height="100%">
-		<tr><td align="center"><img src="./images/under_construction.bmp" style="text-align: center;"/>			
-			</td>
-		</tr>
-	</table>
-</body>
-</html>
+
+<table cellpadding="0" cellspacing="0" class="top10" width="170px">
+	<tr><td class="headerBorder headerMin" colspan="2">
+			<div style="width: 150px;">Mясто за реклама</div>
+		</td>
+	</tr>
+	<tr><td class="pTop10"><a href="http://www.amam.bg/" title="кликни &amp; хапни"><img src="./images/kare_amam.jpg" alt="кликни &amp; хапни" align="left" /></a>
+		</td>
+		<td><div><a href="http://www.amam.bg/" class="link bold" title="кликни &amp; хапни">Amam.bg</a></div>
+			<div class="size10">Кликни &amp; Хапни</div>
+		</td>
+	</tr>
+	<tr><td class="pTop10"><a href="http://www.nani.bg" title="Nani.bg - внесете уют"><img src="./images/nani_1_40x40.jpg" alt="Nani.bg" align="left" /></a>
+		</td>
+		<td><div><a href="http://www.nani.bg" class="link bold" title="Nani.bg - внесете уют">Nani.bg</a></div>
+			<div class="size10">Внесете Уют</div>
+		</td>
+	</tr>
+	<tr><td colspan="2"><hr/></td></tr>
+</table>
