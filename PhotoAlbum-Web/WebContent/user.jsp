@@ -114,7 +114,7 @@
 								<img src="./images/bullet.png" class="bullet" alt="bullet" />
 							</td>
 							<td class="rightItem pTop10">
-								<a href="./upload.jsp">Добави снимка</a>
+								<a href="${pageContext.request.requestURI}?addPhoto=true">Добави снимка</a>
 							</td>
 						</tr>
 					</c:if>
@@ -127,6 +127,9 @@
 			<c:import url="./subCategories.jsp" />
 		</td>
 		<td colspan="2" class="mainCenter vtop">
+			<c:if test="${param.addPhoto == true}">
+				<c:import url="./upload.jsp" />
+			</c:if>
 			<c:if test="${param.showSearch == true}">
 				<c:import url="./search.jsp" />
 			</c:if>
@@ -176,7 +179,7 @@
 							<c:if test="${!empty loggedUser}">
 								<div class="fRight right10">
 									<div style="line-height:17px;">
-										<a href="./upload.jsp" class="link">Добави снимка в настоящата категория &raquo;</a>
+										<a href="${pageContext.request.requestURI}?addPhoto=true" class="link">Добави снимка в настоящата категория &raquo;</a>
 									</div>
 								</div>
 							</c:if>
