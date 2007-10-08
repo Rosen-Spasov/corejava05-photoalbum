@@ -1,8 +1,6 @@
 package photoalbum.hibernate;
 
 import java.util.List;
-import java.util.Set;
-
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -203,8 +201,14 @@ public class HibernateConnection {
 		this.getSession().refresh(obj);
 	}
 	
-	public Set<Photo> searchPhotos(String queryString) {
-		Set<Photo> result = null;
+	@SuppressWarnings("unchecked")
+	public List<Photo> searchPhotos(String queryString) {
+		List<Photo> result = null;
+		
+		String hql = "from Photo p where p.phName like %:queryString%";
+		Query query = this.createQuery(hql);
+		query.setString("queryString", queryString);
+		result = (List<Photo>) query.list();
 		
 		return result;
 	}
