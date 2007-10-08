@@ -198,7 +198,9 @@ public class HibernateConnection {
 	}
 	
 	public void refresh(Object obj) {
-		this.getSession().refresh(obj);
+		if (obj != null) {
+			this.getSession().refresh(obj);
+		}
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -97,8 +97,11 @@
 			</c:if>
 		</td>
 		<td colspan="2" class="mainCenterNone vtop">
+			<c:if test="${param.showSearch == true}">
+				<c:import url="search.jsp" />
+			</c:if>
 			<c:if test="${param.renamePhoto == true}">
-				<%@ include file="renamePhoto.jsp" %>
+				<c:import url="renamePhoto.jsp" />
 			</c:if>
 			<table align="center" class="top10">
 				<tr><td><img src="./image?photoId=${selectedPhoto.photoId}" style="text-align: center;" alt="${selectedPhoto.phName}" title="${selectedPhoto.phName}"/>
