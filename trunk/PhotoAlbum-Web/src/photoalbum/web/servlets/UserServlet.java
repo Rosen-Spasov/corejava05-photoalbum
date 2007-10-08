@@ -83,6 +83,7 @@ public class UserServlet extends photoalbum.web.servlets.BaseServlet implements 
 		if (selectedUser != null) {
 			int userId = selectedUser.getUserId();
 			selectedUser = getPam().getUserById(userId);
+			getPam().refresh(selectedUser);
 			session.setAttribute(ATTR_SELECTED_USER, selectedUser);
 		}
 		
@@ -91,6 +92,7 @@ public class UserServlet extends photoalbum.web.servlets.BaseServlet implements 
 		if (selectedCategory != null) {
 			int categoryId = selectedCategory.getCategoryId();
 			selectedCategory = getPam().getCategoryById(categoryId);
+			getPam().refresh(selectedCategory);
 			session.setAttribute(ATTR_SELECTED_CATEGORY, selectedCategory);
 			
 			PhotoPage[] photoPages = getPages(selectedCategory);
@@ -101,7 +103,7 @@ public class UserServlet extends photoalbum.web.servlets.BaseServlet implements 
 		}
 		session.setAttribute(ATTR_PAGE_INDEX, 0);
 		session.setAttribute(ATTR_TOTAL_PAGES, totalPages);
-		
+
 	}
 	
 	private void loadUserInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

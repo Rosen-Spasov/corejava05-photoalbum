@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <table cellpadding="0" cellspacing="0" align="center">
-	<tr><td><form name="person" method="POST" action="registration" onsubmit="validate()">
+	<tr><td><form name="registrationForm" method="POST" action="registration" onsubmit="validate()">
 				<table class="centerMenu top10" cellpadding="0" cellspacing="0" align="center">
 					<tr><td class="headerMid" colspan="2">
 							<div>Регистрация</div>

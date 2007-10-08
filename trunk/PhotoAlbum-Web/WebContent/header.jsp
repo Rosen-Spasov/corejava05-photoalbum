@@ -33,7 +33,7 @@
 						<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
 					</c:otherwise>
 				</c:choose>
-				<a href="SearchServlet">Търсене</a>
+				<a href='${pageContext.request.requestURI}?showSearch=true'>Търсене</a>
 				<span class="separator"><img src="./images/separator.png" align="middle" style="vertical-align: middle;" /></span>
 				<a href="mainPage.jsp?refresh=true">Начало</a>
 			</td>
