@@ -27,7 +27,10 @@
 <c:set var="pageIndex" value="${sessionScope.pageIndex}" />
 
 <table class="mainTable" cellpadding="0" cellspacing="0" align="center">
-	<c:import url="./header.jsp" />
+
+	<tr>
+		<td colspan="3"><c:import url="./header.jsp" /></td>
+	</tr>
 	<tr><td class="mainLeft vtop">
 			<table cellpadding="0" cellspacing="0" class="leftMenu">
 				<tr><td colspan="2" class="headerMin" style="border-bottom: 3px solid #fabc01;">
@@ -67,7 +70,7 @@
 				<tr><td class="leftItem lh10">&nbsp;</td>
 					<td class="rightItem lh10">&nbsp;</td>
 				</tr>
-				<tr><td colspan="2" class="bottomMin">&nbsp;</td></tr>
+				<tr><td colspan="1" class="bottomMin">&nbsp;</td></tr>
 			</table>
 			<c:if test="${!empty loggedUser && loggedUser.userId == selectedUser.userId}">
 				<table cellpadding="0" cellspacing="0" class="leftMenu top10">
@@ -151,7 +154,9 @@
 			</form>
 		</td>
 	</tr>
-	<c:import url="./footer.jsp" />
+	<tr>
+		<td colspan="3" align="center"><c:import url="./footer.jsp" /></td>
+	</tr>
 </table>
 </body>
 </html>
