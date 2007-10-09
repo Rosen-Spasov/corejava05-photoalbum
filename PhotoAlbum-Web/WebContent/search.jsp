@@ -9,7 +9,7 @@
 				</tr>
 				<tr><td class="mainSearchTd">
 					<div class="fLeft pLeft10 pTop10">
-						<form action="SearchServlet" name="searchPhoto" method="post" onsubmit="validateSearchName()" >
+						<form action="search" name="searchPhoto" method="post" onsubmit="validateSearchName()" >
 							<table cellpadding="0" cellspacing="0" class="searchTable" align="center">
 								<tr align="center">
 									<td width="100px">Име на снимка: </td>

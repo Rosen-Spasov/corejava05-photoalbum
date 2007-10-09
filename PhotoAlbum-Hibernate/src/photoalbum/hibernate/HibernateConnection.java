@@ -207,8 +207,9 @@ public class HibernateConnection {
 	public List<Photo> searchPhotos(String queryString) {
 		List<Photo> result = null;
 		
-		String hql = "from Photo p where p.phName like %:queryString%";
+		String hql = "from Photo p where p.PhName like :queryString";
 		Query query = this.createQuery(hql);
+		queryString = "%"+queryString+"%";
 		query.setString("queryString", queryString);
 		result = (List<Photo>) query.list();
 		
