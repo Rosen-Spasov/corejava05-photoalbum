@@ -12,7 +12,7 @@ import photoalbum.entities.User;
  * Servlet implementation class for Servlet: InitSessionServlet
  * This servlets initializes the session, i.e. sets the PAM and allUsers properties.
  */
- public class InitSessionServlet extends BaseServlet {
+ public class MainPageServlet extends BaseServlet {
 
 	private static final long serialVersionUID = 367016231035980106L;
 	
@@ -26,7 +26,7 @@ import photoalbum.entities.User;
 	
 	public static final String REDIRECT = "mainPage.jsp";
 
-	public InitSessionServlet() {
+	public MainPageServlet() {
 		super();
 	}
 	
@@ -36,14 +36,11 @@ import photoalbum.entities.User;
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doPost(request, response);
-
-		getPam();
-		getLogger();
 		
 		User[] allUsers = getPam().getAllUsers();
+		getPam().refreshAll(allUsers);
 		session.setAttribute(ATTR_ALL_USERS, allUsers);
 		
-		session.setAttribute(ATTR_INITIALIZED, true);
 		response.sendRedirect(REDIRECT);
 	}   	  	    
 }

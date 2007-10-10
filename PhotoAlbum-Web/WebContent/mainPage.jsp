@@ -16,8 +16,8 @@
 </head>
 
 <body>
-<c:if test="${empty sessionScope.initialized || param.refresh == true}">
-	<c:redirect url="/initSession" />
+<c:if test="${!empty param.refresh && param.refresh == true}">
+	<c:redirect url="/main" />
 </c:if>
 <c:set var="allUsers" value="${sessionScope.allUsers}" />
 <c:set var="loggedUser" value="${sessionScope.loggedUser}" />

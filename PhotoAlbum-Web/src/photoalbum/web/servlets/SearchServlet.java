@@ -2,16 +2,12 @@ package photoalbum.web.servlets;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import photoalbum.entities.Category;
 import photoalbum.entities.Photo;
-import photoalbum.entities.User;
-import photoalbum.web.servlets.UserServlet.Action;
 import photoalbum.web.util.PhotoPage;
 
 /**
@@ -119,30 +115,31 @@ import photoalbum.web.util.PhotoPage;
 	
 		
 		
-		private void loadNextPage() {
-			if (session.getAttribute(ATTR_PAGE_INDEX) != null) {
-				int pageIndex = (Integer) session.getAttribute(ATTR_PAGE_INDEX);
-				if (session.getAttribute(ATTR_TOTAL_PAGES) != null) {
-					int totalPages = (Integer) session.getAttribute(ATTR_TOTAL_PAGES);
-					if (pageIndex < totalPages - 1) {
-						pageIndex++;
-						session.setAttribute(ATTR_PAGE_INDEX, pageIndex);
-					}
-				}
-			}
-		}
-		
-		private void loadPrevPage() {
-			if (session.getAttribute(ATTR_PAGE_INDEX) != null) {
-				int pageIndex = (Integer) session.getAttribute(ATTR_PAGE_INDEX);
-				if (pageIndex > 0) {
-					pageIndex--;
+	private void loadNextPage() {
+		if (session.getAttribute(ATTR_PAGE_INDEX) != null) {
+			int pageIndex = (Integer) session.getAttribute(ATTR_PAGE_INDEX);
+			if (session.getAttribute(ATTR_TOTAL_PAGES) != null) {
+				int totalPages = (Integer) session.getAttribute(ATTR_TOTAL_PAGES);
+				if (pageIndex < totalPages - 1) {
+					pageIndex++;
 					session.setAttribute(ATTR_PAGE_INDEX, pageIndex);
 				}
 			}
 		}
+	}
 		
-		private void forwardRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			request.getRequestDispatcher(REQUEST_DISPATCHER).forward(request, response);
+	private void loadPrevPage() {
+		if (session.getAttribute(ATTR_PAGE_INDEX) != null) {
+			int pageIndex = (Integer) session.getAttribute(ATTR_PAGE_INDEX);
+			if (pageIndex > 0) {
+				pageIndex--;
+				session.setAttribute(ATTR_PAGE_INDEX, pageIndex);
+			}
 		}
-	}   	  	    
+	}
+	
+	private void forwardRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher(REQUEST_DISPATCHER).forward(request, response);
+	}
+	
+}   	  	    

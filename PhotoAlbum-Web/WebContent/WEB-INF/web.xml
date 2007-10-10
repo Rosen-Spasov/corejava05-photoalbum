@@ -6,10 +6,10 @@
 		<description>
 		This servlets initializes the session, i.e. sets the PAM and allUsers properties.</description>
 		<display-name>
-		InitSessionServlet</display-name>
+		MainPageServlet</display-name>
 		<servlet-name>InitSessionServlet</servlet-name>
 		<servlet-class>
-		photoalbum.web.servlets.InitSessionServlet</servlet-class>
+		photoalbum.web.servlets.MainPageServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<description>
@@ -102,8 +102,8 @@
 		photoalbum.web.servlets.ImageServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>InitSessionServlet</servlet-name>
-		<url-pattern>/initSession</url-pattern>
+		<servlet-name>MainPageServlet</servlet-name>
+		<url-pattern>/main</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>RegistrationServlet</servlet-name>

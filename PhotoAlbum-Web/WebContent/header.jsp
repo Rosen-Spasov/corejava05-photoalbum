@@ -8,8 +8,8 @@
 		<div class="mainTopLogo"><img src="./images/headBG.png" class="noBorder" USEMAP="#link" /> <map name="link">
 			<area shape="rect" coords="15,10,225,60" href="mainPage.jsp">
 		</map>
-			<div class="mainTopBanner"><a href='./main' title=""
-				class="headerTexLinks">Дали това не е най-големият сайт за снимки в България?!</a>
+			<div class="mainTopBanner">
+				<a href='./underConstruction.html' class="headerTexLinks">Дали това не е най-големият сайт за снимки в България?!</a>
 			</div>
 		</div>
 		</td>
