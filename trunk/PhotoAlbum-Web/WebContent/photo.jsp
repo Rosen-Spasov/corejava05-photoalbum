@@ -27,10 +27,7 @@
 <c:set var="pageIndex" value="${sessionScope.pageIndex}" />
 
 <table class="mainTable" cellpadding="0" cellspacing="0" align="center">
-
-	<tr>
-		<td colspan="3"><c:import url="./header.jsp" /></td>
-	</tr>
+	<c:import url="./header.jsp" />
 	<tr><td class="mainLeft vtop">
 			<table cellpadding="0" cellspacing="0" class="leftMenu">
 				<tr><td colspan="2" class="headerMin" style="border-bottom: 3px solid #fabc01;">
@@ -154,9 +151,7 @@
 			</form>
 		</td>
 	</tr>
-	<tr>
-		<td colspan="3" align="center"><c:import url="./footer.jsp" /></td>
-	</tr>
+	<c:import url="./footer.jsp" />
 </table>
 </body>
 </html>

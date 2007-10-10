@@ -22,53 +22,73 @@
 <c:set var="allUsers" value="${sessionScope.allUsers}" />
 <c:set var="loggedUser" value="${sessionScope.loggedUser}" />
 <table class="mainTable" cellpadding="0" cellspacing="0" align="center" border="0" height="95%">
-	<tr>
-		<td colspan="3"><c:import url="./header.jsp" /></td>
-	</tr>
+	<c:import url="./header.jsp" />
 	<tr height="*">
-		<td class="mainLeft vtop"><c:if test="${empty loggedUser}">
-			<c:import url="login.jsp" />
-		</c:if>
-		<table cellpadding="0" cellspacing="0" class="leftMenu">
-			<tr>
-				<td colspan="2" class="headerMin"
-					style="border-bottom: 3px solid #fabc01;">
-				<div>Потребители</div>
-				</td>
-			</tr>
-			<c:if test="${!empty sessionScope.allUsers}">
-				<c:forEach var="user" items="${sessionScope.allUsers}">
-					<tr>
-						<td class="leftItem pTop10"><img src="./images/bullet.png"
-							class="bullet" alt="bullet" /></td>
-						<td class="rightItem pTop10"><a
-							href="./user?action=LOAD&userId=${user.userId}"><c:out
-							value="${user.username}" /></a></td>
+		<td class="mainLeft vtop">
+			<c:choose>
+				<c:when test="${empty loggedUser}">
+					<c:import url="login.jsp" />
+				</c:when>
+				<c:otherwise>
+				<table cellpadding="0" cellspacing="0" class="leftMenu top10">
+					<tr><td colspan="2" class="headerMin" style="border-bottom: 3px solid #fabc01;">
+							<div>Меню</div>
+						</td>
 					</tr>
-				</c:forEach>
+					<tr><td class="leftItem pTop10">
+							<img src="./images/bullet.png" class="bullet" alt="bullet" />
+						</td>
+						<td class="rightItem pTop10">
+							<a href="./user?action=LOAD&userId=${loggedUser.userId}">Моят профил</a>
+						</td>
+					</tr>
+					<tr><td class="leftItem lh10">&nbsp;</td>
+						<td class="rightItem lh10">&nbsp;</td>
+					</tr>
+					<tr><td colspan="2" class="bottomMin">&nbsp;</td></tr>
+				</table>
+				<div class="lh10">&nbsp;</div>
+				</c:otherwise>
+			</c:choose>
+			<table cellpadding="0" cellspacing="0" class="leftMenu">
+				<tr>
+					<td colspan="2" class="headerMin"
+						style="border-bottom: 3px solid #fabc01;">
+					<div>Потребители</div>
+					</td>
+				</tr>
+				<c:if test="${!empty sessionScope.allUsers}">
+					<c:forEach var="user" items="${sessionScope.allUsers}">
+						<tr>
+							<td class="leftItem pTop10"><img src="./images/bullet.png"
+								class="bullet" alt="bullet" /></td>
+							<td class="rightItem pTop10"><a
+								href="./user?action=LOAD&userId=${user.userId}"><c:out
+								value="${user.username}" /></a></td>
+						</tr>
+					</c:forEach>
+				</c:if>
+				<tr>
+					<td class="leftItem lh10">&nbsp;</td>
+					<td class="rightItem lh10">&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="bottomMin">&nbsp;</td>
+				</tr>
+			</table>
+			<c:import url="advertisement.jsp" />
+		</td>
+		<td colspan="2" class="mainCenterNone vtop">
+			<c:if
+				test="${param.showRegistration == true}">
+				<c:import url="registration.jsp" />
 			</c:if>
-			<tr>
-				<td class="leftItem lh10">&nbsp;</td>
-				<td class="rightItem lh10">&nbsp;</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="bottomMin">&nbsp;</td>
-			</tr>
-		</table>
-		<c:import url="advertisement.jsp" /></td>
-		<td colspan="2" class="mainCenterNone vtop"><c:if
-			test="${param.showRegistration == true}">
-			<c:import url="registration.jsp" />
-		</c:if> <c:if test="${param.showSearch == true}">
-			<c:import url="./search.jsp" />
-		</c:if>
+			<c:if test="${param.showSearch == true}">
+				<c:import url="./search.jsp" />
+			</c:if>
 		</td>
 	</tr>
-	<tr>
-		<tr>
-		<td colspan="3"><c:import url="./footer.jsp" /></td>
-	</tr>
-	</tr>
+	<c:import url="./footer.jsp" />
 </table>
 </body>
 

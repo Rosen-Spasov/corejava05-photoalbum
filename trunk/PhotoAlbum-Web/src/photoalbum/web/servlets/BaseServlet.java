@@ -43,7 +43,10 @@ public abstract class BaseServlet extends HttpServlet implements Servlet {
 	}
 	
 	protected PhotoAlbumManipulator getPam() {
-		if (pam == null) {
+		if (pam == null || !pam.isConnected()) {
+			if (pam != null) {
+				pam.close();
+			}
 			pam = new PhotoAlbumManipulator();
 			session.setAttribute(ATTR_PAM, pam);
 		}

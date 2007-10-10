@@ -216,4 +216,12 @@ public class HibernateConnection {
 		return result;
 	}
 	
+	public boolean isConnected() {
+		return getSession().isConnected();
+	}
+	
+	public boolean isDirty() {
+		return getSession().isDirty();
+	}
+	
 }

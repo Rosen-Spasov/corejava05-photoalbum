@@ -12,7 +12,6 @@
 	<link rel="stylesheet" type="text/css" href="./style/main.css" />
 	<script type="text/javascript" src="./js/mainScript.js"></script>
 	<script type="text/javascript" src="./js/validation.js"></script>
-	
 </head>
 
 <body>
@@ -28,11 +27,8 @@
 <c:set var="totalPages" value="${sessionScope.totalPages}" />
 
 <table class="mainTable" cellpadding="0" cellspacing="0" align="center" height="95%" border="0">
-	<tr>
-		<td colspan="3"><c:import url="./header.jsp" /></td>
-	</tr>
-	<tr height="*"><td class="mainLeft vtop">
-
+	<c:import url="./header.jsp" />
+	<tr><td class="mainLeft vtop">
 			<table cellpadding="0" cellspacing="0" class="leftMenu">
 				<tr><td colspan="2" class="headerMin" style="border-bottom: 3px solid #fabc01;">
 						<div>Навигация</div>
@@ -79,7 +75,6 @@
 							<div>Меню</div>
 						</td>
 					</tr>
-					
 					<tr><td class="leftItem pTop10">
 							<img src="./images/bullet.png" class="bullet" alt="bullet" />
 						</td>
@@ -139,7 +134,6 @@
 				<c:import url="./search.jsp" />
 			</c:if>
 			<c:if test="${!empty selectedCategory && !empty photoPages}">
-			
 				<table class="tabsMiddle top10" cellpadding="0" cellspacing="0">
 					<tr><td class="tabs">
 							<div class="leftTabStub">&nbsp;</div>
@@ -195,9 +189,7 @@
 			</c:if>
 		</td>
 	</tr>
-	<tr>
-		<td colspan="3"><c:import url="./footer.jsp" /></td>
-	</tr>
+	<c:import url="./footer.jsp" />
 </table>
 </body>
 </html>
