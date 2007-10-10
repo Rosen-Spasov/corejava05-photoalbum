@@ -9,16 +9,16 @@
 				</tr>
 				<tr><td class="mainSearchTd">
 					<div class="fLeft pLeft10 pTop10">
-						<form action="search" name="searchPhoto" method="post" onsubmit="validateSearchName()" >
+						<form action="./search" name="searchPhoto" method="post" onsubmit="validateSearchName()" >
 							<table cellpadding="0" cellspacing="0" class="searchTable" align="center">
 								<tr align="center">
-									<td width="100px">Име на снимка: </td>
-									<td width="160px"><input type="text" class="textInput" name="searchName" id="searchName" /></td>
-									<td colspan="2" width="130px">
-										<input type="submit" class="button" style="width:90px;" name="btnSearch" value="Търси" />
+									<td><label for="queryString">Име на снимка: </label>
+										<input type="text" class="textInput" name="queryString" id="queryString" />
+										<input type="submit" class="button" name="submit" value="Търси" />
 									</td>
 								</tr>
 							</table>
+							<input type="hidden" name="action" value="SEARCH" />
 						</form>
 					</div>
 					</td>
