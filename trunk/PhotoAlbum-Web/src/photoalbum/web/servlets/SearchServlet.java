@@ -21,20 +21,16 @@ public class SearchServlet extends BaseServlet {
    public static final String PARAM_ACTION = "action";
    
    public static final String PARAM_QUERY_STRING = "queryString";
-	
-   public static final String PARAM_PAGE_INDEX = "pageIndex";
 
-   public static final String ATTR_FOUND_PAGE_INDEX = PARAM_PAGE_INDEX;
-
-   public static final String ATTR_FOUND_PHOTOS = "foundPhotos";
+   public static final String ATTR_FOUND_PAGES_INDEX = "foundPagesIndex";
 
    public static final String ATTR_FOUND_PHOTO_PAGES = "foundPhotoPages";
 
-   public static final String ATTR_TOTAL_FOUND_PAGES_PAGES = "totalPages";
+   public static final String ATTR_TOTAL_PAGES_FOUND = "totalPagesFound";
 
    public static final String REQUEST_DISPATCHER = "searchResult.jsp";
 
-   public static enum Action {LOADPHOTOS, NEXT_PAGE, PREV_PAGE}
+   public static enum Action {SEARCH, NEXT_PAGE, PREV_PAGE}
 
    public SearchServlet() {
 	   super();
@@ -51,7 +47,7 @@ public class SearchServlet extends BaseServlet {
 		   String action = request.getParameter(PARAM_ACTION);
 		   if (action != null){
 			   switch (Action.valueOf(action)) {
-			   case LOADPHOTOS:
+			   case SEARCH:
 				   loadPhotos(request, response);
 				   break;
 			   case NEXT_PAGE:
@@ -72,12 +68,12 @@ public class SearchServlet extends BaseServlet {
 
    private void loadPhotos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	   
-	   int foundPageIndex = 0;
+	   int foundPagesIndex = 0;
 	   int totalFoundPages = 0;
 
 	   String queryString = request.getParameter(PARAM_QUERY_STRING);
-	   List<Photo> foundPhotos = getPam().searchPhotos(queryString);
-	   if (foundPhotos != null) {
+	   List<Photo> foundPhotos = getPam().findPhotos(queryString);
+	   if (foundPhotos != null || foundPhotos.size() > 0) {
 		   PhotoPage[] foundPhotoPages = PhotoPage.getPages(foundPhotos);
 		   if (foundPhotoPages != null) {
 			   session.setAttribute(ATTR_FOUND_PHOTO_PAGES, foundPhotoPages);
@@ -85,37 +81,31 @@ public class SearchServlet extends BaseServlet {
 		   }
 	   }
 
-	   try {
-		   foundPageIndex = Integer.parseInt(request.getParameter(PARAM_PAGE_INDEX));
-	   } catch (NumberFormatException e) {
-		   getLogger().log("Could not parse page index or no page index has been provided at all.");
-	   }
-
-	   session.setAttribute(ATTR_FOUND_PAGE_INDEX, foundPageIndex);
-	   session.setAttribute(ATTR_TOTAL_FOUND_PAGES_PAGES, totalFoundPages);
+	   session.setAttribute(ATTR_FOUND_PAGES_INDEX, foundPagesIndex);
+	   session.setAttribute(ATTR_TOTAL_PAGES_FOUND, totalFoundPages);
    }
 
 
 
    private void loadNextPage() {
-	   if (session.getAttribute(ATTR_FOUND_PAGE_INDEX) != null) {
-		   int pageIndex = (Integer) session.getAttribute(ATTR_FOUND_PAGE_INDEX);
-		   if (session.getAttribute(ATTR_TOTAL_FOUND_PAGES_PAGES) != null) {
-			   int totalPages = (Integer) session.getAttribute(ATTR_TOTAL_FOUND_PAGES_PAGES);
+	   if (session.getAttribute(ATTR_FOUND_PAGES_INDEX) != null) {
+		   int pageIndex = (Integer) session.getAttribute(ATTR_FOUND_PAGES_INDEX);
+		   if (session.getAttribute(ATTR_TOTAL_PAGES_FOUND) != null) {
+			   int totalPages = (Integer) session.getAttribute(ATTR_TOTAL_PAGES_FOUND);
 			   if (pageIndex < totalPages - 1) {
 				   pageIndex++;
-				   session.setAttribute(ATTR_FOUND_PAGE_INDEX, pageIndex);
+				   session.setAttribute(ATTR_FOUND_PAGES_INDEX, pageIndex);
 			   }
 		   }
 	   }
    }
 
    private void loadPrevPage() {
-	   if (session.getAttribute(ATTR_FOUND_PAGE_INDEX) != null) {
-		   int pageIndex = (Integer) session.getAttribute(ATTR_FOUND_PAGE_INDEX);
+	   if (session.getAttribute(ATTR_FOUND_PAGES_INDEX) != null) {
+		   int pageIndex = (Integer) session.getAttribute(ATTR_FOUND_PAGES_INDEX);
 		   if (pageIndex > 0) {
 			   pageIndex--;
-			   session.setAttribute(ATTR_FOUND_PAGE_INDEX, pageIndex);
+			   session.setAttribute(ATTR_FOUND_PAGES_INDEX, pageIndex);
 		   }
 	   }
    }

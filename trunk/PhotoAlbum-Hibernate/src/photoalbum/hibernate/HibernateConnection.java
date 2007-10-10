@@ -204,7 +204,7 @@ public class HibernateConnection {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Photo> searchPhotos(String queryString) {
+	public List<Photo> findPhotos(String queryString) {
 		if (queryString == null) {
 			return null;
 		}

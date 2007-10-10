@@ -18,9 +18,13 @@ import photoalbum.entities.Photo;
 	
 	public static final String PARAM_ACTION = "action";
 	
+	public static final String PARAM_LOAD_TYPE = "loadType";
+	
 	public static final String PARAM_PHOTO_ID = "photoId";
 	
 	public static final String PARAM_PHOTO_NAME = "phName";
+	
+	public static final String PARAM_SINGLE = "single";
 	
 	public static final String ATTR_SELECTED_PHOTO = "selectedPhoto";
 	
@@ -52,7 +56,8 @@ import photoalbum.entities.Photo;
 					break;
 				case LOAD:
 					int photoId = Integer.parseInt(request.getParameter(PARAM_PHOTO_ID));
-					loadPhoto(photoId);
+					String loadType = request.getParameter(PARAM_LOAD_TYPE);
+					loadPhoto(photoId, loadType);
 					break;
 				case DELETE:
 					photoId = Integer.parseInt(request.getParameter(PARAM_PHOTO_ID));
@@ -74,10 +79,14 @@ import photoalbum.entities.Photo;
 		}
 	}
 	
-	private void loadPhoto(int photoId) {
+	private void loadPhoto(int photoId, String loadType) {
 		Photo selectedPhoto = getPam().getPhotoById(photoId);
 		if (selectedPhoto != null) {
 			session.setAttribute(ATTR_SELECTED_PHOTO, selectedPhoto);
+		}
+		if ("single".equals(loadType)) {
+			session.removeAttribute(UserServlet.ATTR_SELECTED_USER);
+			session.removeAttribute(UserServlet.ATTR_SELECTED_CATEGORY);
 		}
 	}
 	
@@ -96,10 +105,12 @@ import photoalbum.entities.Photo;
 	private void refresh() {
 		if (session.getAttribute(ATTR_SELECTED_PHOTO) != null) {
 			Photo photo = (Photo) session.getAttribute(ATTR_SELECTED_PHOTO);
-			photo = getPam().getPhotoById(photo.getPhotoId());
 			if (photo != null) {
-				getPam().refresh(photo);
-				session.setAttribute(ATTR_SELECTED_PHOTO, photo);
+				photo = getPam().getPhotoById(photo.getPhotoId());
+				if (photo != null) {
+					getPam().refresh(photo);
+					session.setAttribute(ATTR_SELECTED_PHOTO, photo);
+				}
 			}
 		}
 	}

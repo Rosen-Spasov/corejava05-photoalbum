@@ -436,11 +436,11 @@ public class PhotoAlbumManipulator {
 		}
 	}
 	
-	public List<Photo> searchPhotos(String queryString) {
+	public List<Photo> findPhotos(String queryString) {
 		if (queryString == null) {
 			return null;
 		}
-		return getHbConnection().searchPhotos(queryString);
+		return getHbConnection().findPhotos(queryString);
 	}
 	
 	public boolean isConnected() {
