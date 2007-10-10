@@ -440,6 +440,14 @@ public class PhotoAlbumManipulator {
 		return getHbConnection().searchPhotos(queryString);
 	}
 	
+	public boolean isConnected() {
+		return getHbConnection().isConnected();
+	}
+	
+	public boolean isDirty() {
+		return getHbConnection().isDirty();
+	}
+	
 	public void close() {
 		getHbConnection().close();
 	}

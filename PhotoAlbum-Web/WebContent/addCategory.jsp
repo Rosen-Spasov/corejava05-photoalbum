@@ -7,8 +7,10 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Добавяне на Категория</title>
+	<title>Фото албум - Намери снимките, които търсиш!</title>
 	<link rel="stylesheet" type="text/css" href="./style/main.css" />
+	<script type="text/javascript" src="./js/mainScript.js"></script>
+	<script type="text/javascript" src="./js/validation.js"></script>
 </head>
 <body>
 <table class="mainTable" cellpadding="0" cellspacing="0" align="center">
