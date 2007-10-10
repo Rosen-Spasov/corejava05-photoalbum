@@ -15,62 +15,59 @@
 </head>
 
 <body>
+<c:set var="foundPhotoPages" value="sessionScope.foundPhotoPages" />
 <table class="mainTable" cellpadding="0" cellspacing="0" align="center" height="95%">
 	<c:import url="./header.jsp" />
-	<c:set var="searchPhotos" value="${sessionScope.searchPhotos}" />
-	<tr height="*">
-		<td><c:if test="${param.showSearch == true}">
-				<c:import url="./search.jsp" />
-			</c:if>
-			<c:if test="${!empty searchPhotos && !empty photoPages}">
-			 	<table class="tabsMiddle top10" cellpadding="0" cellspacing="0" align="center">
-					<tr><td class="tabs">
-							<div class="leftTabStub">&nbsp;</div>
-							<div class="tab tabSelected bold">резултати</div>
-							<div class="rightTabStub">&nbsp;</div>
-						</td>
-					</tr>
-					<tr><td class="tabsTableMiddle" align="center">
-							<div class="loadingMiddle" style="display: none;">&nbsp;</div>
-							<div style="width: 80%;" align="left">
-								<c:forEach var="photo" items="${photoPages[pageIndex].photos}">
-									<div class="smallestProfile">
-										<div class="smallProfilePicOffline">
-											<a href="./photo?action=LOAD&photoId=${photo.photoId}">
-												<img class="pic" src="./image?photoId=${photo.photoId}" alt=${photo.phName } title=${photo.phName } />
-											</a>
-										</div>
-										<div class="vipPic">&nbsp;</div>
-										<div class="lh17">
-											<a href="./photo?action=LOAD&photoId=${photo.photoId}" class="link bold">Номер: ${photo.photoId}</a>
-										</div>
-										<c:if test="${!empty loggedUser && loggedUser.userId == selectedUser.userId}">
-											<div class="lh17"><a href="./photo?action=DELETE&photoId=${photo.photoId}" onclick="isConfirm()" class="link bold">Изтрий</a></div>
-										</c:if>
-									</div>
-								</c:forEach>
-							</div>
-						</td>
-					</tr>
-					<tr><td class="tabsBottomMid">
-							<div class="fLeft left10">
-								<c:if test="${pageIndex > 0}">
-									<a href="./search?action=PREV_PAGE"><img src="./images/btnLeft.gif" /></a>
-								</c:if>
-								<c:if test="${pageIndex + 1 < totalPages}">
-									<a href="./search?action=NEXT_PAGE"><img src="./images/btnRight.gif" /></a>
-								</c:if>
-								<span style="vertical-align: 50%">${pageIndex + 1} от ${totalPages}</span>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</c:if>
+	<tr><td align="center" style="vertical-align: top;"><c:import url="./search.jsp" />
 		</td>
-		<c:if test="${empty searchPhotos && empty photoPages}">
-			<td><div style="font-size: 30px;">Няма намерени снимки с това име</div>
-			</td>
-		</c:if>
+	</tr>
+	<tr><td><c:choose>
+				<c:when test="${!empty foundPhotoPages}">
+					<table class="tabsMiddle top10" cellpadding="0" cellspacing="0" align="center">
+						<tr><td class="tabs">
+								<div class="leftTabStub">&nbsp;</div>
+								<div class="tab tabSelected bold">Резултати</div>
+								<div class="rightTabStub">&nbsp;</div>
+							</td>
+						</tr>
+						<tr><td class="tabsTableMiddle" align="center">
+								<div class="loadingMiddle" style="display: none;">&nbsp;</div>
+								<div style="width: 80%;" align="left">
+									<c:forEach var="photo" items="${foundPhotoPages[pageIndex].photos}">
+										<div class="smallestProfile">
+											<div class="smallProfilePicOffline">
+												<a href="./photo?action=LOAD&photoId=${photo.photoId}">
+													<img class="pic" src="./image?photoId=${photo.photoId}" alt=${photo.phName } title=${photo.phName } />
+												</a>
+											</div>
+											<div class="vipPic">&nbsp;</div>
+											<div class="lh17">
+												<a href="./photo?action=LOAD&photoId=${photo.photoId}" class="link bold">Номер: ${photo.photoId}</a>
+											</div>
+										</div>
+									</c:forEach>
+								</div>
+							</td>
+						</tr>
+						<tr><td class="tabsBottomMid">
+								<div class="fLeft left10">
+									<c:if test="${pageIndex > 0}">
+										<a href="./search?action=PREV_PAGE"><img src="./images/btnLeft.gif" /></a>
+									</c:if>
+									<c:if test="${pageIndex + 1 < totalPages}">
+										<a href="./search?action=NEXT_PAGE"><img src="./images/btnRight.gif" /></a>
+									</c:if>
+									<span style="vertical-align: 50%">${pageIndex + 1} от ${totalPages}</span>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</c:when>
+				<c:otherwise>
+					<div style="font-size: 20px; color: #5a3c8b;">Няма намерени снимки с това име.</div>
+				</c:otherwise>
+			</c:choose>
+		</td>
 	</tr>
 	<c:import url="./footer.jsp" />
 </table>

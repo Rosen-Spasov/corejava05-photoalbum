@@ -205,6 +205,9 @@ public class HibernateConnection {
 	
 	@SuppressWarnings("unchecked")
 	public List<Photo> searchPhotos(String queryString) {
+		if (queryString == null) {
+			return null;
+		}
 		List<Photo> result = null;
 		
 		String hql = "from Photo p where p.PhName like :queryString";

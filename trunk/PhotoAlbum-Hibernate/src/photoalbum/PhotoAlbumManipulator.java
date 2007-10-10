@@ -437,6 +437,9 @@ public class PhotoAlbumManipulator {
 	}
 	
 	public List<Photo> searchPhotos(String queryString) {
+		if (queryString == null) {
+			return null;
+		}
 		return getHbConnection().searchPhotos(queryString);
 	}
 	

@@ -67,7 +67,7 @@
 				<tr><td class="leftItem lh10">&nbsp;</td>
 					<td class="rightItem lh10">&nbsp;</td>
 				</tr>
-				<tr><td colspan="1" class="bottomMin">&nbsp;</td></tr>
+				<tr><td colspan="2" class="bottomMin">&nbsp;</td></tr>
 			</table>
 			<c:if test="${!empty loggedUser && loggedUser.userId == selectedUser.userId}">
 				<table cellpadding="0" cellspacing="0" class="leftMenu top10">
