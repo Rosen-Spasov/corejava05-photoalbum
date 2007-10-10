@@ -41,6 +41,8 @@ import photoalbum.entities.User;
 		getPam().refreshAll(allUsers);
 		session.setAttribute(ATTR_ALL_USERS, allUsers);
 		
+		session.setAttribute(ATTR_INITIALIZED, true);
+		
 		response.sendRedirect(REDIRECT);
 	}   	  	    
 }
