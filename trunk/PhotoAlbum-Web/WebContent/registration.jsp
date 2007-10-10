@@ -48,7 +48,7 @@
 						<td class="rightItem lh10">&nbsp;</td>
 					</tr>
 					<tr><td class="leftItem right lh10">
-							<a href="./mainPage.jsp?refresh=true">Обратно към главната страница</a>
+							<a style="cursor: pointer;" onclick="javascript:history.back()">Назад</a>
 						</td>
 						<td class="rightItem lh10">
 							<input class="button" type="submit" name="submit" value="Продължи">

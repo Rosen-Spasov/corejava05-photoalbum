@@ -98,6 +98,7 @@ import photoalbum.entities.Photo;
 			Photo photo = (Photo) session.getAttribute(ATTR_SELECTED_PHOTO);
 			photo = getPam().getPhotoById(photo.getPhotoId());
 			if (photo != null) {
+				getPam().refresh(photo);
 				session.setAttribute(ATTR_SELECTED_PHOTO, photo);
 			}
 		}

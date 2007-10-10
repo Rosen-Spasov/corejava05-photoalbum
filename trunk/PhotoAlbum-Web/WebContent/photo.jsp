@@ -48,7 +48,7 @@
 						<img src="./images/bullet.png" class="bullet" alt="bullet" />
 					</td>
 					<td class="rightItem pTop10">
-						<a>Опресни</a>
+						<a href="./photo?action=REFRESH">Опресни</a>
 					</td>
 				</tr>
 				<c:if test="${!empty selectedCategory}">
