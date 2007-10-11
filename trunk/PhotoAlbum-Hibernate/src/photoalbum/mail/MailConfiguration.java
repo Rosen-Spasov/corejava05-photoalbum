@@ -13,6 +13,8 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import photoalbum.logging.Logger;
+
 public class MailConfiguration {
 	
 	public static final String CONF_XML = "./mailConf.xml";
@@ -49,7 +51,7 @@ public class MailConfiguration {
 	
 	public static final String PROPERTY_SENDER = "mail.from";
 	
-	public static final String PROPERTY_DEBUG = "mail.smtp.debug";
+	public static final String PROPERTY_DEBUG = "mail.debug";
 	
 	private static MailConfiguration instance;
 	
@@ -214,27 +216,29 @@ public class MailConfiguration {
 			initProperties();
 			
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getDefaultInstance().log(e);
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getDefaultInstance().log(e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getDefaultInstance().log(e);
 		} catch (XPathExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getDefaultInstance().log(e);
 		}
 	}
 	
 	private void initProperties() {
 		getProperties().put(PROPERTY_SMTP_HOST, getSmtpHost());
-		getProperties().put(PROPERTY_SMTP_PORT, getSmtpPort());
-		getProperties().put(PROPERTY_SMTP_START_TLS, isStartTls());
-		getProperties().put(PROPERTY_SMTP_AUTH, isAuthenticationEnabled());
+		getProperties().put(PROPERTY_SMTP_PORT, String.valueOf( getSmtpPort() ));
+		getProperties().put(PROPERTY_SMTP_START_TLS, String.valueOf( isStartTls() ));
+		getProperties().put(PROPERTY_SMTP_AUTH, String.valueOf( isAuthenticationEnabled() ));
 		getProperties().put(PROPERTY_SENDER, getSender());
-		getProperties().put(PROPERTY_DEBUG, isDebug());
+		getProperties().put(PROPERTY_DEBUG, String.valueOf( isDebug() ));
+//		getProperties().put(PROPERTY_SMTP_HOST, "smtp.gmail.com");
+//		getProperties().put(PROPERTY_SMTP_PORT, "587");
+//		getProperties().put(PROPERTY_SMTP_START_TLS, "true");
+//		getProperties().put(PROPERTY_SMTP_AUTH, "true");
+//		getProperties().put(PROPERTY_SENDER, getSender());
+//		getProperties().put(PROPERTY_DEBUG, "true");
 	}
 
 }

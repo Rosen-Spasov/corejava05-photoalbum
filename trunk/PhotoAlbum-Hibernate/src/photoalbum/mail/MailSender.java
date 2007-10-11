@@ -82,12 +82,7 @@ public class MailSender {
 		Properties props = getMailConfiguration().getProperties();
 		Authenticator authenticator = getMailConfiguration().getSmtpAuthenticator();
 		Session mailSession = Session.getDefaultInstance(props, authenticator);
-		try {
-			PrintStream debugOutput = new PrintStream(Logger.SENT_MAILS_LOG);
-			mailSession.setDebugOut(debugOutput);
-		} catch (FileNotFoundException e) {
-			getLogger().log(e);
-		}
+		mailSession.setDebugOut(System.out);
 		setMailSession(mailSession);
 	}
 	
