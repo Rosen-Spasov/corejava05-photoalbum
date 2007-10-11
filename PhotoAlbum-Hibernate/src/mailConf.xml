@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mail>
+	<smtp>
+		<host>smtp.gmail.com</host>
+		<port>587</port>
+		<startTls>true</startTls>
+		<auth>
+			<enable>true</enable>
+			<username>photoalbum.admin@gmail.com</username>
+			<password>administrator</password>
+		</auth>
+		<sender>photoalbum.admin@gmail.com</sender>
+	</smtp>
+	<debug>true</debug>
+</mail>

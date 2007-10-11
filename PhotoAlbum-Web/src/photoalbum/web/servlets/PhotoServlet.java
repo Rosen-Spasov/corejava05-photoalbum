@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import photoalbum.entities.Photo;
+import photoalbum.entities.User;
 
 /**
  * Servlet implementation class for Servlet: PhotoServlet
@@ -24,6 +25,8 @@ import photoalbum.entities.Photo;
 	
 	public static final String PARAM_PHOTO_NAME = "phName";
 	
+	public static final String PARAM_RECIPIENT_ADDRESS = "recipientAddress";
+	
 	public static final String PARAM_SINGLE = "single";
 	
 	public static final String ATTR_SELECTED_PHOTO = "selectedPhoto";
@@ -32,7 +35,7 @@ import photoalbum.entities.Photo;
 	
 	public static final String USER_REDIRECT_PAGE = "./user?action=REFRESH";
 	
-	public static enum Action {LOAD, REFRESH, DELETE, RENAME}
+	public static enum Action {LOAD, REFRESH, DELETE, RENAME, SEND}
 
 	public PhotoServlet() {
 		super();
@@ -68,6 +71,11 @@ import photoalbum.entities.Photo;
 					photoId = Integer.parseInt(request.getParameter(PARAM_PHOTO_ID));
 					String phName = request.getParameter(PARAM_PHOTO_NAME);
 					renamePhoto(photoId, phName);
+					break;
+				case SEND:
+					photoId = Integer.parseInt(request.getParameter(PARAM_PHOTO_ID));
+					String recipientAddress = request.getParameter(PARAM_RECIPIENT_ADDRESS);
+					sendPhoto(photoId, recipientAddress);
 					break;
 				default:
 				}
@@ -112,6 +120,13 @@ import photoalbum.entities.Photo;
 					session.setAttribute(ATTR_SELECTED_PHOTO, photo);
 				}
 			}
+		}
+	}
+	
+	private void sendPhoto(int photoId, String recipientAddress) {
+		if (session.getAttribute(LoginServlet.ATTR_LOGGED_USER) != null) {
+			User user = (User) session.getAttribute(LoginServlet.ATTR_LOGGED_USER);
+			getPam().sendPhoto(photoId, user, recipientAddress);
 		}
 	}
 }

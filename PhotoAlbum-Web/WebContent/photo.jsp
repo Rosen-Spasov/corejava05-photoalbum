@@ -89,6 +89,13 @@
 							<a href="./photo?action=DELETE&photoId=${selectedPhoto.photoId}" >Изтрий снимката</a>
 						</td>
 					</tr>
+					<tr><td class="leftItem pTop10">
+							<img src="./images/bullet.png" class="bullet" alt="bullet" />
+						</td>
+						<td class="rightItem pTop10">
+							<a href="./photo?sendPhoto=true" >Изпрати на приятел</a>
+						</td>
+					</tr>
 					<tr><td class="leftItem lh10">&nbsp;</td>
 						<td class="rightItem lh10">&nbsp;</td>
 					</tr>
@@ -97,6 +104,9 @@
 			</c:if>
 		</td>
 		<td colspan="2" class="mainCenterNone vtop">
+			<c:if test="${param.sendPhoto == true}">
+				<c:import url="sendPhoto.jsp" />
+			</c:if>
 			<c:if test="${param.showSearch == true}">
 				<c:import url="search.jsp" />
 			</c:if>

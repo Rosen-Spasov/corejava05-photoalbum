@@ -16,6 +16,7 @@ import photoalbum.filesystem.FileSystemManager;
 import photoalbum.hibernate.HibernateConnection;
 import photoalbum.hibernate.HibernateConnectionManager;
 import photoalbum.logging.Logger;
+import photoalbum.mail.MailSender;
 
 public class PhotoAlbumManipulator {
 	
@@ -441,6 +442,18 @@ public class PhotoAlbumManipulator {
 			return null;
 		}
 		return getHbConnection().findPhotos(queryString);
+	}
+	
+	public void sendPhoto(int photoId, User user, String recipientAddress) {
+		if (user == null || recipientAddress == null || recipientAddress.equals("")) {
+			return;
+		}
+		Photo photo = getHbConnection().getPhotoById(photoId);
+		if (photo != null) {
+			String fileName = FileSystemManager.getAbsolutePath(photo);
+			String sender = user.getFirstName() + " " + user.getLastName();
+			MailSender.getInstance().sendFile(fileName, sender, recipientAddress);
+		}
 	}
 	
 	public boolean isConnected() {
