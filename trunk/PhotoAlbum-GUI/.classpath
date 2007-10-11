@@ -13,5 +13,7 @@
 	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/jta.jar"/>
 	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/log4j-1.2.11.jar"/>
 	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/activation.jar"/>
+	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/mail.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

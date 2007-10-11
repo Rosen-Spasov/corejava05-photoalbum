@@ -17,6 +17,8 @@ public class Logger {
 	
 	public static final String DEFAULT_LOG_FILENAME = Utilities.DEFAULT_LOG_FILENAME;
 	
+	public static final String SENT_MAILS_LOG = LOGS_DIRECTORY + "/mails.log";
+	
 	private static Logger defaultInstance = null;
 	
 	private static Hashtable<String, Logger> loggers = null;

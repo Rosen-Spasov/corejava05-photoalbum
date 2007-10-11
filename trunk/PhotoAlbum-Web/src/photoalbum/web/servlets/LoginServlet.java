@@ -23,6 +23,8 @@ public class LoginServlet extends BaseServlet {
 	
 	public static final String PARAM_LOGGED_USER = "loggedUser";
 	
+	public static final String ATTR_LOGGED_USER = PARAM_LOGGED_USER;
+	
 	public static final String LOGIN = "login";
 	
 	public static final String LOGOUT = "logout";
