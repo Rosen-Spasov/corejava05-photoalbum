@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="PhotoAlbum-Hibernate-src"/>
+	<classpathentry kind="src" path="Hibernate-src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="/PhotoAlbum-Hibernate/lib/asm.jar"/>
