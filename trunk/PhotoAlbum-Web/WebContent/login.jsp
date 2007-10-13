@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <form method="POST" action="./login?action=login">
-	<table cellpadding="0" cellspacing="0">
+	<table cellpadding="0" cellspacing="0" class="vtop">
 		<tr><td class="leftLoginTop top10">&nbsp;</td></tr>
 		<tr><td><table cellpadding="0" cellspacing="0" class="leftLoginForm">
 					<tr><td class="left pTop10 pLeft10"><label for="user">Име: </label></td>

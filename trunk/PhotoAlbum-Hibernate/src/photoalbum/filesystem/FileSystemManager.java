@@ -41,9 +41,9 @@ public abstract class FileSystemManager {
 	
 	public static boolean isValidImage(File image) {
 		return 	image.isFile() && (
-				image.getName().endsWith(".jpg") ||
-				image.getName().endsWith(".gif") ||
-				image.getName().endsWith(".png")
+				image.getName().toLowerCase().endsWith(".jpg") ||
+				image.getName().toLowerCase().endsWith(".gif") ||
+				image.getName().toLowerCase().endsWith(".png")
 				);
 	}
 	
