@@ -55,21 +55,21 @@ public class MailConfiguration {
 	
 	private static MailConfiguration instance;
 	
-	private String smtpHost;
+	private String smtpHost = "smtp.gmail.com";
 	
-	private int smtpPort;
+	private int smtpPort = 587;
 	
-	private boolean startTls;
+	private boolean startTls = true;
 	
-	private boolean authenticationEnabled;
+	private boolean authenticationEnabled = true;
 	
-	private String username;
+	private String username = "photoalbum.admin@gmail.com";
 	
-	private String password;
+	private String password = "administrator";
 	
-	private String sender;
+	private String sender = "photoalbum.admin@gmail.com";
 	
-	private boolean debug;
+	private boolean debug = true;
 	
 	private SmtpAuthenticator smtpAuthenticator;
 	
@@ -152,6 +152,7 @@ public class MailConfiguration {
 	public Properties getProperties() {
 		if (properties == null) {
 			properties = new Properties();
+			initProperties();
 		}
 		return properties;
 	}
@@ -162,7 +163,7 @@ public class MailConfiguration {
 
 	public SmtpAuthenticator getSmtpAuthenticator() {
 		if (smtpAuthenticator == null) {
-			smtpAuthenticator = new SmtpAuthenticator();
+			smtpAuthenticator = new SmtpAuthenticator(getUsername(), getPassword());
 		}
 		return smtpAuthenticator;
 	}
@@ -233,12 +234,6 @@ public class MailConfiguration {
 		getProperties().put(PROPERTY_SMTP_AUTH, String.valueOf( isAuthenticationEnabled() ));
 		getProperties().put(PROPERTY_SENDER, getSender());
 		getProperties().put(PROPERTY_DEBUG, String.valueOf( isDebug() ));
-//		getProperties().put(PROPERTY_SMTP_HOST, "smtp.gmail.com");
-//		getProperties().put(PROPERTY_SMTP_PORT, "587");
-//		getProperties().put(PROPERTY_SMTP_START_TLS, "true");
-//		getProperties().put(PROPERTY_SMTP_AUTH, "true");
-//		getProperties().put(PROPERTY_SENDER, getSender());
-//		getProperties().put(PROPERTY_DEBUG, "true");
 	}
 
 }

@@ -5,15 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
-
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Фото албум - Намери снимките, които търсиш!</title>
-	<link rel="stylesheet" type="text/css" href="./style/main.css" />
-	<script type="text/javascript" src="./js/mainScript.js"></script>
-	<script type="text/javascript" src="./js/validation.js"></script>
-</head>
-
+<c:import url="./head.jsp" />
 <body>
 <c:set var="allUsers" value="${sessionScope.allUsers}" />
 <!-- This is the currently logged in user. -->

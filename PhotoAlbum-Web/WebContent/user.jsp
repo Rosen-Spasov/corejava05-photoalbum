@@ -1,19 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@	page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
-
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Фото албум - Намери снимките, които търсиш!</title>
-	<link rel="stylesheet" type="text/css" href="./style/main.css" />
-	<script type="text/javascript" src="./js/mainScript.js"></script>
-	<script type="text/javascript" src="./js/validation.js"></script>
-</head>
-
+<c:import url="./head.jsp" />
 <body>
 <c:set var="allUsers" value="${sessionScope.allUsers}" />
 <!-- This is the currently logged in user. -->
@@ -26,7 +17,7 @@
 <c:set var="pageIndex" value="${sessionScope.pageIndex}" />
 <c:set var="totalPages" value="${sessionScope.totalPages}" />
 
-<table class="mainTable" cellpadding="0" cellspacing="0" align="center" height="95%" border="0">
+<table class="mainTable" cellpadding="0" cellspacing="0" align="center">
 	<c:import url="./header.jsp" />
 	<tr><td class="mainLeft vtop">
 			<table cellpadding="0" cellspacing="0" class="leftMenu">
@@ -81,12 +72,12 @@
 						<td class="rightItem pTop10">
 							<c:choose>
 								<c:when test="${!empty selectedCategory}">
-									<a href="addCategory.jsp?action=ADD&parentType=CATEGORY&parentId=${selectedCategory.categoryId}">
+									<a href="user.jsp?action=ADD&addCategory=true&parentType=CATEGORY&parentId=${selectedCategory.categoryId}">
 										Добави категория
 									</a>
 								</c:when>
 								<c:otherwise>
-									<a href="addCategory.jsp?action=ADD&parentType=USER&parentId=${selectedUser.userId}">
+									<a href="user.jsp?action=ADD&addCategory=true&parentType=USER&parentId=${selectedUser.userId}">
 										Добави категория
 									</a>
 								</c:otherwise>
@@ -98,7 +89,7 @@
 								<img src="./images/bullet.png" class="bullet" alt="bullet" />
 							</td>
 							<td class="rightItem pTop10">
-								<a href="renameCategory.jsp?action=RENAME&categoryId=${selectedCategory.categoryId}&currentName=${selectedCategory.catName}">
+								<a href="user.jsp?action=RENAME&renameCategory=true&categoryId=${selectedCategory.categoryId}">
 									Преименувай
 								</a>
 							</td>
@@ -127,6 +118,12 @@
 			<c:import url="./subCategories.jsp" />
 		</td>
 		<td colspan="2" class="mainCenter vtop">
+			<c:if test="${param.addCategory == true}">
+				<c:import url="./addCategory.jsp" />
+			</c:if>
+			<c:if test="${param.renameCategory == true}">
+				<c:import url="./renameCategory.jsp" />
+			</c:if>
 			<c:if test="${param.addPhoto == true}">
 				<c:import url="./upload.jsp" />
 			</c:if>

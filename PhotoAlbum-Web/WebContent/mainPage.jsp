@@ -1,36 +1,25 @@
+<%@	page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@	page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <html>
-
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Фото албум - Намери снимките, които търсиш!</title>
-<link rel="stylesheet" type="text/css" href="./style/main.css" />
-<script type="text/javascript" src="./js/mainScript.js"></script>
-<script type="text/javascript" src="./js/validation.js"></script>
-</head>
-
+<c:import url="./head.jsp" />
 <body>
 <c:if test="${empty sessionScope.initialized || param.refresh == true}">
 	<c:redirect url="/main" />
 </c:if>
 <c:set var="allUsers" value="${sessionScope.allUsers}" />
 <c:set var="loggedUser" value="${sessionScope.loggedUser}" />
-<table class="mainTable" cellpadding="0" cellspacing="0" align="center" border="0" height="95%">
+<table class="mainTable" cellpadding="0" cellspacing="0" align="center">
 	<c:import url="./header.jsp" />
-	<tr height="*">
-		<td class="mainLeft vtop">
+	<tr><td class="mainLeft vtop">
 			<c:choose>
 				<c:when test="${empty loggedUser}">
 					<c:import url="login.jsp" />
 				</c:when>
 				<c:otherwise>
-				<table cellpadding="0" cellspacing="0" class="leftMenu top10">
+				<table cellpadding="0" cellspacing="0" class="leftMenu top10 vtop">
 					<tr><td colspan="2" class="headerMin" style="border-bottom: 3px solid #fabc01;">
 							<div>Меню</div>
 						</td>
